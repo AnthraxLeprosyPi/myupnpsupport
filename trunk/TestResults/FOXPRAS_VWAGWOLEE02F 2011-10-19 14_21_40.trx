@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="b08e0e8a-40a5-4496-8509-7e007047b77d" name="FOXPRAS@VWAGWOLEE02F 2011-10-19 14:21:40" runUser="DEVWAG00\FOXPRAS" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="cabf2651-b5d2-4d4f-949c-61788090e2fe">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment enabled="false" runDeploymentRoot="FOXPRAS_VWAGWOLEE02F 2011-10-19 14_21_40">
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\Resources\UPNPAVCDSML.dll" />
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\Resources\UPNP_AV.dll" />
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\Resources\UPnP.dll" />
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\Resources\UPNPAVMSCP.dll" />
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\Resources\UPNPAV_DeviceRendererStack.dll" />
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\bin\Debug\MyUPnPSupport.dll" />
+      <DeploymentItem filename="D:\!Prasse\Projects\MyUPnPSupport\UPnPInterface\Resources\UPNPAV_RendererStack.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-10-19T14:21:40.7282500+02:00" queuing="2011-10-19T14:21:52.5407500+02:00" start="2011-10-19T14:21:53.5563750+02:00" finish="2011-10-19T14:21:59.9157500+02:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TestMethod1" storage="d:\!prasse\projects\myupnpsupport\upnpinterface.test\bin\debug\upnpinterface.test.dll" id="fc298fb1-547a-91a3-1fe4-353b439b4962">
+      <Execution id="031c50dd-6133-4f28-8861-b5727314250b" />
+      <TestMethod codeBase="D:/!Prasse/Projects/MyUPnPSupport/UPnPInterface.Test/bin/Debug/UPnPInterface.Test.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="UPnPInterface.Test.UnitTest1, UPnPInterface.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestMethod1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="fc298fb1-547a-91a3-1fe4-353b439b4962" executionId="031c50dd-6133-4f28-8861-b5727314250b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="031c50dd-6133-4f28-8861-b5727314250b" testId="fc298fb1-547a-91a3-1fe4-353b439b4962" testName="TestMethod1" computerName="VWAGWOLEE02F" duration="00:00:02.3075572" startTime="2011-10-19T14:21:54.2751250+02:00" endTime="2011-10-19T14:21:59.5563750+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="031c50dd-6133-4f28-8861-b5727314250b">
+    </UnitTestResult>
+  </Results>
+</TestRun>
