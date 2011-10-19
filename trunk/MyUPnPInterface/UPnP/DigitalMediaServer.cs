@@ -13,8 +13,18 @@ namespace MyUPnPSupport.UPnP {
         private MediaServerCore MediaServerCore { get; set; }
         private UPnPMediaServer MediaServer { get; set; }
 
-        public DigitalMediaServer(string friendlName) {
-            MediaServerCore = new MediaServerCore(friendlName);
+        public DigitalMediaServer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri){
+            MediaServerCore = new MediaServerCore(friendlyName);
+
+            MediaServerCore.GetUPnPDevice().UniqueDeviceName = deviceId.ToString();
+            MediaServerCore.GetUPnPDevice().StandardDeviceType = "MediaServer";
+            MediaServerCore.GetUPnPDevice().Manufacturer = manufacturer;
+            MediaServerCore.GetUPnPDevice().ManufacturerURL = deviceUri.ToString();
+            MediaServerCore.GetUPnPDevice().ModelName = modelName;
+            MediaServerCore.GetUPnPDevice().ModelDescription = modelDescription;
+            MediaServerCore.GetUPnPDevice().ModelURL = deviceUri;
+            MediaServerCore.GetUPnPDevice().HasPresentation = false;
+
             this.MediaServerCore.OnDirectoriesChanged += new UPnPMediaServerCore.MediaServerCore.MediaServerCoreEventHandler(MediaServerCore_OnDirectoriesChanged);
             MediaServer = new UPnPMediaServer();
         }

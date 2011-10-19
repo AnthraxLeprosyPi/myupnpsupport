@@ -65,7 +65,7 @@ namespace OpenSource.UPnP.AV.RENDERER.Device
 			OnNewConnection += h;
 
 			InfoStrings = Info;
-			device = UPnPDevice.CreateEmbeddedDevice(1,Guid.NewGuid().ToString());
+			device = UPnPDevice.CreateRootDevice(1800, 1.0, "\\");
 			device.FriendlyName = "AVRenderer Device (" + Dns.GetHostName() +")";
 
 			AVT = new DvAVTransport();
@@ -287,7 +287,7 @@ namespace OpenSource.UPnP.AV.RENDERER.Device
 			{
 				if(OK==false)
 				{
-					if(CurrentConnections<ConnectionMax)
+					if(CurrentConnections<=ConnectionMax)
 					{ 
 						++ CurrentConnections;
 						Random r = new Random();
@@ -576,15 +576,12 @@ namespace OpenSource.UPnP.AV.RENDERER.Device
 		}
 		protected void StopSink(System.UInt32 InstanceID)
 		{
-			if(ID_Table.ContainsKey(InstanceID)==false)
-			{
-				throw(new UPnPCustomException(802,InstanceID.ToString() + " is not a valid InstanceID"));
-			}
-			else
-			{
-				AVConnection c = (AVConnection)ID_Table[InstanceID];
-				c.Stop();
-			}
+            //if (ID_Table.ContainsKey(InstanceID) == false) {
+            //    throw (new UPnPCustomException(802, InstanceID.ToString() + " is not a valid InstanceID"));
+            //} else {
+            //    AVConnection c = (AVConnection)ID_Table[InstanceID];
+            //    c.Stop();
+            //}
 		}
 		protected void PauseSink(System.UInt32 InstanceID)
 		{
@@ -678,7 +675,8 @@ namespace OpenSource.UPnP.AV.RENDERER.Device
 			}
 			else
 			{
-				AVConnection c = (AVConnection)ID_Table[InstanceID];
+				AVConnection c = (AVConnection
+                    )ID_Table[InstanceID];
 				if((NextURI =="")||(NextURI==null))
 				{
 					c.SetNextAVTransportURI(null, NextURIMetaData);

@@ -7,37 +7,28 @@ using OpenSource.UPnP;
 namespace MyUPnPSupport.UPnP {
    public class UPnPDeviceManager  : IDisposable{
 
-        private UPnPDevice RootDevice { get; set; }
+        private List<UPnPDevice> UPnPDevices { get; set; }
 
-        public UPnPDeviceManager(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri) {            
-            RootDevice = UPnPDevice.CreateRootDevice(900, 1, "");
-            RootDevice.FriendlyName = friendlyName;
-            RootDevice.UniqueDeviceName = deviceId.ToString();            
-            RootDevice.StandardDeviceType = "MediaRenderer";  
-            RootDevice.Manufacturer = manufacturer;
-            RootDevice.ManufacturerURL = deviceUri.ToString();
-            RootDevice.ModelName = modelName;
-            RootDevice.ModelDescription = modelDescription;
-            RootDevice.ModelURL = deviceUri;
-            RootDevice.HasPresentation = false;
+        public UPnPDeviceManager() {
+            UPnPDevices = new List<UPnPDevice>();
         }
 
-        public void AddDevice(IUPnPDevice childDevice) {
-            RootDevice.AddDevice(childDevice);
+        public void AddDevice(IUPnPDevice device) {
+            UPnPDevices.Add(device.GetUPnPDevice());
         }
 
-        public void StartRootDevice() {
-            RootDevice.StartDevice();
+        public void StartDevices() {
+            UPnPDevices.ForEach(dev => dev.StartDevice());
         }
 
-        public void StopRootDevice() {
-            RootDevice.StopDevice();
+        public void StopDevices() {
+            UPnPDevices.ForEach(dev => dev.StopDevice());
         }
 
         #region IDisposable Members
 
         public void Dispose() {            
-            StopRootDevice();
+            StopDevices();
         }
 
         #endregion

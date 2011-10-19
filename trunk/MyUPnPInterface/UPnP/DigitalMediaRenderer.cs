@@ -9,8 +9,7 @@ using OpenSource.UPnP.AV.CdsMetadata;
 
 namespace MyUPnPSupport.UPnP {
     public class DigitalMediaRenderer : AVRenderer , IDisposable {
-
-        
+                
         public delegate void OnPlayHandler(Uri mediaURI, string mediaTitle);
         public event OnPlayHandler OnPlay; 
 
@@ -23,15 +22,28 @@ namespace MyUPnPSupport.UPnP {
             new ProtocolInfoString("http-get:*:video/x-ms-wmv:*"),
             new ProtocolInfoString("http-get:*:video/x-ms-asf:*"),
             new ProtocolInfoString("http-get:*:video/x-ms-avi:*"),
-            new ProtocolInfoString(" http-get:*:video/mpeg:*")
+            new ProtocolInfoString("http-get:*:video/mpeg:*")
         };
 
-        public DigitalMediaRenderer(string deviceName)
-            : base(1, Capabilities.ToArray(), null) {
-            base.device.FriendlyName = deviceName;
-            
+        public DigitalMediaRenderer (string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri)
+            : base(10, Capabilities.ToArray(), null) {
+           
+            base.device.FriendlyName = friendlyName;
+            base.device.UniqueDeviceName = deviceId.ToString();
+            base.device.DeviceURN = "urn:schemas-upnp-org:device:Anthrax:1";
+            base.device.SerialNumber = deviceId.ToString(); 
+            base.device.StandardDeviceType = "MediaRenderer";  
+            base.device.Manufacturer = manufacturer;
+            base.device.ManufacturerURL = deviceUri.ToString();
+            base.device.ModelName = modelName;
+            base.device.ModelDescription = modelDescription;
+            base.device.ModelURL = deviceUri;
+            base.device.HasPresentation = false;
+            base.device.Icon = Resources.Resource.logo_mp_l;
+            base.device.Icon2 = Resources.Resource.logo_mp_s;
             this.OnNewConnection += new ConnectionHandler(DigitalMediaRenderer_OnNewConnection);
             this.OnClosedConnection += new ConnectionHandler(DigitalMediaRenderer_OnClosedConnection);
+            
         }
 
         void DigitalMediaRenderer_OnClosedConnection(AVRenderer sender, AVConnection c) {

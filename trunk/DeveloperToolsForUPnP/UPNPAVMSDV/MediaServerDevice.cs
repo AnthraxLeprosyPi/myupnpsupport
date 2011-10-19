@@ -499,7 +499,7 @@ namespace OpenSource.UPnP.AV.MediaServer.DV
 			{
                 Guid udn = new Guid("57EE842B-214E-48B0-873D-75B85A09D19F");
 				this.Device = UPnPDevice.CreateEmbeddedDevice(1.0, udn.ToString());
-				//parent.AddDevice(this.Device);
+				parent.AddDevice(this.Device);
 			}
 
 			// transfer basic info about the device, like serial #, manufacturer, etc.
