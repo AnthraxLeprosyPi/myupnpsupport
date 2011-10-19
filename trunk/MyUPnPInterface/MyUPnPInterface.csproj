@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5CDDCC35-403D-45F7-BB8B-2F60FD3D928D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MyUPnPSupport</RootNamespace>
+    <AssemblyName>MyUPnPSupport</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MyUPnPSupport.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UPnP\DigitalMediaController.cs" />
+    <Compile Include="UPnP\DigitalMediaServer.cs" />
+    <Compile Include="UPnP\DigitalMediaRenderer.cs" />
+    <Compile Include="UPnP\UPnPDeviceManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugin\" />
+    <Folder Include="Skin\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\AVMediaServerCore.dll" />
+    <Content Include="Resources\UPnP.dll" />
+    <Content Include="Resources\UPNPAVCDSML.dll" />
+    <Content Include="Resources\UPNPAVMSCP.dll" />
+    <Content Include="Resources\UPNPAVMSDV.dll" />
+    <Content Include="Resources\UPNPAV_DeviceRendererStack.dll" />
+    <Content Include="Resources\UPNPAV_RendererStack.dll" />
+    <Content Include="Resources\UPNP_AV.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\MediaServer\UPnPMediaServerCore\UPnPMediaServerCore.csproj">
+      <Project>{658883b6-926a-4482-84ab-43aa3d155f6b}</Project>
+      <Name>UPnPMediaServerCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPNPAVCDSML\UPnPAVCDSML.csproj">
+      <Project>{8ea0e595-45ec-40c1-82ce-269f4fa9ebb3}</Project>
+      <Name>UPnPAVCDSML</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPNPAVMSCP\UPnPAVMSCP.csproj">
+      <Project>{8901df28-45ed-4bc5-8972-ae463a68e756}</Project>
+      <Name>UPnPAVMSCP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPNPAVMSDV\UPnPAVMSDV.csproj">
+      <Project>{f080b2d6-53ed-4363-aaa1-17ef02a69b10}</Project>
+      <Name>UPnPAVMSDV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPNPAV_DeviceRendererStack\UPnPAV_DeviceRendererStack.csproj">
+      <Project>{76f0e0ba-056e-4b30-b09e-f7887ba53b7d}</Project>
+      <Name>UPnPAV_DeviceRendererStack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPNPAV_RendererStack\UPnPAV_RendererStack.csproj">
+      <Project>{e01b6019-acc6-40a6-a511-48d285d51c40}</Project>
+      <Name>UPnPAV_RendererStack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPnP\UPnP.csproj">
+      <Project>{584ed187-8f2a-4b58-a266-85f3f212b092}</Project>
+      <Name>UPnP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeveloperToolsForUPnP\UPNP_AV\UPnPAV.csproj">
+      <Project>{b2439738-5f46-4e59-95a1-92c3df38696f}</Project>
+      <Name>UPnPAV</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
