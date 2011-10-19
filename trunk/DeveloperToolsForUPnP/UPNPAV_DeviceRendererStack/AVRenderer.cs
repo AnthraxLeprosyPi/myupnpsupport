@@ -576,12 +576,12 @@ namespace OpenSource.UPnP.AV.RENDERER.Device
 		}
 		protected void StopSink(System.UInt32 InstanceID)
 		{
-            //if (ID_Table.ContainsKey(InstanceID) == false) {
-            //    throw (new UPnPCustomException(802, InstanceID.ToString() + " is not a valid InstanceID"));
-            //} else {
-            //    AVConnection c = (AVConnection)ID_Table[InstanceID];
-            //    c.Stop();
-            //}
+            if (ID_Table.ContainsKey(InstanceID) == false) {
+                throw (new UPnPCustomException(802, InstanceID.ToString() + " is not a valid InstanceID"));
+            } else {
+                AVConnection c = (AVConnection)ID_Table[InstanceID];
+                c.Stop();
+            }
 		}
 		protected void PauseSink(System.UInt32 InstanceID)
 		{
