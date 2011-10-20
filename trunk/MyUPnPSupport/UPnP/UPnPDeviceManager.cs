@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using OpenSource.UPnP;
 using MyUPnPSupport.UPnP.Services;
-using MyUPnPSupport.UPnP.MediaServer;
 using MyUPnPSupport.UPnP.Devices;
 
 namespace MyUPnPSupport.UPnP {
@@ -15,7 +14,7 @@ namespace MyUPnPSupport.UPnP {
         public UPnPDeviceManager() {
             UPnPDevices = new List<UPnPDevice>();
             Uri myURI = new Uri("http://www.team-mediaportal.com");           
-            DigitalMediaRenderer renderer = new DigitalMediaRenderer(
+            MediaPortalDMR renderer = new MediaPortalDMR(
                 "MediaPortal (DMR)",
                 "Anthrax",
                 "MyUPnPSupport MediaPortal-Plugin",
@@ -23,7 +22,7 @@ namespace MyUPnPSupport.UPnP {
                 new Guid("3F4EDD00-F8DD-4B91-AA76-BCABF3DCF193"),
                 myURI);
 
-            DigitalMediaServer server = new DigitalMediaServer(
+            MediaPortalDMS server = new MediaPortalDMS(
                 "MediaPortal (DMS)",
                 "Anthrax",
                 "MyUPnPSupport MediaPortal-Plugin",

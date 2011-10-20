@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using MyUPnPSupport.UPnP;
 using MyUPnPSupport.UPnP.Services;
-using MyUPnPSupport.UPnP.MediaServer;
 
 namespace MyUPnPSupport {
     class Program {

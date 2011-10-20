@@ -5,7 +5,7 @@ namespace MyUPnPSupport.UPnP.Services
     /// <summary>
     /// Transparent DeviceSide UPnP Service
     /// </summary>
-    public class MediaPortalAVTransport : IUPnPService
+    public class AVTransport : IUPnPService
     {
 
         // Place your declarations above this line
@@ -1394,7 +1394,7 @@ namespace MyUPnPSupport.UPnP.Services
                 return(RetVal);
             }
         }
-        public delegate void OnStateVariableModifiedHandler(MediaPortalAVTransport sender);
+        public delegate void OnStateVariableModifiedHandler(AVTransport sender);
         public event OnStateVariableModifiedHandler OnStateVariableModified_PossibleRecordQualityModes;
         public event OnStateVariableModifiedHandler OnStateVariableModified_NextAVTransportURI;
         public event OnStateVariableModifiedHandler OnStateVariableModified_NextAVTransportURIMetaData;
@@ -2318,17 +2318,17 @@ namespace MyUPnPSupport.UPnP.Services
         }
         public delegate void Delegate_GetCurrentTransportActions(System.UInt32 InstanceID, out System.String Actions);
         public delegate void Delegate_GetDeviceCapabilities(System.UInt32 InstanceID, out System.String PlayMedia, out System.String RecMedia, out System.String RecQualityModes);
-        public delegate void Delegate_GetMediaInfo(System.UInt32 InstanceID, out System.UInt32 NrTracks, out System.String MediaDuration, out System.String CurrentURI, out System.String CurrentURIMetaData, out System.String NextURI, out System.String NextURIMetaData, out MediaPortalAVTransport.Enum_PlaybackStorageMedium PlayMedium, out MediaPortalAVTransport.Enum_RecordStorageMedium RecordMedium, out MediaPortalAVTransport.Enum_RecordMediumWriteStatus WriteStatus);
+        public delegate void Delegate_GetMediaInfo(System.UInt32 InstanceID, out System.UInt32 NrTracks, out System.String MediaDuration, out System.String CurrentURI, out System.String CurrentURIMetaData, out System.String NextURI, out System.String NextURIMetaData, out AVTransport.Enum_PlaybackStorageMedium PlayMedium, out AVTransport.Enum_RecordStorageMedium RecordMedium, out AVTransport.Enum_RecordMediumWriteStatus WriteStatus);
         public delegate void Delegate_GetPositionInfo(System.UInt32 InstanceID, out System.UInt32 Track, out System.String TrackDuration, out System.String TrackMetaData, out System.String TrackURI, out System.String RelTime, out System.String AbsTime, out System.Int32 RelCount, out System.Int32 AbsCount);
-        public delegate void Delegate_GetTransportInfo(System.UInt32 InstanceID, out MediaPortalAVTransport.Enum_TransportState CurrentTransportState, out MediaPortalAVTransport.Enum_TransportStatus CurrentTransportStatus, out MediaPortalAVTransport.Enum_TransportPlaySpeed CurrentSpeed);
-        public delegate void Delegate_GetTransportSettings(System.UInt32 InstanceID, out MediaPortalAVTransport.Enum_CurrentPlayMode PlayMode, out MediaPortalAVTransport.Enum_CurrentRecordQualityMode RecQualityMode);
+        public delegate void Delegate_GetTransportInfo(System.UInt32 InstanceID, out AVTransport.Enum_TransportState CurrentTransportState, out AVTransport.Enum_TransportStatus CurrentTransportStatus, out AVTransport.Enum_TransportPlaySpeed CurrentSpeed);
+        public delegate void Delegate_GetTransportSettings(System.UInt32 InstanceID, out AVTransport.Enum_CurrentPlayMode PlayMode, out AVTransport.Enum_CurrentRecordQualityMode RecQualityMode);
         public delegate void Delegate_Next(System.UInt32 InstanceID);
         public delegate void Delegate_Pause(System.UInt32 InstanceID);
-        public delegate void Delegate_Play(System.UInt32 InstanceID, MediaPortalAVTransport.Enum_TransportPlaySpeed Speed);
+        public delegate void Delegate_Play(System.UInt32 InstanceID, AVTransport.Enum_TransportPlaySpeed Speed);
         public delegate void Delegate_Previous(System.UInt32 InstanceID);
-        public delegate void Delegate_Seek(System.UInt32 InstanceID, MediaPortalAVTransport.Enum_A_ARG_TYPE_SeekMode Unit, System.String Target);
+        public delegate void Delegate_Seek(System.UInt32 InstanceID, AVTransport.Enum_A_ARG_TYPE_SeekMode Unit, System.String Target);
         public delegate void Delegate_SetAVTransportURI(System.UInt32 InstanceID, System.String CurrentURI, System.String CurrentURIMetaData);
-        public delegate void Delegate_SetPlayMode(System.UInt32 InstanceID, MediaPortalAVTransport.Enum_CurrentPlayMode NewPlayMode);
+        public delegate void Delegate_SetPlayMode(System.UInt32 InstanceID, AVTransport.Enum_CurrentPlayMode NewPlayMode);
         public delegate void Delegate_Stop(System.UInt32 InstanceID);
 
         public Delegate_GetCurrentTransportActions External_GetCurrentTransportActions = null;
@@ -2533,9 +2533,9 @@ namespace MyUPnPSupport.UPnP.Services
 
         private class _DvAVTransport
         {
-            private MediaPortalAVTransport Outer = null;
+            private AVTransport Outer = null;
             private UPnPService S;
-            internal _DvAVTransport(MediaPortalAVTransport n)
+            internal _DvAVTransport(AVTransport n)
             {
                 Outer = n;
                 S = BuildUPnPService();
@@ -3234,7 +3234,7 @@ namespace MyUPnPSupport.UPnP.Services
             public Delegate_SetPlayMode Sink_SetPlayMode;
             public Delegate_Stop Sink_Stop;
         }
-        public MediaPortalAVTransport()
+        public AVTransport()
         {
             _S = new _DvAVTransport(this);
             _S.GetUPnPService().GetStateVariableObject("PossibleRecordQualityModes").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_PossibleRecordQualityModes);
@@ -3282,7 +3282,7 @@ namespace MyUPnPSupport.UPnP.Services
             _S.Sink_SetPlayMode = new Delegate_SetPlayMode(SetPlayMode);
             _S.Sink_Stop = new Delegate_Stop(Stop);
         }
-        public MediaPortalAVTransport(string ID):this()
+        public AVTransport(string ID):this()
         {
             _S.GetUPnPService().ServiceID = ID;
         }

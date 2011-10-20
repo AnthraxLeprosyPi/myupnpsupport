@@ -5,7 +5,7 @@ namespace MyUPnPSupport.UPnP.Services
     /// <summary>
     /// Transparent DeviceSide UPnP Service
     /// </summary>
-    public class MediaPortalRenderingControl : IUPnPService
+    public class RenderingControl : IUPnPService
     {
 
         // Place your declarations above this line
@@ -161,7 +161,7 @@ namespace MyUPnPSupport.UPnP.Services
                 return(RetVal);
             }
         }
-        public delegate void OnStateVariableModifiedHandler(MediaPortalRenderingControl sender);
+        public delegate void OnStateVariableModifiedHandler(RenderingControl sender);
         public event OnStateVariableModifiedHandler OnStateVariableModified_GreenVideoGain;
         public event OnStateVariableModifiedHandler OnStateVariableModified_BlueVideoBlackLevel;
         public event OnStateVariableModifiedHandler OnStateVariableModified_VerticalKeystone;
@@ -862,17 +862,17 @@ namespace MyUPnPSupport.UPnP.Services
         public delegate void Delegate_GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel);
         public delegate void Delegate_GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain);
         public delegate void Delegate_GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone);
-        public delegate void Delegate_GetLoudness(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentLoudness);
-        public delegate void Delegate_GetMute(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentMute);
+        public delegate void Delegate_GetLoudness(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentLoudness);
+        public delegate void Delegate_GetMute(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentMute);
         public delegate void Delegate_GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel);
         public delegate void Delegate_GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain);
         public delegate void Delegate_GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness);
         public delegate void Delegate_GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone);
-        public delegate void Delegate_GetVolume(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.UInt16 CurrentVolume);
-        public delegate void Delegate_GetVolumeDB(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume);
-        public delegate void Delegate_GetVolumeDBRange(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 MinValue, out System.Int16 MaxValue);
+        public delegate void Delegate_GetVolume(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.UInt16 CurrentVolume);
+        public delegate void Delegate_GetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume);
+        public delegate void Delegate_GetVolumeDBRange(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 MinValue, out System.Int16 MaxValue);
         public delegate void Delegate_ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList);
-        public delegate void Delegate_SelectPreset(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_PresetName PresetName);
+        public delegate void Delegate_SelectPreset(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_PresetName PresetName);
         public delegate void Delegate_SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel);
         public delegate void Delegate_SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain);
         public delegate void Delegate_SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness);
@@ -881,14 +881,14 @@ namespace MyUPnPSupport.UPnP.Services
         public delegate void Delegate_SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel);
         public delegate void Delegate_SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain);
         public delegate void Delegate_SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone);
-        public delegate void Delegate_SetLoudness(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredLoudness);
-        public delegate void Delegate_SetMute(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredMute);
+        public delegate void Delegate_SetLoudness(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredLoudness);
+        public delegate void Delegate_SetMute(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredMute);
         public delegate void Delegate_SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel);
         public delegate void Delegate_SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain);
         public delegate void Delegate_SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness);
         public delegate void Delegate_SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone);
-        public delegate void Delegate_SetVolume(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.UInt16 DesiredVolume);
-        public delegate void Delegate_SetVolumeDB(System.UInt32 InstanceID, MediaPortalRenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Int16 DesiredVolume);
+        public delegate void Delegate_SetVolume(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.UInt16 DesiredVolume);
+        public delegate void Delegate_SetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Int16 DesiredVolume);
 
         public Delegate_GetBlueVideoBlackLevel External_GetBlueVideoBlackLevel = null;
         public Delegate_GetBlueVideoGain External_GetBlueVideoGain = null;
@@ -1161,9 +1161,9 @@ namespace MyUPnPSupport.UPnP.Services
 
         private class _DvRenderingControl
         {
-            private MediaPortalRenderingControl Outer = null;
+            private RenderingControl Outer = null;
             private UPnPService S;
-            internal _DvRenderingControl(MediaPortalRenderingControl n)
+            internal _DvRenderingControl(RenderingControl n)
             {
                 Outer = n;
                 S = BuildUPnPService();
@@ -1926,7 +1926,7 @@ namespace MyUPnPSupport.UPnP.Services
             public Delegate_SetVolume Sink_SetVolume;
             public Delegate_SetVolumeDB Sink_SetVolumeDB;
         }
-        public MediaPortalRenderingControl()
+        public RenderingControl()
         {
             _S = new _DvRenderingControl(this);
             _S.GetUPnPService().GetStateVariableObject("GreenVideoGain").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_GreenVideoGain);
@@ -1986,7 +1986,7 @@ namespace MyUPnPSupport.UPnP.Services
             _S.Sink_SetVolume = new Delegate_SetVolume(SetVolume);
             _S.Sink_SetVolumeDB = new Delegate_SetVolumeDB(SetVolumeDB);
         }
-        public MediaPortalRenderingControl(string ID):this()
+        public RenderingControl(string ID):this()
         {
             _S.GetUPnPService().ServiceID = ID;
         }

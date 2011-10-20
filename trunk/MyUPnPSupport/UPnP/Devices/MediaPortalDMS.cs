@@ -3,19 +3,18 @@
 
 using System;
 using OpenSource.UPnP;
-using MyUPnPSupport.UPnP.MediaServer;
 using System.Collections.Generic;
+using MyUPnPSupport.UPnP.Services;
 
 namespace MyUPnPSupport.UPnP.Devices {
     /// <summary>
     /// Summary description for SampleDevice.
     /// </summary>
-   public class DigitalMediaServer : IUPnPDevice{
+   public class MediaPortalDMS : IUPnPDevice{
         private UPnPDevice device;
-
-
+       
         /// <summary>
-        /// Initializes a new customized instance of the <see cref="DigitalMediaServer"/> class.
+        /// Initializes a new customized instance of the <see cref="MediaPortalDMS"/> class.
         /// </summary>
         /// <param name="friendlyName">Name of the friendly.</param>
         /// <param name="manufacturer">The manufacturer.</param>
@@ -23,7 +22,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         /// <param name="modelDescription">The model description.</param>
         /// <param name="deviceId">The device id.</param>
         /// <param name="deviceUri">The device URI.</param>
-        public DigitalMediaServer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri) : this() {
+        public MediaPortalDMS(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri) : this() {
             device.FriendlyName = friendlyName;
             device.UniqueDeviceName = deviceId.ToString();
             device.SerialNumber = deviceId.ToString();    
@@ -36,7 +35,7 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.Icon2 = Resources.Resource.logo_mp_s;         
         }
 
-        public DigitalMediaServer() {
+        public MediaPortalDMS() {
             device = UPnPDevice.CreateRootDevice(1800, 1.0, "\\");
 
             device.FriendlyName = "Intel's Embedded Media Server";
@@ -47,30 +46,31 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelNumber = "";
             device.HasPresentation = false;
             device.DeviceURN = "urn:schemas-upnp-org:device:MediaServer:1";
-            MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer ConnectionManager = new MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer();
-            ConnectionManager.External_ConnectionComplete = new MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer.Delegate_ConnectionComplete(ConnectionManager_ConnectionComplete);
-            ConnectionManager.External_GetCurrentConnectionIDs = new MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
-            ConnectionManager.External_GetCurrentConnectionInfo = new MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
-            ConnectionManager.External_GetProtocolInfo = new MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);
-            ConnectionManager.External_PrepareForConnection = new MyUPnPSupport.UPnP.MediaServer.MediaPortalConnectionManagerServer.Delegate_PrepareForConnection(ConnectionManager_PrepareForConnection);
+            MyUPnPSupport.UPnP.Services.ConnectionManagerServer ConnectionManager = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer();
+            ConnectionManager.External_ConnectionComplete = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_ConnectionComplete(ConnectionManager_ConnectionComplete);
+            ConnectionManager.External_GetCurrentConnectionIDs = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
+            ConnectionManager.External_GetCurrentConnectionInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
+            ConnectionManager.External_GetProtocolInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);
+            ConnectionManager.External_PrepareForConnection = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_PrepareForConnection(ConnectionManager_PrepareForConnection);
             device.AddService(ConnectionManager);
-            MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory ContentDirectory = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory();
-            ContentDirectory.External_Browse = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_Browse(ContentDirectory_Browse);
-            ContentDirectory.External_CreateObject = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_CreateObject(ContentDirectory_CreateObject);
-            ContentDirectory.External_CreateReference = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_CreateReference(ContentDirectory_CreateReference);
-            ContentDirectory.External_DeleteResource = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_DeleteResource(ContentDirectory_DeleteResource);
-            ContentDirectory.External_DestroyObject = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_DestroyObject(ContentDirectory_DestroyObject);
-            ContentDirectory.External_ExportResource = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_ExportResource(ContentDirectory_ExportResource);
-            ContentDirectory.External_GetSearchCapabilities = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_GetSearchCapabilities(ContentDirectory_GetSearchCapabilities);
-            ContentDirectory.External_GetSortCapabilities = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_GetSortCapabilities(ContentDirectory_GetSortCapabilities);
-            ContentDirectory.External_GetSystemUpdateID = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_GetSystemUpdateID(ContentDirectory_GetSystemUpdateID);
-            ContentDirectory.External_GetTransferProgress = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_GetTransferProgress(ContentDirectory_GetTransferProgress);
-            ContentDirectory.External_ImportResource = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_ImportResource(ContentDirectory_ImportResource);
-            ContentDirectory.External_Search = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_Search(ContentDirectory_Search);
-            ContentDirectory.External_StopTransferResource = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_StopTransferResource(ContentDirectory_StopTransferResource);
-            ContentDirectory.External_UpdateObject = new MyUPnPSupport.UPnP.MediaServer.MediaPortalContentDirectory.Delegate_UpdateObject(ContentDirectory_UpdateObject);
+            MyUPnPSupport.UPnP.Services.ContentDirectory ContentDirectory = new MyUPnPSupport.UPnP.Services.ContentDirectory();
+            ContentDirectory.External_Browse = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_Browse(ContentDirectory_Browse);
+            ContentDirectory.External_CreateObject = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_CreateObject(ContentDirectory_CreateObject);
+            ContentDirectory.External_CreateReference = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_CreateReference(ContentDirectory_CreateReference);
+            ContentDirectory.External_DeleteResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_DeleteResource(ContentDirectory_DeleteResource);
+            ContentDirectory.External_DestroyObject = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_DestroyObject(ContentDirectory_DestroyObject);
+            ContentDirectory.External_ExportResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_ExportResource(ContentDirectory_ExportResource);
+            ContentDirectory.External_GetSearchCapabilities = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetSearchCapabilities(ContentDirectory_GetSearchCapabilities);
+            ContentDirectory.External_GetSortCapabilities = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetSortCapabilities(ContentDirectory_GetSortCapabilities);
+            ContentDirectory.External_GetSystemUpdateID = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetSystemUpdateID(ContentDirectory_GetSystemUpdateID);
+            ContentDirectory.External_GetTransferProgress = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetTransferProgress(ContentDirectory_GetTransferProgress);
+            ContentDirectory.External_ImportResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_ImportResource(ContentDirectory_ImportResource);
+            ContentDirectory.External_Search = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_Search(ContentDirectory_Search);
+            ContentDirectory.External_StopTransferResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_StopTransferResource(ContentDirectory_StopTransferResource);
+            ContentDirectory.External_UpdateObject = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_UpdateObject(ContentDirectory_UpdateObject);
             device.AddService(ContentDirectory);
 
+           
             // Setting the initial value of evented variables
             ConnectionManager.Evented_SinkProtocolInfo = "Sample String";
             ConnectionManager.Evented_SourceProtocolInfo = "Sample String";
@@ -81,6 +81,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         }
 
         //public void AddDirectory(string dirPath) {
+            
         //    MediaServer.AddDirectory(new DirectoryInfo(dirPath), false, false);
         //}
 
@@ -100,14 +101,14 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("ConnectionManager_GetCurrentConnectionIDs(" + ")");
         }
 
-        public void ConnectionManager_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status) {
+        public void ConnectionManager_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status) {
             RcsID = 0;
             AVTransportID = 0;
             ProtocolInfo = "Sample String";
             PeerConnectionManager = "Sample String";
             PeerConnectionID = 0;
-            Direction = MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_Direction.INPUT;
-            Status = MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus.OK;
+            Direction = ConnectionManagerServer.Enum_A_ARG_TYPE_Direction.INPUT;
+            Status = ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus.OK;
             Console.WriteLine("ConnectionManager_GetCurrentConnectionInfo(" + ConnectionID.ToString() + ")");
         }
 
@@ -117,14 +118,14 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("ConnectionManager_GetProtocolInfo(" + ")");
         }
 
-        public void ConnectionManager_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID) {
+        public void ConnectionManager_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID) {
             ConnectionID = 0;
             AVTransportID = 0;
             RcsID = 0;
             Console.WriteLine("ConnectionManager_PrepareForConnection(" + RemoteProtocolInfo.ToString() + PeerConnectionManager.ToString() + PeerConnectionID.ToString() + Direction.ToString() + ")");
         }
 
-        public void ContentDirectory_Browse(System.String ObjectID, MediaPortalContentDirectory.Enum_A_ARG_TYPE_BrowseFlag BrowseFlag, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID) {
+        public void ContentDirectory_Browse(System.String ObjectID, ContentDirectory.Enum_A_ARG_TYPE_BrowseFlag BrowseFlag, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID) {
             Result = "Sample String";
             NumberReturned = 0;
             TotalMatches = 0;
@@ -171,8 +172,8 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("ContentDirectory_GetSystemUpdateID(" + ")");
         }
 
-        public void ContentDirectory_GetTransferProgress(System.UInt32 TransferID, out MediaPortalContentDirectory.Enum_A_ARG_TYPE_TransferStatus TransferStatus, out System.String TransferLength, out System.String TransferTotal) {
-            TransferStatus = MediaPortalContentDirectory.Enum_A_ARG_TYPE_TransferStatus.COMPLETED;
+        public void ContentDirectory_GetTransferProgress(System.UInt32 TransferID, out ContentDirectory.Enum_A_ARG_TYPE_TransferStatus TransferStatus, out System.String TransferLength, out System.String TransferTotal) {
+            TransferStatus = ContentDirectory.Enum_A_ARG_TYPE_TransferStatus.COMPLETED;
             TransferLength = "Sample String";
             TransferTotal = "Sample String";
             Console.WriteLine("ContentDirectory_GetTransferProgress(" + TransferID.ToString() + ")");
