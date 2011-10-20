@@ -6,12 +6,13 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5CDDCC35-403D-45F7-BB8B-2F60FD3D928D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUPnPSupport</RootNamespace>
     <AssemblyName>MyUPnPSupport</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,11 +32,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MyUPnPSupport.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="core, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="core, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\MediaPortal\core.dll</HintPath>
+    </Reference>
     <Reference Include="Databases, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="dialogs, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="System" />
@@ -81,13 +106,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="UPnP\Services\MediaPortalAVTransport.cs" />
-    <Compile Include="UPnP\Services\MediaPortalConnectionManagerRenderer.cs" />
-    <Compile Include="UPnP\Services\MediaPortalRenderingControl.cs" />
-    <Compile Include="UPnP\Devices\DigitalMediaRenderer.cs" />
-    <Compile Include="UPnP\Services\MediaPortalConnectionManagerServer.cs" />
-    <Compile Include="UPnP\Services\MediaPortalContentDirectory.cs" />
-    <Compile Include="UPnP\Devices\DigitalMediaServer.cs" />
+    <Compile Include="UPnP\Services\AVTransport.cs" />
+    <Compile Include="UPnP\Services\ConnectionManagerRenderer.cs" />
+    <Compile Include="UPnP\Services\RenderingControl.cs" />
+    <Compile Include="UPnP\Devices\MediaPortalDMR.cs" />
+    <Compile Include="UPnP\Services\ConnectionManagerServer.cs" />
+    <Compile Include="UPnP\Services\ContentDirectory.cs" />
+    <Compile Include="UPnP\Devices\MediaPortalDMS.cs" />
     <Compile Include="UPnP\UPnPDeviceManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,8 +152,8 @@
     <Content Include="Resources\MediaPortal\dialogs.dll" />
     <Content Include="Resources\MediaPortal\utils.dll" />
     <Content Include="Resources\MediaPortal\WindowPlugins.dll" />
-    <Content Include="Resources\MyUPnPSupport_disabled.png" />
-    <Content Include="Resources\MyUPnPSupport_enabled.png" />
+    <EmbeddedResource Include="Resources\MyUPnPSupport_disabled.png" />
+    <EmbeddedResource Include="Resources\MyUPnPSupport_enabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -25,6 +25,7 @@ using MyUPnPSupport.Plugin.Config;
 using MyUPnPSupport.Plugin.Window.Items;
 using WindowPlugins;
 using MyUPnPSupport.UPnP;
+using System.Windows.Forms;
 
 namespace MyUPnPSupport.Plugin.Window {
     public partial class Main : WindowPluginBase {
@@ -60,11 +61,11 @@ namespace MyUPnPSupport.Plugin.Window {
             DeviceManager = null;
         }
         public override bool Init() {
+            MessageBox.Show("Init!");
             LoadSettings();
             DeviceManager = new UPnPDeviceManager();
             DeviceManager.StartDevices();
-            return true;
-            //return Load(Settings.SKINFILE_MAIN_WINDOW);
+            return Load(Settings.SKINFILE_MAIN_WINDOW);
         }
 
         protected override void LoadSettings() {

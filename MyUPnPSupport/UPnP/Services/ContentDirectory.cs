@@ -1,11 +1,11 @@
 using OpenSource.UPnP;
 
-namespace MyUPnPSupport.UPnP.MediaServer
+namespace MyUPnPSupport.UPnP.Services
 {
     /// <summary>
     /// Transparent DeviceSide UPnP Service
     /// </summary>
-    public class MediaPortalContentDirectory : IUPnPService
+    public class ContentDirectory : IUPnPService
     {
 
         // Place your declarations above this line
@@ -161,7 +161,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
                 return(RetVal);
             }
         }
-        public delegate void OnStateVariableModifiedHandler(MediaPortalContentDirectory sender);
+        public delegate void OnStateVariableModifiedHandler(ContentDirectory sender);
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_BrowseFlag;
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_Index;
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_Filter;
@@ -820,7 +820,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
                  ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_SearchCriteria")).ModerationPeriod = value;
             }
         }
-        public delegate void Delegate_Browse(System.String ObjectID, MediaPortalContentDirectory.Enum_A_ARG_TYPE_BrowseFlag BrowseFlag, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID);
+        public delegate void Delegate_Browse(System.String ObjectID, ContentDirectory.Enum_A_ARG_TYPE_BrowseFlag BrowseFlag, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID);
         public delegate void Delegate_CreateObject(System.String ContainerID, System.String Elements, out System.String ObjectID, out System.String Result);
         public delegate void Delegate_CreateReference(System.String ContainerID, System.String ObjectID, out System.String NewID);
         public delegate void Delegate_DeleteResource(System.Uri ResourceURI);
@@ -829,7 +829,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
         public delegate void Delegate_GetSearchCapabilities(out System.String SearchCaps);
         public delegate void Delegate_GetSortCapabilities(out System.String SortCaps);
         public delegate void Delegate_GetSystemUpdateID(out System.UInt32 Id);
-        public delegate void Delegate_GetTransferProgress(System.UInt32 TransferID, out MediaPortalContentDirectory.Enum_A_ARG_TYPE_TransferStatus TransferStatus, out System.String TransferLength, out System.String TransferTotal);
+        public delegate void Delegate_GetTransferProgress(System.UInt32 TransferID, out ContentDirectory.Enum_A_ARG_TYPE_TransferStatus TransferStatus, out System.String TransferLength, out System.String TransferTotal);
         public delegate void Delegate_ImportResource(System.Uri SourceURI, System.Uri DestinationURI, out System.UInt32 TransferID);
         public delegate void Delegate_Search(System.String ContainerID, System.String SearchCriteria, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID);
         public delegate void Delegate_StopTransferResource(System.UInt32 TransferID);
@@ -997,9 +997,9 @@ namespace MyUPnPSupport.UPnP.MediaServer
 
         private class _DvContentDirectory
         {
-            private MediaPortalContentDirectory Outer = null;
+            private ContentDirectory Outer = null;
             private UPnPService S;
-            internal _DvContentDirectory(MediaPortalContentDirectory n)
+            internal _DvContentDirectory(ContentDirectory n)
             {
                 Outer = n;
                 S = BuildUPnPService();
@@ -1312,7 +1312,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
             public Delegate_StopTransferResource Sink_StopTransferResource;
             public Delegate_UpdateObject Sink_UpdateObject;
         }
-        public MediaPortalContentDirectory()
+        public ContentDirectory()
         {
             _S = new _DvContentDirectory(this);
             _S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_BrowseFlag").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_A_ARG_TYPE_BrowseFlag);
@@ -1350,7 +1350,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
             _S.Sink_StopTransferResource = new Delegate_StopTransferResource(StopTransferResource);
             _S.Sink_UpdateObject = new Delegate_UpdateObject(UpdateObject);
         }
-        public MediaPortalContentDirectory(string ID):this()
+        public ContentDirectory(string ID):this()
         {
             _S.GetUPnPService().ServiceID = ID;
         }

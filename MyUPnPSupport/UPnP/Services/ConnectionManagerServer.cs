@@ -1,11 +1,11 @@
 using OpenSource.UPnP;
 
-namespace MyUPnPSupport.UPnP.MediaServer
+namespace MyUPnPSupport.UPnP.Services
 {
     /// <summary>
     /// Transparent DeviceSide UPnP Service
     /// </summary>
-    public class MediaPortalConnectionManagerServer : IUPnPService
+    public class ConnectionManagerServer : IUPnPService
     {
 
         // Place your declarations above this line
@@ -171,7 +171,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
                 return(RetVal);
             }
         }
-        public delegate void OnStateVariableModifiedHandler(MediaPortalConnectionManagerServer sender);
+        public delegate void OnStateVariableModifiedHandler(ConnectionManagerServer sender);
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_ConnectionManager;
         public event OnStateVariableModifiedHandler OnStateVariableModified_SinkProtocolInfo;
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_ConnectionStatus;
@@ -492,9 +492,9 @@ namespace MyUPnPSupport.UPnP.MediaServer
         }
         public delegate void Delegate_ConnectionComplete(System.Int32 ConnectionID);
         public delegate void Delegate_GetCurrentConnectionIDs(out System.String ConnectionIDs);
-        public delegate void Delegate_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status);
+        public delegate void Delegate_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status);
         public delegate void Delegate_GetProtocolInfo(out System.String Source, out System.String Sink);
-        public delegate void Delegate_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, MediaPortalConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID);
+        public delegate void Delegate_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID);
 
         public Delegate_ConnectionComplete External_ConnectionComplete = null;
         public Delegate_GetCurrentConnectionIDs External_GetCurrentConnectionIDs = null;
@@ -573,9 +573,9 @@ namespace MyUPnPSupport.UPnP.MediaServer
 
         private class _DvConnectionManager
         {
-            private MediaPortalConnectionManagerServer Outer = null;
+            private ConnectionManagerServer Outer = null;
             private UPnPService S;
-            internal _DvConnectionManager(MediaPortalConnectionManagerServer n)
+            internal _DvConnectionManager(ConnectionManagerServer n)
             {
                 Outer = n;
                 S = BuildUPnPService();
@@ -750,7 +750,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
             public Delegate_GetProtocolInfo Sink_GetProtocolInfo;
             public Delegate_PrepareForConnection Sink_PrepareForConnection;
         }
-        public MediaPortalConnectionManagerServer()
+        public ConnectionManagerServer()
         {
             _S = new _DvConnectionManager(this);
             _S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_ConnectionManager").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_A_ARG_TYPE_ConnectionManager);
@@ -769,7 +769,7 @@ namespace MyUPnPSupport.UPnP.MediaServer
             _S.Sink_GetProtocolInfo = new Delegate_GetProtocolInfo(GetProtocolInfo);
             _S.Sink_PrepareForConnection = new Delegate_PrepareForConnection(PrepareForConnection);
         }
-        public MediaPortalConnectionManagerServer(string ID):this()
+        public ConnectionManagerServer(string ID):this()
         {
             _S.GetUPnPService().ServiceID = ID;
         }
