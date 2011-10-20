@@ -1,16 +1,18 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using MediaPortal.Common.Utils;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+[assembly: CompatibleVersion("1.1.7.0")]
 [assembly: AssemblyTitle("MyUPnPSupport")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VOLKSWAGEN GROUP")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MyUPnPSupport")]
-[assembly: AssemblyCopyright("Copyright © VOLKSWAGEN GROUP 2011")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
