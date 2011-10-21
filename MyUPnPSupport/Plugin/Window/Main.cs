@@ -63,7 +63,7 @@ namespace MyUPnPSupport.Plugin.Window {
         public override bool Init() {
             MessageBox.Show("Init!");
             LoadSettings();
-            DeviceManager = new UPnPDeviceManager();
+            DeviceManager = new UPnPDeviceManager(Settings.ENABLE_DMR, Settings.ENABLE_DMS, Settings.ENABLE_DMC);
             DeviceManager.StartDevices();
             return Load(Settings.SKINFILE_MAIN_WINDOW);
         }

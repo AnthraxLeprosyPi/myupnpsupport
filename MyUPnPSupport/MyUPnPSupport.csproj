@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5CDDCC35-403D-45F7-BB8B-2F60FD3D928D}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUPnPSupport</RootNamespace>
     <AssemblyName>MyUPnPSupport</AssemblyName>
@@ -69,7 +69,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
@@ -84,6 +83,7 @@
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugin\Config\Settings.cs" />
+    <Compile Include="Plugin\Devices\MediaPortalDMR.cs" />
     <Compile Include="Plugin\Window\Dialogs\CommonDialogs.cs" />
     <Compile Include="Plugin\Window\Dialogs\ContextMenu.cs" />
     <Compile Include="Plugin\Window\Dialogs\Enum.cs" />
@@ -101,18 +101,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Resource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
     <Compile Include="UPnP\Services\AVTransport.cs" />
     <Compile Include="UPnP\Services\ConnectionManagerRenderer.cs" />
     <Compile Include="UPnP\Services\RenderingControl.cs" />
-    <Compile Include="UPnP\Devices\MediaPortalDMR.cs" />
+    <Compile Include="UPnP\Devices\DigitalMediaRenderer.cs" />
     <Compile Include="UPnP\Services\ConnectionManagerServer.cs" />
     <Compile Include="UPnP\Services\ContentDirectory.cs" />
-    <Compile Include="UPnP\Devices\MediaPortalDMS.cs" />
+    <Compile Include="UPnP\Devices\DigitalMediaServer.cs" />
     <Compile Include="UPnP\UPnPDeviceManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,16 +122,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\logo_mp_l.png" />
     <EmbeddedResource Include="Resources\logo_mp_s.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Resource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UPnP\UPnP.csproj">

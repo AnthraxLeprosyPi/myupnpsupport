@@ -72,89 +72,31 @@ namespace MyUPnPSupport.Plugin.Config {
 
         public static string PLEX_ICON_DEFAULT_SEARCH = Path.Combine(SKIN_FOLDER_MEDIA, "icon_online.png");
 
-        static Settings() {
-            DefaultLayout = CreatePreferredLayouts();
+        static Settings() {            
             //Set defaults           
+            ENABLE_DMR = true;
+            ENABLE_DMS = false;
+            ENABLE_DMC = false;
+
             CacheFolder = PLEX_ARTWORK_CACHE_ROOT_PATH;
            
             SelectQualityPriorToPlayback = true;
             DeleteCacheOnExit = false;
         }
-       
 
-        public static Dictionary<string, PlexSectionLayout> PreferredLayouts { get; private set; }
-        public static PlexSectionLayout DefaultLayout { get; private set; }
 
-        
+        public static bool ENABLE_DMR { get; set; }
+        public static bool ENABLE_DMS { get; set; }
+        public static bool ENABLE_DMC { get; set; }
+
+   
 
         public static int FetchCount { get; set; }
         public static string CacheFolder { get; set; }
         public static bool DeleteCacheOnExit { get; set; }
         public static bool SelectQualityPriorToPlayback { get; set; }
 
-        private static PlexSectionLayout CreatePreferredLayouts() {
-            PreferredLayouts = new Dictionary<string, PlexSectionLayout>
-                                   {
-                                       {
-                                           "default",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.List, Section = SectionType.Music}
-                                           },
-                                       {
-                                           "secondary",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.List, Section = SectionType.Music}
-                                           },
-                                       {
-                                           "artist",
-                                           new PlexSectionLayout
-                                               {
-                                                   Layout = GUIFacadeControl.Layout.LargeIcons,
-                                                   Section = SectionType.Music
-                                               }
-                                           },
-                                       {
-                                           "album",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.CoverFlow, Section = SectionType.Music}
-                                           },
-                                       {
-                                           "show",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.CoverFlow, Section = SectionType.Video}
-                                           },
-                                       {
-                                           "season",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.Filmstrip, Section = SectionType.Video}
-                                           },
-                                       {
-                                           "episode",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.List, Section = SectionType.Photo}
-                                           },
-                                       {
-                                           "track",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.Playlist, Section = SectionType.Music}
-                                           },
-                                       {
-                                           "movie",
-                                           new PlexSectionLayout
-                                               {Layout = GUIFacadeControl.Layout.CoverFlow, Section = SectionType.Video}
-                                           },
-                                   };
-            //return default Layout
-            return new PlexSectionLayout { Layout = GUIFacadeControl.Layout.List, Section = SectionType.Video };
-        }
-
-        public static PlexSectionLayout GetPreferredLayout(string viewGroup) {
-            if (!String.IsNullOrEmpty(viewGroup) && PreferredLayouts.ContainsKey(viewGroup)) {
-                return PreferredLayouts[viewGroup];
-            }
-            return DefaultLayout;
-        }
-
+   
         /// <summary>
         ///   Load the settings from the mediaportal config
         /// </summary>
@@ -196,7 +138,6 @@ namespace MyUPnPSupport.Plugin.Config {
         }
 
         #endregion
-
 
     }
 }

@@ -5,16 +5,17 @@ using System;
 using OpenSource.UPnP;
 using System.Collections.Generic;
 using MyUPnPSupport.UPnP.Services;
+using MyUPnPSupport.Properties;
 
 namespace MyUPnPSupport.UPnP.Devices {
     /// <summary>
     /// Summary description for SampleDevice.
     /// </summary>
-   public class MediaPortalDMS : IUPnPDevice{
+   public class DigitalMediaServer : IUPnPDevice{
         private UPnPDevice device;
        
         /// <summary>
-        /// Initializes a new customized instance of the <see cref="MediaPortalDMS"/> class.
+        /// Initializes a new customized instance of the <see cref="DigitalMediaServer"/> class.
         /// </summary>
         /// <param name="friendlyName">Name of the friendly.</param>
         /// <param name="manufacturer">The manufacturer.</param>
@@ -22,7 +23,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         /// <param name="modelDescription">The model description.</param>
         /// <param name="deviceId">The device id.</param>
         /// <param name="deviceUri">The device URI.</param>
-        public MediaPortalDMS(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri) : this() {
+        public DigitalMediaServer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri) : this() {
             device.FriendlyName = friendlyName;
             device.UniqueDeviceName = deviceId.ToString();
             device.SerialNumber = deviceId.ToString();    
@@ -31,11 +32,11 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelName = modelName;
             device.ModelDescription = modelDescription;
             device.ModelURL = deviceUri;
-            device.Icon = Resources.Resource.logo_mp_l;
-            device.Icon2 = Resources.Resource.logo_mp_s;         
+            device.Icon = Resources.logo_mp_l;
+            device.Icon2 = Resources.logo_mp_s;         
         }
 
-        public MediaPortalDMS() {
+        public DigitalMediaServer() {
             device = UPnPDevice.CreateRootDevice(1800, 1.0, "\\");
 
             device.FriendlyName = "Intel's Embedded Media Server";
