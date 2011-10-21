@@ -244,9 +244,9 @@ namespace MyUPnPSupport.Plugin.Config {
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.BackgroundImage = global::MyUPnPSupport.Resources.Resource.MyUPnPSupport_enabled;
+            this.pictureBox1.BackgroundImage = global::MyUPnPSupport.Properties.Resources.MyUPnPSupport_enabled;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Image = global::MyUPnPSupport.Resources.Resource.MyUPnPSupport_enabled;
+            this.pictureBox1.Image = global::MyUPnPSupport.Properties.Resources.MyUPnPSupport_enabled;
             this.pictureBox1.Location = new System.Drawing.Point(630, 9);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(70, 70);

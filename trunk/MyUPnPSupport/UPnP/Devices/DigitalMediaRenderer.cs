@@ -6,15 +6,15 @@ using OpenSource.UPnP;
 using MyUPnPSupport.UPnP.Services;
 using MediaPortal.Playlists;
 using MediaPortal.GUI.Library;
+using MyUPnPSupport.Properties;
 
 namespace MyUPnPSupport.UPnP.Devices {
     /// <summary>
     /// Summary description for SampleDevice.
     /// </summary>
-   public class MediaPortalDMR : IUPnPDevice {
+   public class DigitalMediaRenderer : IUPnPDevice {
         private UPnPDevice device;
-        private static readonly PlayListPlayer PlexPlayListPlayer;
-
+      
         public delegate void Delegate_ConnectionComplete(System.Int32 ConnectionID);
         public delegate void Delegate_GetCurrentConnectionIDs(out System.String ConnectionIDs);
         public delegate void Delegate_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status);
@@ -28,7 +28,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         public Delegate_PrepareForConnection External_PrepareForConnection = null;
 
         /// <summary>
-        /// Initializes a new custom instance of the <see cref="MediaPortalDMR"/> class.
+        /// Initializes a new custom instance of the <see cref="DigitalMediaRenderer"/> class.
         /// </summary>
         /// <param name="friendlyName">Name of the friendly.</param>
         /// <param name="manufacturer">The manufacturer.</param>
@@ -36,26 +36,22 @@ namespace MyUPnPSupport.UPnP.Devices {
         /// <param name="modelDescription">The model description.</param>
         /// <param name="deviceId">The device id.</param>
         /// <param name="deviceUri">The device URI.</param>
-        public MediaPortalDMR(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri)
+        public DigitalMediaRenderer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri, Uri manufacturerUri)
             : this() {
             device.FriendlyName = friendlyName;
             device.UniqueDeviceName = deviceId.ToString();
             device.SerialNumber = deviceId.ToString();
             device.Manufacturer = manufacturer;
-            device.ManufacturerURL = deviceUri.ToString();
+            device.ManufacturerURL = manufacturerUri.ToString();
             device.ModelName = modelName;
             device.ModelDescription = modelDescription;
             device.ModelURL = deviceUri;
-            device.Icon = Resources.Resource.logo_mp_l;
-            device.Icon2 = Resources.Resource.logo_mp_s;
+            device.Icon = Resources.logo_mp_l;
+            device.Icon2 = Resources.logo_mp_s;
         }
 
-        static MediaPortalDMR() {
-            PlexPlayListPlayer = PlayListPlayer.SingletonPlayer;
-            PlexPlayListPlayer.Init();
-        }
-
-        public MediaPortalDMR() {
+        
+        public DigitalMediaRenderer() {
             device = UPnPDevice.CreateRootDevice(1800, 1.0, "\\");
 
             device.FriendlyName = "Intel's Embedded UPnP Renderer";
@@ -141,19 +137,19 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.StopDevice();
         }
 
-        public void AVTransport_GetCurrentTransportActions(System.UInt32 InstanceID, out System.String Actions) {
+        public virtual void AVTransport_GetCurrentTransportActions(System.UInt32 InstanceID, out System.String Actions) {
             Actions = "Sample String";
             Console.WriteLine("AVTransport_GetCurrentTransportActions(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_GetDeviceCapabilities(System.UInt32 InstanceID, out System.String PlayMedia, out System.String RecMedia, out System.String RecQualityModes) {
+        public virtual void AVTransport_GetDeviceCapabilities(System.UInt32 InstanceID, out System.String PlayMedia, out System.String RecMedia, out System.String RecQualityModes) {
             PlayMedia = "Sample String";
             RecMedia = "Sample String";
             RecQualityModes = "Sample String";
             Console.WriteLine("AVTransport_GetDeviceCapabilities(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_GetMediaInfo(System.UInt32 InstanceID, out System.UInt32 NrTracks, out System.String MediaDuration, out System.String CurrentURI, out System.String CurrentURIMetaData, out System.String NextURI, out System.String NextURIMetaData, out AVTransport.Enum_PlaybackStorageMedium PlayMedium, out AVTransport.Enum_RecordStorageMedium RecordMedium, out AVTransport.Enum_RecordMediumWriteStatus WriteStatus) {
+        public virtual void AVTransport_GetMediaInfo(System.UInt32 InstanceID, out System.UInt32 NrTracks, out System.String MediaDuration, out System.String CurrentURI, out System.String CurrentURIMetaData, out System.String NextURI, out System.String NextURIMetaData, out AVTransport.Enum_PlaybackStorageMedium PlayMedium, out AVTransport.Enum_RecordStorageMedium RecordMedium, out AVTransport.Enum_RecordMediumWriteStatus WriteStatus) {
             NrTracks = 0;
             MediaDuration = "00:50:00";
             CurrentURI = "Sample String";
@@ -166,7 +162,7 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("AVTransport_GetMediaInfo(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_GetPositionInfo(System.UInt32 InstanceID, out System.UInt32 Track, out System.String TrackDuration, out System.String TrackMetaData, out System.String TrackURI, out System.String RelTime, out System.String AbsTime, out System.Int32 RelCount, out System.Int32 AbsCount) {
+        public virtual void AVTransport_GetPositionInfo(System.UInt32 InstanceID, out System.UInt32 Track, out System.String TrackDuration, out System.String TrackMetaData, out System.String TrackURI, out System.String RelTime, out System.String AbsTime, out System.Int32 RelCount, out System.Int32 AbsCount) {
             Track = 0;
             TrackDuration = "Sample String";
             TrackMetaData = "Sample String";
@@ -178,61 +174,57 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("AVTransport_GetPositionInfo(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_GetTransportInfo(System.UInt32 InstanceID, out AVTransport.Enum_TransportState CurrentTransportState, out AVTransport.Enum_TransportStatus CurrentTransportStatus, out AVTransport.Enum_TransportPlaySpeed CurrentSpeed) {
+        public virtual void AVTransport_GetTransportInfo(System.UInt32 InstanceID, out AVTransport.Enum_TransportState CurrentTransportState, out AVTransport.Enum_TransportStatus CurrentTransportStatus, out AVTransport.Enum_TransportPlaySpeed CurrentSpeed) {
             CurrentTransportState = AVTransport.Enum_TransportState.STOPPED;
             CurrentTransportStatus = AVTransport.Enum_TransportStatus.OK;
             CurrentSpeed = AVTransport.Enum_TransportPlaySpeed._1;
             Console.WriteLine("AVTransport_GetTransportInfo(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_GetTransportSettings(System.UInt32 InstanceID, out AVTransport.Enum_CurrentPlayMode PlayMode, out AVTransport.Enum_CurrentRecordQualityMode RecQualityMode) {
+        public virtual void AVTransport_GetTransportSettings(System.UInt32 InstanceID, out AVTransport.Enum_CurrentPlayMode PlayMode, out AVTransport.Enum_CurrentRecordQualityMode RecQualityMode) {
             PlayMode = AVTransport.Enum_CurrentPlayMode.NORMAL;
             RecQualityMode = AVTransport.Enum_CurrentRecordQualityMode._0_EP;
             Console.WriteLine("AVTransport_GetTransportSettings(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_Next(System.UInt32 InstanceID) {
+        public virtual void AVTransport_Next(System.UInt32 InstanceID) {
             Console.WriteLine("AVTransport_Next(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_Pause(System.UInt32 InstanceID) {
+        public virtual void AVTransport_Pause(System.UInt32 InstanceID) {
             Console.WriteLine("AVTransport_Pause(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_Play(System.UInt32 InstanceID, AVTransport.Enum_TransportPlaySpeed Speed) {
+        public virtual void AVTransport_Play(System.UInt32 InstanceID, AVTransport.Enum_TransportPlaySpeed Speed) {
             Console.WriteLine("AVTransport_Play(" + InstanceID.ToString() + Speed.ToString() + ")");
         }
 
-        public void AVTransport_Previous(System.UInt32 InstanceID) {
+        public virtual void AVTransport_Previous(System.UInt32 InstanceID) {
             Console.WriteLine("AVTransport_Previous(" + InstanceID.ToString() + ")");
         }
 
-        public void AVTransport_Seek(System.UInt32 InstanceID, AVTransport.Enum_A_ARG_TYPE_SeekMode Unit, System.String Target) {
+        public virtual void AVTransport_Seek(System.UInt32 InstanceID, AVTransport.Enum_A_ARG_TYPE_SeekMode Unit, System.String Target) {
             Console.WriteLine("AVTransport_Seek(" + InstanceID.ToString() + Unit.ToString() + Target.ToString() + ")");
         }
 
-        public void AVTransport_SetAVTransportURI(System.UInt32 InstanceID, System.String CurrentURI, System.String CurrentURIMetaData) {
-            //if (GUIGraphicsContext.form.InvokeRequired) {
-            //    GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_SetAVTransportURI(InstanceID, CurrentURI, CurrentURIMetaData)));
-            //}
-            //PlexPlayListPlayer.g_Player.PlayAudioStream(CurrentURI);
+        public virtual void AVTransport_SetAVTransportURI(System.UInt32 InstanceID, System.String CurrentURI, System.String CurrentURIMetaData) {         
             Console.WriteLine("AVTransport_SetAVTransportURI(" + InstanceID.ToString() + CurrentURI.ToString() + CurrentURIMetaData.ToString() + ")");
         }
 
-        public void AVTransport_SetPlayMode(System.UInt32 InstanceID, AVTransport.Enum_CurrentPlayMode NewPlayMode) {
+        public virtual void AVTransport_SetPlayMode(System.UInt32 InstanceID, AVTransport.Enum_CurrentPlayMode NewPlayMode) {
             Console.WriteLine("AVTransport_SetPlayMode(" + InstanceID.ToString() + NewPlayMode.ToString() + ")");
         }
 
-        public void AVTransport_Stop(System.UInt32 InstanceID) {
+        public virtual void AVTransport_Stop(System.UInt32 InstanceID) {
             Console.WriteLine("AVTransport_Stop(" + InstanceID.ToString() + ")");
         }
 
-        public void ConnectionManager_GetCurrentConnectionIDs(out System.String ConnectionIDs) {
+        public virtual void ConnectionManager_GetCurrentConnectionIDs(out System.String ConnectionIDs) {
             ConnectionIDs = "Sample String";
             Console.WriteLine("ConnectionManager_GetCurrentConnectionIDs(" + ")");
         }
 
-        public void ConnectionManager_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerRenderer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerRenderer.Enum_A_ARG_TYPE_ConnectionStatus Status) {
+        public virtual void ConnectionManager_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerRenderer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerRenderer.Enum_A_ARG_TYPE_ConnectionStatus Status) {
             RcsID = 0;
             AVTransportID = 0;
             ProtocolInfo = "Sample String";
@@ -243,168 +235,168 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("ConnectionManager_GetCurrentConnectionInfo(" + ConnectionID.ToString() + ")");
         }
 
-        public void ConnectionManager_GetProtocolInfo(out System.String Source, out System.String Sink) {
+        public virtual void ConnectionManager_GetProtocolInfo(out System.String Source, out System.String Sink) {
             Source = "Sample String";
             Sink = "http-get:*:audio/mpegurl:*,http-get:*:audio/mp3:*,http-get:*:audio/mpeg:*,http-get:*:audio/x-ms-wma:*,http-get:*:audio/wma:*,http-get:*:audio/mpeg3:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-ms-asf:*,http-get:*:video/x-ms-avi:*,http-get:*:video/mpeg:*";
             Console.WriteLine("ConnectionManager_GetProtocolInfo(" + ")");
         }
 
-        public void RenderingControl_GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel) {
+        public virtual void RenderingControl_GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel) {
             CurrentBlueVideoBlackLevel = 0;
             Console.WriteLine("RenderingControl_GetBlueVideoBlackLevel(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetBlueVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoGain) {
+        public virtual void RenderingControl_GetBlueVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoGain) {
             CurrentBlueVideoGain = 0;
             Console.WriteLine("RenderingControl_GetBlueVideoGain(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetBrightness(System.UInt32 InstanceID, out System.UInt16 CurrentBrightness) {
+        public virtual void RenderingControl_GetBrightness(System.UInt32 InstanceID, out System.UInt16 CurrentBrightness) {
             CurrentBrightness = 0;
             Console.WriteLine("RenderingControl_GetBrightness(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetColorTemperature(System.UInt32 InstanceID, out System.UInt16 CurrentColorTemperature) {
+        public virtual void RenderingControl_GetColorTemperature(System.UInt32 InstanceID, out System.UInt16 CurrentColorTemperature) {
             CurrentColorTemperature = 0;
             Console.WriteLine("RenderingControl_GetColorTemperature(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetContrast(System.UInt32 InstanceID, out System.UInt16 CurrentContrast) {
+        public virtual void RenderingControl_GetContrast(System.UInt32 InstanceID, out System.UInt16 CurrentContrast) {
             CurrentContrast = 0;
             Console.WriteLine("RenderingControl_GetContrast(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel) {
+        public virtual void RenderingControl_GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel) {
             CurrentGreenVideoBlackLevel = 0;
             Console.WriteLine("RenderingControl_GetGreenVideoBlackLevel(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain) {
+        public virtual void RenderingControl_GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain) {
             CurrentGreenVideoGain = 0;
             Console.WriteLine("RenderingControl_GetGreenVideoGain(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone) {
+        public virtual void RenderingControl_GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone) {
             CurrentHorizontalKeystone = 0;
             Console.WriteLine("RenderingControl_GetHorizontalKeystone(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetLoudness(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentLoudness) {
+        public virtual void RenderingControl_GetLoudness(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentLoudness) {
             CurrentLoudness = false;
             Console.WriteLine("RenderingControl_GetLoudness(" + InstanceID.ToString() + Channel.ToString() + ")");
         }
 
-        public void RenderingControl_GetMute(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentMute) {
+        public virtual void RenderingControl_GetMute(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentMute) {
             CurrentMute = false;
             Console.WriteLine("RenderingControl_GetMute(" + InstanceID.ToString() + Channel.ToString() + ")");
         }
 
-        public void RenderingControl_GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel) {
+        public virtual void RenderingControl_GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel) {
             CurrentRedVideoBlackLevel = 0;
             Console.WriteLine("RenderingControl_GetRedVideoBlackLevel(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain) {
+        public virtual void RenderingControl_GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain) {
             CurrentRedVideoGain = 0;
             Console.WriteLine("RenderingControl_GetRedVideoGain(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness) {
+        public virtual void RenderingControl_GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness) {
             CurrentSharpness = 0;
             Console.WriteLine("RenderingControl_GetSharpness(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone) {
+        public virtual void RenderingControl_GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone) {
             CurrentVerticalKeystone = 0;
             Console.WriteLine("RenderingControl_GetVerticalKeystone(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_GetVolume(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.UInt16 CurrentVolume) {
+        public virtual void RenderingControl_GetVolume(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.UInt16 CurrentVolume) {
             CurrentVolume = 50;
             Console.WriteLine("RenderingControl_GetVolume(" + InstanceID.ToString() + Channel.ToString() + ")");
         }
 
-        public void RenderingControl_GetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume) {
+        public virtual void RenderingControl_GetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume) {
             CurrentVolume = 50;
             Console.WriteLine("RenderingControl_GetVolumeDB(" + InstanceID.ToString() + Channel.ToString() + ")");
         }
 
-        public void RenderingControl_GetVolumeDBRange(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 MinValue, out System.Int16 MaxValue) {
+        public virtual void RenderingControl_GetVolumeDBRange(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 MinValue, out System.Int16 MaxValue) {
             MinValue = 0;
             MaxValue = 100;
             Console.WriteLine("RenderingControl_GetVolumeDBRange(" + InstanceID.ToString() + Channel.ToString() + ")");
         }
 
-        public void RenderingControl_ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList) {
+        public virtual void RenderingControl_ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList) {
             CurrentPresetNameList = "Sample String";
             Console.WriteLine("RenderingControl_ListPresets(" + InstanceID.ToString() + ")");
         }
 
-        public void RenderingControl_SelectPreset(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_PresetName PresetName) {
+        public virtual void RenderingControl_SelectPreset(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_PresetName PresetName) {
             Console.WriteLine("RenderingControl_SelectPreset(" + InstanceID.ToString() + PresetName.ToString() + ")");
         }
 
-        public void RenderingControl_SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel) {
+        public virtual void RenderingControl_SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel) {
             Console.WriteLine("RenderingControl_SetBlueVideoBlackLevel(" + InstanceID.ToString() + DesiredBlueVideoBlackLevel.ToString() + ")");
         }
 
-        public void RenderingControl_SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain) {
+        public virtual void RenderingControl_SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain) {
             Console.WriteLine("RenderingControl_SetBlueVideoGain(" + InstanceID.ToString() + DesiredBlueVideoGain.ToString() + ")");
         }
 
-        public void RenderingControl_SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness) {
+        public virtual void RenderingControl_SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness) {
             Console.WriteLine("RenderingControl_SetBrightness(" + InstanceID.ToString() + DesiredBrightness.ToString() + ")");
         }
 
-        public void RenderingControl_SetColorTemperature(System.UInt32 InstanceID, System.UInt16 DesiredColorTemperature) {
+        public virtual void RenderingControl_SetColorTemperature(System.UInt32 InstanceID, System.UInt16 DesiredColorTemperature) {
             Console.WriteLine("RenderingControl_SetColorTemperature(" + InstanceID.ToString() + DesiredColorTemperature.ToString() + ")");
         }
 
-        public void RenderingControl_SetContrast(System.UInt32 InstanceID, System.UInt16 DesiredContrast) {
+        public virtual void RenderingControl_SetContrast(System.UInt32 InstanceID, System.UInt16 DesiredContrast) {
             Console.WriteLine("RenderingControl_SetContrast(" + InstanceID.ToString() + DesiredContrast.ToString() + ")");
         }
 
-        public void RenderingControl_SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel) {
+        public virtual void RenderingControl_SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel) {
             Console.WriteLine("RenderingControl_SetGreenVideoBlackLevel(" + InstanceID.ToString() + DesiredGreenVideoBlackLevel.ToString() + ")");
         }
 
-        public void RenderingControl_SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain) {
+        public virtual void RenderingControl_SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain) {
             Console.WriteLine("RenderingControl_SetGreenVideoGain(" + InstanceID.ToString() + DesiredGreenVideoGain.ToString() + ")");
         }
 
-        public void RenderingControl_SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone) {
+        public virtual void RenderingControl_SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone) {
             Console.WriteLine("RenderingControl_SetHorizontalKeystone(" + InstanceID.ToString() + DesiredHorizontalKeystone.ToString() + ")");
         }
 
-        public void RenderingControl_SetLoudness(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredLoudness) {
+        public virtual void RenderingControl_SetLoudness(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredLoudness) {
             Console.WriteLine("RenderingControl_SetLoudness(" + InstanceID.ToString() + Channel.ToString() + DesiredLoudness.ToString() + ")");
         }
 
-        public void RenderingControl_SetMute(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredMute) {
+        public virtual void RenderingControl_SetMute(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredMute) {
             Console.WriteLine("RenderingControl_SetMute(" + InstanceID.ToString() + Channel.ToString() + DesiredMute.ToString() + ")");
         }
 
-        public void RenderingControl_SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel) {
+        public virtual void RenderingControl_SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel) {
             Console.WriteLine("RenderingControl_SetRedVideoBlackLevel(" + InstanceID.ToString() + DesiredRedVideoBlackLevel.ToString() + ")");
         }
 
-        public void RenderingControl_SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain) {
+        public virtual void RenderingControl_SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain) {
             Console.WriteLine("RenderingControl_SetRedVideoGain(" + InstanceID.ToString() + DesiredRedVideoGain.ToString() + ")");
         }
 
-        public void RenderingControl_SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness) {
+        public virtual void RenderingControl_SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness) {
             Console.WriteLine("RenderingControl_SetSharpness(" + InstanceID.ToString() + DesiredSharpness.ToString() + ")");
         }
 
-        public void RenderingControl_SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone) {
+        public virtual void RenderingControl_SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone) {
             Console.WriteLine("RenderingControl_SetVerticalKeystone(" + InstanceID.ToString() + DesiredVerticalKeystone.ToString() + ")");
         }
 
-        public void RenderingControl_SetVolume(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.UInt16 DesiredVolume) {
+        public virtual void RenderingControl_SetVolume(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.UInt16 DesiredVolume) {
             Console.WriteLine("RenderingControl_SetVolume(" + InstanceID.ToString() + Channel.ToString() + DesiredVolume.ToString() + ")");
         }
 
-        public void RenderingControl_SetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Int16 DesiredVolume) {
+        public virtual void RenderingControl_SetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, System.Int16 DesiredVolume) {
             Console.WriteLine("RenderingControl_SetVolumeDB(" + InstanceID.ToString() + Channel.ToString() + DesiredVolume.ToString() + ")");
         }
 
