@@ -36,7 +36,7 @@ namespace MyUPnPSupport.Plugin.Config {
                 InitializeComponent();
                 Load += ConfigurationForm_Load;
                 FormClosing += ConfigurationForm_FormClosing;
-                Settings.Load();           
+                Settings.Load();
             } catch (Exception ex) {
                 Log.Error(ex);
             }
@@ -44,13 +44,19 @@ namespace MyUPnPSupport.Plugin.Config {
 
 
         private void ConfigurationForm_Load(object sender, EventArgs e) {
-          
+            Text = String.Format("{0} - {1} - Configuration", Settings.PLUGIN_NAME, Settings.PLUGIN_VERSION);
+            checkBoxDMR.Checked = Settings.ENABLE_DMR;
+            checkBoxDMS.Checked = Settings.ENABLE_DMS;
+            checkBoxDMC.Checked = Settings.ENABLE_DMC;
         }
 
         private void ConfigurationForm_FormClosing(object sender, FormClosingEventArgs e) {
-           
+            Settings.ENABLE_DMR = checkBoxDMR.Checked;
+            Settings.ENABLE_DMS = checkBoxDMS.Checked;
+            Settings.ENABLE_DMC = checkBoxDMC.Checked;
+            Settings.Save();
         }
 
-  
+
     }
 }

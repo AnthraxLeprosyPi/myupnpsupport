@@ -27,7 +27,7 @@ using MyUPnPSupport.Plugin.Config;
 namespace MyUPnPSupport.Plugin.Window.Items {
     public interface IMenuItem {
         IMenuItem Parent { get; set; }
-        Settings.PlexSectionLayout PreferredLayout { get; set; }
+       
         string Name { get; }
         List<IMenuItem> ViewItems { get; set; }
         int LastSelectedChildIndex { get; set; }
