@@ -39,7 +39,8 @@ namespace MyUPnPSupport.Plugin.Window {
 
         #region Skin Controls
 
-        [SkinControlAttribute(2011)] protected GUIImage ctrlBackgroundImage;
+        [SkinControlAttribute(2011)]
+        protected GUIImage ctrlBackgroundImage;
 
         #endregion
 
@@ -61,7 +62,6 @@ namespace MyUPnPSupport.Plugin.Window {
             DeviceManager = null;
         }
         public override bool Init() {
-            MessageBox.Show("Init!");
             LoadSettings();
             DeviceManager = new UPnPDeviceManager(Settings.ENABLE_DMR, Settings.ENABLE_DMS, Settings.ENABLE_DMC);
             DeviceManager.StartDevices();
@@ -75,11 +75,11 @@ namespace MyUPnPSupport.Plugin.Window {
         protected override void OnPageLoad() {
             base.OnPageLoad();
             GUIPropertyManager.SetProperty("#currentmodule", Settings.PLUGIN_NAME);
-            GUIPropertyManager.SetProperty("#MyUPnPSupport.Buffering.State", string.Empty);        
-            RegisterEventHandlers();            
+            GUIPropertyManager.SetProperty("#MyUPnPSupport.Buffering.State", string.Empty);
+            RegisterEventHandlers();
         }
 
-        protected override void OnPageDestroy(int new_windowId) {            
+        protected override void OnPageDestroy(int new_windowId) {
             base.OnPageDestroy(new_windowId);
             UnRegisterEventHandlers();
         }
@@ -126,8 +126,8 @@ namespace MyUPnPSupport.Plugin.Window {
 
         protected override void OnInfo(int iItem) {
             if (facadeLayout[iItem] is IMenuItem) {
-                ((IMenuItem) facadeLayout[iItem]).Parent.LastSelectedChildIndex = iItem;
-                ((IMenuItem) facadeLayout[iItem]).OnInfo();
+                ((IMenuItem)facadeLayout[iItem]).Parent.LastSelectedChildIndex = iItem;
+                ((IMenuItem)facadeLayout[iItem]).OnInfo();
             } else {
                 base.OnInfo(iItem);
             }
@@ -151,8 +151,8 @@ namespace MyUPnPSupport.Plugin.Window {
         protected override void OnClick(int iItem) {
             GUIListItem item = facadeLayout[iItem];
             if (facadeLayout[iItem] is IMenuItem) {
-                ((IMenuItem) facadeLayout[iItem]).Parent.LastSelectedChildIndex = iItem;
-                ((IMenuItem) facadeLayout[iItem]).OnClicked(this, null);
+                ((IMenuItem)facadeLayout[iItem]).Parent.LastSelectedChildIndex = iItem;
+                ((IMenuItem)facadeLayout[iItem]).OnClicked(this, null);
             } else {
                 base.OnClick(iItem);
             }

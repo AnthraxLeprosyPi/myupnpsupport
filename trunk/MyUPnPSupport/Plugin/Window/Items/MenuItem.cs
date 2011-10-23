@@ -36,9 +36,9 @@ namespace MyUPnPSupport.Plugin.Window.Items {
         public MenuItem(IMenuItem parent, string title) : base(title) {
             Parent = parent;
             OnItemSelected += MenuItem_OnItemSelected;
-            IconImage = Settings.PLEX_ICON_DEFAULT;
-            IconImageBig = Settings.PLEX_ICON_DEFAULT;
-            ThumbnailImage = Settings.PLEX_ICON_DEFAULT;
+            //IconImage = Settings.PLEX_ICON_DEFAULT;
+            //IconImageBig = Settings.PLEX_ICON_DEFAULT;
+            //ThumbnailImage = Settings.PLEX_ICON_DEFAULT;
         }
 
         #region IMenuItem Members
@@ -69,8 +69,7 @@ namespace MyUPnPSupport.Plugin.Window.Items {
         public virtual void OnInfo() {
         }
 
-        public Settings.PlexSectionLayout PreferredLayout { get; set; }
-
+     
         #endregion
 
         public static event OnMenuItemSelectedEventHandler OnMenuItemSelected;

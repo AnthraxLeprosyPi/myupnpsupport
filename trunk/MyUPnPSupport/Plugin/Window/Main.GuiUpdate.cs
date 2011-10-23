@@ -36,7 +36,7 @@ namespace MyUPnPSupport.Plugin.Window {
             if (ctrlBackgroundImage == null || String.IsNullOrEmpty(imagePath) || !File.Exists(imagePath) ||
                 ctrlBackgroundImage.ImagePath.Equals(imagePath)) return;
             //ctrlBackgroundImage.RemoveMemoryImageTexture();      
-            ctrlBackgroundImage.SetFileName(imagePath);            
+            ctrlBackgroundImage.SetFileName(imagePath);
             ctrlBackgroundImage.DoUpdate();
             ctrlBackgroundImage.Refresh();
             GUIWindowManager.Process();
@@ -47,8 +47,7 @@ namespace MyUPnPSupport.Plugin.Window {
 
         }
 
-        private void Navigation_OnMenuItemsFetchCompleted(List<IMenuItem> fetchedMenuItems, int selectedFacadeIndex,
-                                                          Settings.PlexSectionLayout preferredLayout) {
+        private void Navigation_OnMenuItemsFetchCompleted(List<IMenuItem> fetchedMenuItems, int selectedFacadeIndex) {
             //GUIPropertyManager.SetProperty("#currentmodule", String.Join(">", Navigation.History.ToArray()));
             facadeLayout.Clear();
             facadeLayout.ListLayout.Clear();
@@ -57,7 +56,7 @@ namespace MyUPnPSupport.Plugin.Window {
             facadeLayout.FilmstripLayout.Clear();
             facadeLayout.ListLayout.Clear();
             facadeLayout.PlayListLayout.Clear();
-            CurrentLayout = preferredLayout.Layout;
+            //CurrentLayout = preferredLayout.Layout;
             SwitchLayout();
             foreach (var item in fetchedMenuItems) {
                 facadeLayout.Add(item as MenuItem);
