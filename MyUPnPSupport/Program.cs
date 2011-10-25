@@ -7,7 +7,7 @@ using MyUPnPSupport.UPnP.Services;
 using MyUPnPSupport.Plugin.Devices;
 
 namespace MyUPnPSupport {
-    class Program {
+    class Program { 
 
         [STAThread]
         public static void Main(string[] args) {          
