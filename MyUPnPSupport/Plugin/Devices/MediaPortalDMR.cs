@@ -8,6 +8,8 @@ using MediaPortal.GUI.Library;
 using MediaPortal.Player;
 using MyUPnPSupport.UPnP.Services;
 using System.Windows.Forms;
+using MediaPortal.Util;
+using OpenSource.UPnP;
 
 namespace MyUPnPSupport.Plugin.Devices {
     class MediaPortalDMR : DigitalMediaRenderer {
@@ -18,7 +20,7 @@ namespace MyUPnPSupport.Plugin.Devices {
         static MediaPortalDMR() {
             Player = PlayListPlayer.SingletonPlayer;
             Player.Init();
-            g_Player.Init();           
+            g_Player.Init();
         }
 
 
@@ -47,14 +49,29 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         void g_Player_PlayBackEnded(g_Player.MediaType type, string filename) {
             AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.NO_MEDIA_PRESENT;
+            PositionTimer.Stop();
         }
 
         void g_Player_PlayBackStarted(g_Player.MediaType type, string filename) {
             AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.PLAYING;
+            PositionTimer.Start();
+            AVT_LastChange("TransportState", UPnP.Services.AVTransport.Enum_TransportState_ToString(UPnP.Services.AVTransport.Enum_TransportState.PLAYING));
         }
 
         void g_Player_PlayBackStopped(g_Player.MediaType type, int stoptime, string filename) {
             AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.STOPPED;
+            PositionTimer.Stop();
+            AVT_LastChange("TransportState", UPnP.Services.AVTransport.Enum_TransportState_ToString(UPnP.Services.AVTransport.Enum_TransportState.STOPPED));
+        }
+
+        protected void AVT_LastChange(string VarName, string VarValue) {
+            StringBuilder s = new StringBuilder();
+            s.Append("<Event xmlns = \"urn:schemas-upnp-org:metadata-1-0/AVT/\">\r\n");
+            s.Append("   <InstanceID val=\"" + "0" + "\">\r\n");
+            s.Append("        <" + VarName + " val=\"" + UPnPStringFormatter.EscapeString(VarValue) + "\"/>\r\n");
+            s.Append("   </InstanceID>\r\n");
+            s.Append("</Event>");
+            AVTransport.Evented_LastChange = UPnPStringFormatter.EscapeString(s.ToString());
         }
 
         public override void AVTransport_GetTransportInfo(uint InstanceID, out UPnP.Services.AVTransport.Enum_TransportState CurrentTransportState, out UPnP.Services.AVTransport.Enum_TransportStatus CurrentTransportStatus, out UPnP.Services.AVTransport.Enum_TransportPlaySpeed CurrentSpeed) {
@@ -69,27 +86,27 @@ namespace MyUPnPSupport.Plugin.Devices {
             }
             CurrentTransportStatus = AVTransport.Enum_TransportStatus.OK;
             CurrentSpeed = AVTransport.Enum_TransportPlaySpeed._1;
-        }          
-        
-        private string GetFormattedTime(double dTime) {
-          return String.Format("{0}:{1}:{2}", (int)(dTime / 3600d), (int)((dTime % 3600d) / 60d), (int)(dTime % 60d)); 
         }
-        
+
         void PositionTimer_Tick(object sender, EventArgs e) {
-            if ((g_Player.CurrentPosition > 0) && (g_Player.CurrentPosition <= g_Player.Duration)) {
-                AVTransport.CurrentMediaDuration = GetFormattedTime(g_Player.Duration);
-                AVTransport.CurrentTrackDuration = AVTransport.CurrentMediaDuration;
+            if ((g_Player.CurrentPosition > 0)) {// && (g_Player.CurrentPosition <= g_Player.Duration)) {
+                //AVTransport.CurrentMediaDuration = GetFormattedTime(g_Player.Duration);
+                //AVTransport.CurrentTrackDuration = AVTransport.CurrentMediaDuration;
                 AVTransport.AbsoluteTimePosition = GetFormattedTime(g_Player.CurrentPosition);
-                AVTransport.RelativeTimePosition = AVTransport.AbsoluteTimePosition;
+                AVT_LastChange("AbsoluteTimePosition", AVTransport.AbsoluteTimePosition);
+                // AVTransport.RelativeTimePosition =  Utils.SecondsToHMSString((int)g_Player.CurrentPosition);
             }
-        }             
+        }
+        private string GetFormattedTime(double dTime) {
+            return String.Format("{0:00}:{1:00}:{2:00}", (int)(dTime / 3600d), (int)((dTime % 3600d) / 60d), (int)(dTime % 60d));
+        }
 
         public override void AVTransport_GetPositionInfo(uint InstanceID, out uint Track, out string TrackDuration, out string TrackMetaData, out string TrackURI, out string RelTime, out string AbsTime, out int RelCount, out int AbsCount) {
             Track = 0;
-            TrackDuration = GetFormattedTime(g_Player.Duration);
+            TrackDuration = "00:05:00"; //GetFormattedTime(g_Player.Duration);
             TrackMetaData = "<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\"><item id=\"X\" parentID=\"Y\" restricted=\"1\"><dc:title>Test-Title</dc:title><dc:creator>Anthrax</dc:creator><upnp:class>object.item.audioItem</upnp:class></item></DIDL-Lite>";
             TrackURI = g_Player.CurrentFile;
-            RelTime = "";
+            RelTime = GetFormattedTime(g_Player.CurrentPosition);
             AbsTime = GetFormattedTime(g_Player.CurrentPosition);
             RelCount = 0;
             AbsCount = 0;
@@ -98,8 +115,10 @@ namespace MyUPnPSupport.Plugin.Devices {
         public override void AVTransport_SetAVTransportURI(uint InstanceID, string CurrentURI, string CurrentURIMetaData) {
             if (GUIGraphicsContext.form.InvokeRequired) {
                 GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_SetAVTransportURI(InstanceID, CurrentURI, CurrentURIMetaData)));
+                return;
             }
-            Player.g_Player.Play(CurrentURI);
+            AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.PLAYING;
+            g_Player.Play(CurrentURI);
             Log.Debug("AVTransport_SetAVTransportURI(" + InstanceID.ToString() + CurrentURI.ToString() + CurrentURIMetaData.ToString() + ")");
         }
 
@@ -142,7 +161,7 @@ namespace MyUPnPSupport.Plugin.Devices {
                 GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Seek(InstanceID, Unit, Target)));
                 return;
             }
-            if (g_Player.CanSeek) {
+            if (g_Player.CanSeek && !Target.Contains("00:00:00")) {
                 UPnP.Services.AVTransport.Enum_TransportState last = AVTransport.TransportState;
                 AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.TRANSITIONING;
                 switch (Unit) {
@@ -167,7 +186,7 @@ namespace MyUPnPSupport.Plugin.Devices {
                     default:
                         break;
                 }
-                AVTransport.TransportState = last;                
+                AVTransport.TransportState = last;
             }
         }
 

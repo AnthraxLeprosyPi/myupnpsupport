@@ -27,7 +27,9 @@ namespace MyUPnPSupport.UPnP {
                     "MyUPnPSupport MediaPortal-Plugin",
                     "Custom root-device for the MyUPnPSupport MediaPortal-Plugin",
                     new Guid("6D40169B-BC4E-4D1D-BBB4-C26A67CC9BCF"),
-                    new Uri("http://www.team-mediaportal.com"));
+                    new Uri("http://www.team-mediaportal.com"),
+                    Properties.Resources.upnp_dms_l,
+                    Properties.Resources.upnp_dms_s);
                 this.AddDevice(server);
             }
             if (enableDMC) { 
