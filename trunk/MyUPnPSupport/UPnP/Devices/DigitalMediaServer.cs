@@ -6,6 +6,7 @@ using OpenSource.UPnP;
 using System.Collections.Generic;
 using MyUPnPSupport.UPnP.Services;
 using MyUPnPSupport.Properties;
+using System.Drawing;
 
 namespace MyUPnPSupport.UPnP.Devices {
     /// <summary>
@@ -23,7 +24,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         /// <param name="modelDescription">The model description.</param>
         /// <param name="deviceId">The device id.</param>
         /// <param name="deviceUri">The device URI.</param>
-        public DigitalMediaServer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri) : this() {
+        public DigitalMediaServer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri, Image iconLarge, Image iconSmall) : this() {
             device.FriendlyName = friendlyName;
             device.UniqueDeviceName = deviceId.ToString();
             device.SerialNumber = deviceId.ToString();    
@@ -32,8 +33,8 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelName = modelName;
             device.ModelDescription = modelDescription;
             device.ModelURL = deviceUri;
-            device.Icon = Resources.logo_mp_l;
-            device.Icon2 = Resources.logo_mp_s;         
+            device.Icon = iconLarge;
+            device.Icon2 = iconSmall;         
         }
 
         public DigitalMediaServer() {
