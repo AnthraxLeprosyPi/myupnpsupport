@@ -35,28 +35,34 @@ namespace MyUPnPSupport.Plugin.Config {
             try {
                 InitializeComponent();
                 Load += ConfigurationForm_Load;
-                FormClosing += ConfigurationForm_FormClosing;
-                Settings.Load();
+                FormClosing += ConfigurationForm_FormClosing;                
             } catch (Exception ex) {
                 Log.Error(ex);
             }
         }
-
-
-        private void ConfigurationForm_Load(object sender, EventArgs e) {
+        
+        private void ConfigurationForm_Load(object sender, EventArgs e) {            
             Text = String.Format("{0} - {1} - Configuration", Settings.PLUGIN_NAME, Settings.PLUGIN_VERSION);
-            checkBoxDMR.Checked = Settings.ENABLE_DMR;
-            checkBoxDMS.Checked = Settings.ENABLE_DMS;
-            checkBoxDMC.Checked = Settings.ENABLE_DMC;
+            Settings.Load();
+            checkBoxDMR.Checked = Settings.DMR_ENABLE;
+            textBoxDMRName.Text = Settings.DMR_NAME;
+            textBoxDMRGuid.Text = Settings.DMR_GUID;
+            checkBoxDMS.Checked = Settings.DMS_ENABLE;
+            checkBoxDMC.Checked = Settings.DMC_ENABLE;
         }
 
         private void ConfigurationForm_FormClosing(object sender, FormClosingEventArgs e) {
-            Settings.ENABLE_DMR = checkBoxDMR.Checked;
-            Settings.ENABLE_DMS = checkBoxDMS.Checked;
-            Settings.ENABLE_DMC = checkBoxDMC.Checked;
+            Settings.DMR_ENABLE = checkBoxDMR.Checked;
+            Settings.DMR_NAME = textBoxDMRName.Text;
+            Settings.DMR_GUID = textBoxDMRGuid.Text;
+            Settings.DMS_ENABLE = checkBoxDMS.Checked;
+            Settings.DMC_ENABLE = checkBoxDMC.Checked;
             Settings.Save();
         }
 
-
+        private void buttonDMRNewGuid_Click(object sender, EventArgs e)
+        {
+            textBoxDMRGuid.Text = Guid.NewGuid().ToString();
+        }
     }
 }

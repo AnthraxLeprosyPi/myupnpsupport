@@ -26,11 +26,14 @@ using System.IO;
 using MediaPortal.GUI.Library;
 using MyUPnPSupport.Plugin.Window.Dialogs;
 
-namespace MyUPnPSupport.Plugin.Config {
-    public static class Settings {
+namespace MyUPnPSupport.Plugin.Config
+{
+    public static class Settings
+    {
         #region SectionType enum
 
-        public enum SectionType {
+        public enum SectionType
+        {
             Music,
             Video,
             Photo
@@ -50,43 +53,56 @@ namespace MyUPnPSupport.Plugin.Config {
 
         public static string SKINFILE_MAIN_WINDOW = GUIGraphicsContext.Skin + @"\MyUPnPSupport.xml";
 
-        static Settings() {
+        static Settings()
+        {
             //Set defaults           
-            ENABLE_DMR = true;
-            ENABLE_DMS = false;
-            ENABLE_DMC = false;
+            //DMR_ENABLE = true;
+            //DMS_ENABLE = false;
+            //DMC_ENABLE = false;
         }
 
-        public static bool ENABLE_DMR { get; set; }
-        public static bool ENABLE_DMS { get; set; }
-        public static bool ENABLE_DMC { get; set; }
+        public static bool DMR_ENABLE { get; set; }
+        public static string DMR_GUID { get; set; }
+        public static string DMR_NAME { get; set; }
+        public static bool DMS_ENABLE { get; set; }
+        public static bool DMC_ENABLE { get; set; }
 
 
         /// <summary>
         ///   Load the settings from the mediaportal config
         /// </summary>
-        public static void Load() {
+        public static void Load()
+        {
             using (
                 MediaPortal.Profile.Settings reader =
-                    new MediaPortal.Profile.Settings(MediaPortal.Configuration.Config.GetFile(MediaPortal.Configuration.Config.Dir.Config, "MediaPortal.xml"))) {
-                ENABLE_DMR = reader.GetValueAsBool(PLUGIN_NAME, "EnableDMR", true);
-                ENABLE_DMS = reader.GetValueAsBool(PLUGIN_NAME, "EnableDMS", false);
-                ENABLE_DMC = reader.GetValueAsBool(PLUGIN_NAME, "EnableDMC", false);
+                    new MediaPortal.Profile.Settings(MediaPortal.Configuration.Config.GetFile(MediaPortal.Configuration.Config.Dir.Config, "MediaPortal.xml")))
+            {
+                DMR_ENABLE = reader.GetValueAsBool(PLUGIN_NAME, "DMR_ENABLE", true);
+                DMR_GUID = reader.GetValueAsString(PLUGIN_NAME, "DMR_GUID", Guid.NewGuid().ToString());
+                DMR_NAME = reader.GetValueAsString(PLUGIN_NAME, "DMR_NAME", "MediaPortal (DMR)");
+                DMS_ENABLE = reader.GetValueAsBool(PLUGIN_NAME, "DMS_ENABLE", false);
+                DMC_ENABLE = reader.GetValueAsBool(PLUGIN_NAME, "DMC_ENABLE", false);
             }
         }
 
         /// <summary>
         ///   Save the settings to the MP config
         /// </summary>
-        public static void Save() {
+        public static void Save()
+        {
             using (
                 MediaPortal.Profile.Settings xmlwriter =
-                    new MediaPortal.Profile.Settings(MediaPortal.Configuration.Config.GetFile(MediaPortal.Configuration.Config.Dir.Config, "MediaPortal.xml"))) {
-                        xmlwriter.SetValueAsBool(PLUGIN_NAME, "EnableDMR", ENABLE_DMR);
-                        xmlwriter.SetValueAsBool(PLUGIN_NAME, "EnableDMS", ENABLE_DMS);
-                        xmlwriter.SetValueAsBool(PLUGIN_NAME, "EnableDMC", ENABLE_DMC);
+                    new MediaPortal.Profile.Settings(MediaPortal.Configuration.Config.GetFile(MediaPortal.Configuration.Config.Dir.Config, "MediaPortal.xml")))
+            {
+                xmlwriter.SetValueAsBool(PLUGIN_NAME, "DMR_ENABLE", DMR_ENABLE);
+                xmlwriter.SetValueAsBool(PLUGIN_NAME, "DMS_ENABLE", DMS_ENABLE);
+                xmlwriter.SetValueAsBool(PLUGIN_NAME, "DMC_ENABLE", DMC_ENABLE);
 
             }
         }
+
+
+
+
     }
 }

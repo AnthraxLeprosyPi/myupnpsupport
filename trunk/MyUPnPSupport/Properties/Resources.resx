@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="config_ctripes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\config_ctripes.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -144,5 +144,24 @@
   </data>
   <data name="hover_extensions" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hover_extensions.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="upnp_dmc_l" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upnp_dmc_l.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="upnp_dmc_s" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upnp_dmc_s.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="upnp_dmr_l" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upnp_dmr_l.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="upnp_dmr_s" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upnp_dmr_s.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="upnp_dms_l" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upnp_dms_l.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="upnp_dms_s" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upnp_dms_s.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

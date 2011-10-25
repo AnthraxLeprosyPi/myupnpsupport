@@ -2696,10 +2696,8 @@ namespace OpenSource.UPnP
             if (SerialNumber != null) XDoc.WriteElementString("serialNumber", SerialNumber);
             XDoc.WriteElementString("UDN", "uuid:" + UniqueDeviceName);
 
-            if (_icon != null)
-            {
-                lock (_icon)
-                {
+            if (_icon != null) {
+                lock (_icon) {
                     XDoc.WriteStartElement("iconList");
                     XDoc.WriteStartElement("icon");
                     XDoc.WriteElementString("mimetype", "image/png");
@@ -2707,18 +2705,32 @@ namespace OpenSource.UPnP
                     XDoc.WriteElementString("height", _icon.Height.ToString());
                     XDoc.WriteElementString("depth", System.Drawing.Image.GetPixelFormatSize(_icon.PixelFormat).ToString());
                     XDoc.WriteElementString("url", "/icon.png");
-                    XDoc.WriteEndElement();                   
+                    XDoc.WriteEndElement();
 
-                    if (_icon2 != null)
-                    {
+                    XDoc.WriteStartElement("icon");
+                    XDoc.WriteElementString("mimetype", "image/jpg");
+                    XDoc.WriteElementString("width", _icon.Width.ToString());
+                    XDoc.WriteElementString("height", _icon.Height.ToString());
+                    XDoc.WriteElementString("depth", System.Drawing.Image.GetPixelFormatSize(_icon.PixelFormat).ToString());
+                    XDoc.WriteElementString("url", "/icon.jpg");
+                    XDoc.WriteEndElement();
+
+                    if (_icon2 != null) {
                         XDoc.WriteStartElement("icon");
                         XDoc.WriteElementString("mimetype", "image/png");
                         XDoc.WriteElementString("width", _icon2.Width.ToString());
                         XDoc.WriteElementString("height", _icon2.Height.ToString());
-                        XDoc.WriteElementString("depth", System.Drawing.Image.GetPixelFormatSize(_icon.PixelFormat).ToString());
+                        XDoc.WriteElementString("depth", System.Drawing.Image.GetPixelFormatSize(_icon2.PixelFormat).ToString());
                         XDoc.WriteElementString("url", "/icon2.png");
                         XDoc.WriteEndElement();
-                       
+
+                        XDoc.WriteStartElement("icon");
+                        XDoc.WriteElementString("mimetype", "image/jpg");
+                        XDoc.WriteElementString("width", _icon2.Width.ToString());
+                        XDoc.WriteElementString("height", _icon2.Height.ToString());
+                        XDoc.WriteElementString("depth", System.Drawing.Image.GetPixelFormatSize(_icon2.PixelFormat).ToString());
+                        XDoc.WriteElementString("url", "/icon2.jpg");
+                        XDoc.WriteEndElement();
                     }
 
                     XDoc.WriteEndElement();
