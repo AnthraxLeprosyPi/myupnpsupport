@@ -157,8 +157,19 @@
     <Content Include="Resources\MediaPortal\dialogs.dll" />
     <Content Include="Resources\MediaPortal\utils.dll" />
     <Content Include="Resources\MediaPortal\WindowPlugins.dll" />
+    <Content Include="Resources\upnp_dmc_l.png" />
+    <Content Include="Resources\upnp_dmc_s.png" />
+    <Content Include="Resources\upnp_dmr_l.png" />
+    <Content Include="Resources\upnp_dmr_s.png" />
+    <Content Include="Resources\upnp_dms_l.png" />
+    <Content Include="Resources\upnp_dms_s.png" />
     <EmbeddedResource Include="Resources\MyUPnPSupport_disabled.png" />
     <EmbeddedResource Include="Resources\MyUPnPSupport_enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UPnP\Schemas\didl-lite-v2.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

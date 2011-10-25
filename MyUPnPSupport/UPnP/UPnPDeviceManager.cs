@@ -6,6 +6,7 @@ using OpenSource.UPnP;
 using MyUPnPSupport.UPnP.Services;
 using MyUPnPSupport.UPnP.Devices;
 using MyUPnPSupport.Plugin.Devices;
+using MyUPnPSupport.Plugin.Config;
 
 namespace MyUPnPSupport.UPnP {
    public class UPnPDeviceManager  : IDisposable{
@@ -16,7 +17,7 @@ namespace MyUPnPSupport.UPnP {
             UPnPDevices = new List<UPnPDevice>();
 
             if (enableDMR) {
-                MediaPortalDMR dmr = new MediaPortalDMR();
+                MediaPortalDMR dmr = new MediaPortalDMR(Settings.DMR_NAME, Settings.DMR_GUID);
                 AddDevice(dmr);
             }
             if (enableDMS) {

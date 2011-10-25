@@ -7,14 +7,18 @@ using MyUPnPSupport.UPnP.Services;
 using MediaPortal.Playlists;
 using MediaPortal.GUI.Library;
 using MyUPnPSupport.Properties;
+using System.Drawing;
 
 namespace MyUPnPSupport.UPnP.Devices {
     /// <summary>
     /// Summary description for SampleDevice.
     /// </summary>
-   public class DigitalMediaRenderer : IUPnPDevice {
+    public class DigitalMediaRenderer : IUPnPDevice {
         private UPnPDevice device;
-      
+        protected AVTransport AVTransport;
+        protected ConnectionManagerRenderer ConnectionManager;
+        protected RenderingControl RenderingControl;
+
         public delegate void Delegate_ConnectionComplete(System.Int32 ConnectionID);
         public delegate void Delegate_GetCurrentConnectionIDs(out System.String ConnectionIDs);
         public delegate void Delegate_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status);
@@ -27,6 +31,8 @@ namespace MyUPnPSupport.UPnP.Devices {
         public Delegate_GetProtocolInfo External_GetProtocolInfo = null;
         public Delegate_PrepareForConnection External_PrepareForConnection = null;
 
+
+
         /// <summary>
         /// Initializes a new custom instance of the <see cref="DigitalMediaRenderer"/> class.
         /// </summary>
@@ -36,7 +42,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         /// <param name="modelDescription">The model description.</param>
         /// <param name="deviceId">The device id.</param>
         /// <param name="deviceUri">The device URI.</param>
-        public DigitalMediaRenderer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri, Uri manufacturerUri)
+        public DigitalMediaRenderer(string friendlyName, string manufacturer, string modelName, string modelDescription, Guid deviceId, Uri deviceUri, Uri manufacturerUri, Image iconLarge, Image iconSmall)
             : this() {
             device.FriendlyName = friendlyName;
             device.UniqueDeviceName = deviceId.ToString();
@@ -46,11 +52,11 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelName = modelName;
             device.ModelDescription = modelDescription;
             device.ModelURL = deviceUri;
-            device.Icon = Resources.logo_mp_l;
-            device.Icon2 = Resources.logo_mp_s;
+            device.Icon = iconLarge;
+            device.Icon2 = iconSmall;
         }
 
-        
+
         public DigitalMediaRenderer() {
             device = UPnPDevice.CreateRootDevice(1800, 1.0, "\\");
 
@@ -62,7 +68,7 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelNumber = "X1";
             device.HasPresentation = false;
             device.DeviceURN = "urn:schemas-upnp-org:device:MediaRenderer:1";
-            MyUPnPSupport.UPnP.Services.AVTransport AVTransport = new MyUPnPSupport.UPnP.Services.AVTransport();
+            AVTransport = new MyUPnPSupport.UPnP.Services.AVTransport();
             AVTransport.External_GetCurrentTransportActions = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetCurrentTransportActions(AVTransport_GetCurrentTransportActions);
             AVTransport.External_GetDeviceCapabilities = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetDeviceCapabilities(AVTransport_GetDeviceCapabilities);
             AVTransport.External_GetMediaInfo = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetMediaInfo(AVTransport_GetMediaInfo);
@@ -78,12 +84,12 @@ namespace MyUPnPSupport.UPnP.Devices {
             AVTransport.External_SetPlayMode = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_SetPlayMode(AVTransport_SetPlayMode);
             AVTransport.External_Stop = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Stop(AVTransport_Stop);
             device.AddService(AVTransport);
-            MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer ConnectionManager = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer();
+            ConnectionManager = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer();
             ConnectionManager.External_GetCurrentConnectionIDs = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
             ConnectionManager.External_GetCurrentConnectionInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
             ConnectionManager.External_GetProtocolInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);
             device.AddService(ConnectionManager);
-            MyUPnPSupport.UPnP.Services.RenderingControl RenderingControl = new MyUPnPSupport.UPnP.Services.RenderingControl();
+            RenderingControl = new MyUPnPSupport.UPnP.Services.RenderingControl();
             RenderingControl.External_GetBlueVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetBlueVideoBlackLevel(RenderingControl_GetBlueVideoBlackLevel);
             RenderingControl.External_GetBlueVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetBlueVideoGain(RenderingControl_GetBlueVideoGain);
             RenderingControl.External_GetBrightness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetBrightness(RenderingControl_GetBrightness);
@@ -138,37 +144,37 @@ namespace MyUPnPSupport.UPnP.Devices {
         }
 
         public virtual void AVTransport_GetCurrentTransportActions(System.UInt32 InstanceID, out System.String Actions) {
-            Actions = "Sample String";
+            Actions = "";
             Console.WriteLine("AVTransport_GetCurrentTransportActions(" + InstanceID.ToString() + ")");
         }
 
         public virtual void AVTransport_GetDeviceCapabilities(System.UInt32 InstanceID, out System.String PlayMedia, out System.String RecMedia, out System.String RecQualityModes) {
-            PlayMedia = "Sample String";
-            RecMedia = "Sample String";
-            RecQualityModes = "Sample String";
+            PlayMedia = "";
+            RecMedia = "";
+            RecQualityModes = "";
             Console.WriteLine("AVTransport_GetDeviceCapabilities(" + InstanceID.ToString() + ")");
         }
 
         public virtual void AVTransport_GetMediaInfo(System.UInt32 InstanceID, out System.UInt32 NrTracks, out System.String MediaDuration, out System.String CurrentURI, out System.String CurrentURIMetaData, out System.String NextURI, out System.String NextURIMetaData, out AVTransport.Enum_PlaybackStorageMedium PlayMedium, out AVTransport.Enum_RecordStorageMedium RecordMedium, out AVTransport.Enum_RecordMediumWriteStatus WriteStatus) {
             NrTracks = 0;
-            MediaDuration = "00:50:00";
-            CurrentURI = "Sample String";
-            CurrentURIMetaData = "Sample String";
-            NextURI = "Sample String";
-            NextURIMetaData = "Sample String";
+            MediaDuration = "";
+            CurrentURI = "";
+            CurrentURIMetaData = "";
+            NextURI = "";
+            NextURIMetaData = "";
             PlayMedium = AVTransport.Enum_PlaybackStorageMedium.UNKNOWN;
-            RecordMedium = AVTransport.Enum_RecordStorageMedium.UNKNOWN;
-            WriteStatus = AVTransport.Enum_RecordMediumWriteStatus.WRITABLE;
+            RecordMedium = AVTransport.Enum_RecordStorageMedium.NOT_IMPLEMENTED;
+            WriteStatus = AVTransport.Enum_RecordMediumWriteStatus.NOT_IMPLEMENTED;
             Console.WriteLine("AVTransport_GetMediaInfo(" + InstanceID.ToString() + ")");
         }
 
         public virtual void AVTransport_GetPositionInfo(System.UInt32 InstanceID, out System.UInt32 Track, out System.String TrackDuration, out System.String TrackMetaData, out System.String TrackURI, out System.String RelTime, out System.String AbsTime, out System.Int32 RelCount, out System.Int32 AbsCount) {
             Track = 0;
-            TrackDuration = "Sample String";
-            TrackMetaData = "Sample String";
-            TrackURI = "Sample String";
-            RelTime = "Sample String";
-            AbsTime = "Sample String";
+            TrackDuration = "";
+            TrackMetaData = "";
+            TrackURI = "";
+            RelTime = "";
+            AbsTime = "";
             RelCount = 0;
             AbsCount = 0;
             Console.WriteLine("AVTransport_GetPositionInfo(" + InstanceID.ToString() + ")");
@@ -183,7 +189,7 @@ namespace MyUPnPSupport.UPnP.Devices {
 
         public virtual void AVTransport_GetTransportSettings(System.UInt32 InstanceID, out AVTransport.Enum_CurrentPlayMode PlayMode, out AVTransport.Enum_CurrentRecordQualityMode RecQualityMode) {
             PlayMode = AVTransport.Enum_CurrentPlayMode.NORMAL;
-            RecQualityMode = AVTransport.Enum_CurrentRecordQualityMode._0_EP;
+            RecQualityMode = AVTransport.Enum_CurrentRecordQualityMode.NOT_IMPLEMENTED;
             Console.WriteLine("AVTransport_GetTransportSettings(" + InstanceID.ToString() + ")");
         }
 
@@ -207,7 +213,7 @@ namespace MyUPnPSupport.UPnP.Devices {
             Console.WriteLine("AVTransport_Seek(" + InstanceID.ToString() + Unit.ToString() + Target.ToString() + ")");
         }
 
-        public virtual void AVTransport_SetAVTransportURI(System.UInt32 InstanceID, System.String CurrentURI, System.String CurrentURIMetaData) {         
+        public virtual void AVTransport_SetAVTransportURI(System.UInt32 InstanceID, System.String CurrentURI, System.String CurrentURIMetaData) {
             Console.WriteLine("AVTransport_SetAVTransportURI(" + InstanceID.ToString() + CurrentURI.ToString() + CurrentURIMetaData.ToString() + ")");
         }
 
@@ -220,7 +226,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         }
 
         public virtual void ConnectionManager_GetCurrentConnectionIDs(out System.String ConnectionIDs) {
-            ConnectionIDs = "Sample String";
+            ConnectionIDs = "";
             Console.WriteLine("ConnectionManager_GetCurrentConnectionIDs(" + ")");
         }
 
@@ -236,7 +242,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         }
 
         public virtual void ConnectionManager_GetProtocolInfo(out System.String Source, out System.String Sink) {
-            Source = "Sample String";
+            Source = "";
             Sink = "http-get:*:audio/mpegurl:*,http-get:*:audio/mp3:*,http-get:*:audio/mpeg:*,http-get:*:audio/x-ms-wma:*,http-get:*:audio/wma:*,http-get:*:audio/mpeg3:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-ms-asf:*,http-get:*:video/x-ms-avi:*,http-get:*:video/mpeg:*";
             Console.WriteLine("ConnectionManager_GetProtocolInfo(" + ")");
         }

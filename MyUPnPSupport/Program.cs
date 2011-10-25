@@ -5,14 +5,16 @@ using System.Text;
 using MyUPnPSupport.UPnP;
 using MyUPnPSupport.UPnP.Services;
 using MyUPnPSupport.Plugin.Devices;
+using MyUPnPSupport.Plugin.Config;
 
 namespace MyUPnPSupport {
     class Program { 
 
         [STAThread]
-        public static void Main(string[] args) {          
-
-            UPnPDeviceManager manager = new UPnPDeviceManager(true, true, true);           
+        public static void Main(string[] args) {
+            
+            UPnPDeviceManager manager = new UPnPDeviceManager(false, false, false);           
+            manager.AddDevice(new MediaPortalDMR("DMR", Guid.NewGuid().ToString()));
             manager.StartDevices();
             
             Console.ReadLine();
