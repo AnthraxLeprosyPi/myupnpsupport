@@ -54,25 +54,23 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         void g_Player_PlayBackStarted(g_Player.MediaType type, string filename) {
             AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.PLAYING;
-            PositionTimer.Start();
-            AVT_LastChange("TransportState", UPnP.Services.AVTransport.Enum_TransportState_ToString(UPnP.Services.AVTransport.Enum_TransportState.PLAYING));
+            PositionTimer.Start();           
         }
 
         void g_Player_PlayBackStopped(g_Player.MediaType type, int stoptime, string filename) {
             AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.STOPPED;
-            PositionTimer.Stop();
-            AVT_LastChange("TransportState", UPnP.Services.AVTransport.Enum_TransportState_ToString(UPnP.Services.AVTransport.Enum_TransportState.STOPPED));
+            PositionTimer.Stop();          
         }
 
-        protected void AVT_LastChange(string VarName, string VarValue) {
-            StringBuilder s = new StringBuilder();
-            s.Append("<Event xmlns = \"urn:schemas-upnp-org:metadata-1-0/AVT/\">\r\n");
-            s.Append("   <InstanceID val=\"" + "0" + "\">\r\n");
-            s.Append("        <" + VarName + " val=\"" + UPnPStringFormatter.EscapeString(VarValue) + "\"/>\r\n");
-            s.Append("   </InstanceID>\r\n");
-            s.Append("</Event>");
-            AVTransport.Evented_LastChange = UPnPStringFormatter.EscapeString(s.ToString());
-        }
+        //protected void AVT_LastChange(string VarName, string VarValue) {
+        //    StringBuilder s = new StringBuilder();
+        //    s.Append("<Event xmlns = \"urn:schemas-upnp-org:metadata-1-0/AVT/\">\r\n");
+        //    s.Append("   <InstanceID val=\"" + "0" + "\">\r\n");
+        //    s.Append("        <" + VarName + " val=\"" + UPnPStringFormatter.EscapeString(VarValue) + "\"/>\r\n");
+        //    s.Append("   </InstanceID>\r\n");
+        //    s.Append("</Event>");
+        //    AVTransport.Evented_LastChange = UPnPStringFormatter.EscapeString(s.ToString());
+        //}
 
         public override void AVTransport_GetTransportInfo(uint InstanceID, out UPnP.Services.AVTransport.Enum_TransportState CurrentTransportState, out UPnP.Services.AVTransport.Enum_TransportStatus CurrentTransportStatus, out UPnP.Services.AVTransport.Enum_TransportPlaySpeed CurrentSpeed) {
             if (g_Player.Player == null || g_Player.Stopped) {
@@ -92,8 +90,7 @@ namespace MyUPnPSupport.Plugin.Devices {
             if ((g_Player.CurrentPosition > 0)) {// && (g_Player.CurrentPosition <= g_Player.Duration)) {
                 //AVTransport.CurrentMediaDuration = GetFormattedTime(g_Player.Duration);
                 //AVTransport.CurrentTrackDuration = AVTransport.CurrentMediaDuration;
-                AVTransport.AbsoluteTimePosition = GetFormattedTime(g_Player.CurrentPosition);
-                AVT_LastChange("AbsoluteTimePosition", AVTransport.AbsoluteTimePosition);
+                AVTransport.AbsoluteTimePosition = GetFormattedTime(g_Player.CurrentPosition);                
                 // AVTransport.RelativeTimePosition =  Utils.SecondsToHMSString((int)g_Player.CurrentPosition);
             }
         }
