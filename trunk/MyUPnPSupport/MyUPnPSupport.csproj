@@ -136,8 +136,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\logo_mp_l.png" />
-    <EmbeddedResource Include="Resources\logo_mp_s.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UPnP\UPnP.csproj">

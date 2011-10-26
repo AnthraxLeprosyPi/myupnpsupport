@@ -1,4 +1,5 @@
 using OpenSource.UPnP;
+using System.Text;
 
 namespace MyUPnPSupport.UPnP.Services
 {
@@ -2547,6 +2548,19 @@ namespace MyUPnPSupport.UPnP.Services
             public void SetStateVariable(string VarName, object VarValue)
             {
                S.SetStateVariable(VarName,VarValue);
+               if (VarName != "LastChange") {
+                   AVT_LastChange(VarName, VarValue.ToString());
+               }
+            }
+
+            protected void AVT_LastChange(string VarName, string VarValue) {
+                StringBuilder s = new StringBuilder();
+                s.Append("<Event xmlns = \"urn:schemas-upnp-org:metadata-1-0/AVT/\">\r\n");
+                s.Append("   <InstanceID val=\"" + "0" + "\">\r\n");
+                s.Append("        <" + VarName + " val=\"" + UPnPStringFormatter.EscapeString(VarValue) + "\"/>\r\n");
+                s.Append("   </InstanceID>\r\n");
+                s.Append("</Event>");
+                Outer.Evented_LastChange = UPnPStringFormatter.EscapeString(s.ToString());
             }
             public object GetStateVariable(string VarName)
             {
