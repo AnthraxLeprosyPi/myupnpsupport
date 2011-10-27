@@ -1,11 +1,12 @@
 using OpenSource.UPnP;
 
-namespace MyUPnPSupport.UPnP.Services
+namespace UPnPDevices.Services
+
 {
     /// <summary>
     /// Transparent DeviceSide UPnP Service
     /// </summary>
-    public class ConnectionManagerServer : IUPnPService
+    public class ConnectionManagerRenderer : IUPnPService
     {
 
         // Place your declarations above this line
@@ -171,7 +172,7 @@ namespace MyUPnPSupport.UPnP.Services
                 return(RetVal);
             }
         }
-        public delegate void OnStateVariableModifiedHandler(ConnectionManagerServer sender);
+        public delegate void OnStateVariableModifiedHandler(ConnectionManagerRenderer sender);
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_ConnectionManager;
         public event OnStateVariableModifiedHandler OnStateVariableModified_SinkProtocolInfo;
         public event OnStateVariableModifiedHandler OnStateVariableModified_A_ARG_TYPE_ConnectionStatus;
@@ -490,17 +491,13 @@ namespace MyUPnPSupport.UPnP.Services
                  ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("CurrentConnectionIDs")).ModerationPeriod = value;
             }
         }
-        public delegate void Delegate_ConnectionComplete(System.Int32 ConnectionID);
         public delegate void Delegate_GetCurrentConnectionIDs(out System.String ConnectionIDs);
-        public delegate void Delegate_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status);
+        public delegate void Delegate_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerRenderer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerRenderer.Enum_A_ARG_TYPE_ConnectionStatus Status);
         public delegate void Delegate_GetProtocolInfo(out System.String Source, out System.String Sink);
-        public delegate void Delegate_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID);
 
-        public Delegate_ConnectionComplete External_ConnectionComplete = null;
         public Delegate_GetCurrentConnectionIDs External_GetCurrentConnectionIDs = null;
         public Delegate_GetCurrentConnectionInfo External_GetCurrentConnectionInfo = null;
         public Delegate_GetProtocolInfo External_GetProtocolInfo = null;
-        public Delegate_PrepareForConnection External_PrepareForConnection = null;
 
         public void RemoveStateVariable_A_ARG_TYPE_ConnectionManager()
         {
@@ -542,10 +539,6 @@ namespace MyUPnPSupport.UPnP.Services
         {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("CurrentConnectionIDs"));
         }
-        public void RemoveAction_ConnectionComplete()
-        {
-             _S.GetUPnPService().RemoveMethod("ConnectionComplete");
-        }
         public void RemoveAction_GetCurrentConnectionIDs()
         {
              _S.GetUPnPService().RemoveMethod("GetCurrentConnectionIDs");
@@ -558,10 +551,6 @@ namespace MyUPnPSupport.UPnP.Services
         {
              _S.GetUPnPService().RemoveMethod("GetProtocolInfo");
         }
-        public void RemoveAction_PrepareForConnection()
-        {
-             _S.GetUPnPService().RemoveMethod("PrepareForConnection");
-        }
         public System.Net.IPEndPoint GetCaller()
         {
              return(_S.GetUPnPService().GetCaller());
@@ -573,9 +562,9 @@ namespace MyUPnPSupport.UPnP.Services
 
         private class _DvConnectionManager
         {
-            private ConnectionManagerServer Outer = null;
+            private ConnectionManagerRenderer Outer = null;
             private UPnPService S;
-            internal _DvConnectionManager(ConnectionManagerServer n)
+            internal _DvConnectionManager(ConnectionManagerRenderer n)
             {
                 Outer = n;
                 S = BuildUPnPService();
@@ -597,7 +586,6 @@ namespace MyUPnPSupport.UPnP.Services
                 UPnPStateVariable[] RetVal = new UPnPStateVariable[10];
                 RetVal[0] = new UPnPModeratedStateVariable("A_ARG_TYPE_ConnectionManager", typeof(System.String), false);
                 RetVal[0].AddAssociation("GetCurrentConnectionInfo", "PeerConnectionManager");
-                RetVal[0].AddAssociation("PrepareForConnection", "PeerConnectionManager");
                 RetVal[1] = new UPnPModeratedStateVariable("SinkProtocolInfo", typeof(System.String), true);
                 RetVal[1].AddAssociation("GetProtocolInfo", "Sink");
                 RetVal[2] = new UPnPModeratedStateVariable("A_ARG_TYPE_ConnectionStatus", typeof(System.String), false);
@@ -605,23 +593,16 @@ namespace MyUPnPSupport.UPnP.Services
                 RetVal[2].AddAssociation("GetCurrentConnectionInfo", "Status");
                 RetVal[3] = new UPnPModeratedStateVariable("A_ARG_TYPE_AVTransportID", typeof(System.Int32), false);
                 RetVal[3].AddAssociation("GetCurrentConnectionInfo", "AVTransportID");
-                RetVal[3].AddAssociation("PrepareForConnection", "AVTransportID");
                 RetVal[4] = new UPnPModeratedStateVariable("A_ARG_TYPE_Direction", typeof(System.String), false);
                 RetVal[4].AllowedStringValues = new string[2]{"Input", "Output"};
                 RetVal[4].AddAssociation("GetCurrentConnectionInfo", "Direction");
-                RetVal[4].AddAssociation("PrepareForConnection", "Direction");
                 RetVal[5] = new UPnPModeratedStateVariable("A_ARG_TYPE_RcsID", typeof(System.Int32), false);
                 RetVal[5].AddAssociation("GetCurrentConnectionInfo", "RcsID");
-                RetVal[5].AddAssociation("PrepareForConnection", "RcsID");
                 RetVal[6] = new UPnPModeratedStateVariable("A_ARG_TYPE_ProtocolInfo", typeof(System.String), false);
                 RetVal[6].AddAssociation("GetCurrentConnectionInfo", "ProtocolInfo");
-                RetVal[6].AddAssociation("PrepareForConnection", "RemoteProtocolInfo");
                 RetVal[7] = new UPnPModeratedStateVariable("A_ARG_TYPE_ConnectionID", typeof(System.Int32), false);
-                RetVal[7].AddAssociation("ConnectionComplete", "ConnectionID");
                 RetVal[7].AddAssociation("GetCurrentConnectionInfo", "ConnectionID");
                 RetVal[7].AddAssociation("GetCurrentConnectionInfo", "PeerConnectionID");
-                RetVal[7].AddAssociation("PrepareForConnection", "PeerConnectionID");
-                RetVal[7].AddAssociation("PrepareForConnection", "ConnectionID");
                 RetVal[8] = new UPnPModeratedStateVariable("SourceProtocolInfo", typeof(System.String), true);
                 RetVal[8].AddAssociation("GetProtocolInfo", "Source");
                 RetVal[9] = new UPnPModeratedStateVariable("CurrentConnectionIDs", typeof(System.String), true);
@@ -632,25 +613,12 @@ namespace MyUPnPSupport.UPnP.Services
                 {
                    S.AddStateVariable(RetVal[i]);
                 }
-                S.AddMethod("ConnectionComplete");
                 S.AddMethod("GetCurrentConnectionIDs");
                 S.AddMethod("GetCurrentConnectionInfo");
                 S.AddMethod("GetProtocolInfo");
-                S.AddMethod("PrepareForConnection");
                 return(S);
             }
 
-            public void ConnectionComplete(System.Int32 ConnectionID)
-            {
-                if (Outer.External_ConnectionComplete != null)
-                {
-                    Outer.External_ConnectionComplete(ConnectionID);
-                }
-                else
-                {
-                    Sink_ConnectionComplete(ConnectionID);
-                }
-            }
             public void GetCurrentConnectionIDs(out System.String ConnectionIDs)
             {
                 if (Outer.External_GetCurrentConnectionIDs != null)
@@ -719,38 +687,12 @@ namespace MyUPnPSupport.UPnP.Services
                     Sink_GetProtocolInfo(out Source, out Sink);
                 }
             }
-            public void PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, System.String Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID)
-            {
-                Enum_A_ARG_TYPE_Direction e_Direction;
-                switch(Direction)
-                {
-                    case "Input":
-                        e_Direction = Enum_A_ARG_TYPE_Direction.INPUT;
-                        break;
-                    case "Output":
-                        e_Direction = Enum_A_ARG_TYPE_Direction.OUTPUT;
-                        break;
-                    default:
-                        e_Direction = 0;
-                        break;
-                }
-                if (Outer.External_PrepareForConnection != null)
-                {
-                    Outer.External_PrepareForConnection(RemoteProtocolInfo, PeerConnectionManager, PeerConnectionID, e_Direction, out ConnectionID, out AVTransportID, out RcsID);
-                }
-                else
-                {
-                    Sink_PrepareForConnection(RemoteProtocolInfo, PeerConnectionManager, PeerConnectionID, e_Direction, out ConnectionID, out AVTransportID, out RcsID);
-                }
-            }
 
-            public Delegate_ConnectionComplete Sink_ConnectionComplete;
             public Delegate_GetCurrentConnectionIDs Sink_GetCurrentConnectionIDs;
             public Delegate_GetCurrentConnectionInfo Sink_GetCurrentConnectionInfo;
             public Delegate_GetProtocolInfo Sink_GetProtocolInfo;
-            public Delegate_PrepareForConnection Sink_PrepareForConnection;
         }
-        public ConnectionManagerServer()
+        public ConnectionManagerRenderer()
         {
             _S = new _DvConnectionManager(this);
             _S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_ConnectionManager").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_A_ARG_TYPE_ConnectionManager);
@@ -763,13 +705,11 @@ namespace MyUPnPSupport.UPnP.Services
             _S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_ConnectionID").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_A_ARG_TYPE_ConnectionID);
             _S.GetUPnPService().GetStateVariableObject("SourceProtocolInfo").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_SourceProtocolInfo);
             _S.GetUPnPService().GetStateVariableObject("CurrentConnectionIDs").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_CurrentConnectionIDs);
-            _S.Sink_ConnectionComplete = new Delegate_ConnectionComplete(ConnectionComplete);
             _S.Sink_GetCurrentConnectionIDs = new Delegate_GetCurrentConnectionIDs(GetCurrentConnectionIDs);
             _S.Sink_GetCurrentConnectionInfo = new Delegate_GetCurrentConnectionInfo(GetCurrentConnectionInfo);
             _S.Sink_GetProtocolInfo = new Delegate_GetProtocolInfo(GetProtocolInfo);
-            _S.Sink_PrepareForConnection = new Delegate_PrepareForConnection(PrepareForConnection);
         }
-        public ConnectionManagerServer(string ID):this()
+        public ConnectionManagerRenderer(string ID):this()
         {
             _S.GetUPnPService().ServiceID = ID;
         }
@@ -822,15 +762,6 @@ namespace MyUPnPSupport.UPnP.Services
         #endregion
 
         /// <summary>
-        /// Action: ConnectionComplete
-        /// </summary>
-        /// <param name="ConnectionID">Associated State Variable: A_ARG_TYPE_ConnectionID</param>
-        public void ConnectionComplete(System.Int32 ConnectionID)
-        {
-            //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
-        }
-        /// <summary>
         /// Action: GetCurrentConnectionIDs
         /// </summary>
         /// <param name="ConnectionIDs">Associated State Variable: CurrentConnectionIDs</param>
@@ -861,21 +792,6 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="Source">Associated State Variable: SourceProtocolInfo</param>
         /// <param name="Sink">Associated State Variable: SinkProtocolInfo</param>
         public void GetProtocolInfo(out System.String Source, out System.String Sink)
-        {
-            //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
-        }
-        /// <summary>
-        /// Action: PrepareForConnection
-        /// </summary>
-        /// <param name="RemoteProtocolInfo">Associated State Variable: A_ARG_TYPE_ProtocolInfo</param>
-        /// <param name="PeerConnectionManager">Associated State Variable: A_ARG_TYPE_ConnectionManager</param>
-        /// <param name="PeerConnectionID">Associated State Variable: A_ARG_TYPE_ConnectionID</param>
-        /// <param name="Direction">Associated State Variable: A_ARG_TYPE_Direction</param>
-        /// <param name="ConnectionID">Associated State Variable: A_ARG_TYPE_ConnectionID</param>
-        /// <param name="AVTransportID">Associated State Variable: A_ARG_TYPE_AVTransportID</param>
-        /// <param name="RcsID">Associated State Variable: A_ARG_TYPE_RcsID</param>
-        public void PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID)
         {
             //ToDo: Add Your implementation here, and remove exception
             throw(new UPnPCustomException(800,"This method has not been completely implemented..."));

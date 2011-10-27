@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenSource.UPnP;
-using MyUPnPSupport.UPnP.Services;
-using MyUPnPSupport.UPnP.Devices;
-using MyUPnPSupport.Plugin.Devices;
 using MyUPnPSupport.Plugin.Config;
+using OpenSource.UPnP;
+using UPnPDevices.Devices;
 
-namespace MyUPnPSupport.UPnP {
+namespace MyUPnPSupport.Plugin.Devices {
    public class UPnPDeviceManager  : IDisposable{
 
         private List<UPnPDevice> UPnPDevices { get; set; }

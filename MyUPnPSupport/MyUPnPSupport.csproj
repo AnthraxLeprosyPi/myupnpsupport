@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Plugin\Config\Settings.cs" />
     <Compile Include="Plugin\Devices\MediaPortalDMR.cs" />
+    <Compile Include="Plugin\Devices\UPnPDeviceManager.cs" />
     <Compile Include="Plugin\Window\Dialogs\CommonDialogs.cs" />
     <Compile Include="Plugin\Window\Dialogs\ContextMenu.cs" />
     <Compile Include="Plugin\Window\Dialogs\Enum.cs" />
@@ -112,14 +113,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UPnP\Services\AVTransport.cs" />
-    <Compile Include="UPnP\Services\ConnectionManagerRenderer.cs" />
-    <Compile Include="UPnP\Services\RenderingControl.cs" />
-    <Compile Include="UPnP\Devices\DigitalMediaRenderer.cs" />
-    <Compile Include="UPnP\Services\ConnectionManagerServer.cs" />
-    <Compile Include="UPnP\Services\ContentDirectory.cs" />
-    <Compile Include="UPnP\Devices\DigitalMediaServer.cs" />
-    <Compile Include="UPnP\UPnPDeviceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extension\Forum\" />
@@ -138,6 +131,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UPnPDevices\UPnPDevices.csproj">
+      <Project>{4D528573-314D-45BE-A201-E22E3B9808B5}</Project>
+      <Name>UPnPDevices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UPnP\UPnP.csproj">
       <Project>{584ED187-8F2A-4B58-A266-85F3F212B092}</Project>
       <Name>UPnP</Name>
@@ -163,11 +160,6 @@
     <Content Include="Resources\upnp_dms_s.png" />
     <EmbeddedResource Include="Resources\MyUPnPSupport_disabled.png" />
     <EmbeddedResource Include="Resources\MyUPnPSupport_enabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UPnP\Schemas\didl-lite-v2.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -3,21 +3,18 @@
 
 using System;
 using OpenSource.UPnP;
-using MyUPnPSupport.UPnP.Services;
-using MediaPortal.Playlists;
-using MediaPortal.GUI.Library;
-using MyUPnPSupport.Properties;
+using UPnPDevices.Services;
 using System.Drawing;
 
-namespace MyUPnPSupport.UPnP.Devices {
+namespace UPnPDevices.Devices {
     /// <summary>
     /// Summary description for SampleDevice.
     /// </summary>
     public class DigitalMediaRenderer : IUPnPDevice {
         private UPnPDevice device;
-        protected AVTransport AVTransport;
-        protected ConnectionManagerRenderer ConnectionManager;
-        protected RenderingControl RenderingControl;
+        protected AVTransport _aVTransport;
+        protected ConnectionManagerRenderer _connectionManager;
+        protected RenderingControl _renderingControl;
 
         public delegate void Delegate_ConnectionComplete(System.Int32 ConnectionID);
         public delegate void Delegate_GetCurrentConnectionIDs(out System.String ConnectionIDs);
@@ -68,71 +65,71 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelNumber = "X1";
             device.HasPresentation = false;
             device.DeviceURN = "urn:schemas-upnp-org:device:MediaRenderer:1";
-            AVTransport = new MyUPnPSupport.UPnP.Services.AVTransport();
-            AVTransport.External_GetCurrentTransportActions = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetCurrentTransportActions(AVTransport_GetCurrentTransportActions);
-            AVTransport.External_GetDeviceCapabilities = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetDeviceCapabilities(AVTransport_GetDeviceCapabilities);
-            AVTransport.External_GetMediaInfo = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetMediaInfo(AVTransport_GetMediaInfo);
-            AVTransport.External_GetPositionInfo = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetPositionInfo(AVTransport_GetPositionInfo);
-            AVTransport.External_GetTransportInfo = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetTransportInfo(AVTransport_GetTransportInfo);
-            AVTransport.External_GetTransportSettings = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_GetTransportSettings(AVTransport_GetTransportSettings);
-            AVTransport.External_Next = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Next(AVTransport_Next);
-            AVTransport.External_Pause = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Pause(AVTransport_Pause);
-            AVTransport.External_Play = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Play(AVTransport_Play);
-            AVTransport.External_Previous = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Previous(AVTransport_Previous);
-            AVTransport.External_Seek = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Seek(AVTransport_Seek);
-            AVTransport.External_SetAVTransportURI = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_SetAVTransportURI(AVTransport_SetAVTransportURI);
-            AVTransport.External_SetPlayMode = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_SetPlayMode(AVTransport_SetPlayMode);
-            AVTransport.External_Stop = new MyUPnPSupport.UPnP.Services.AVTransport.Delegate_Stop(AVTransport_Stop);
-            device.AddService(AVTransport);
-            ConnectionManager = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer();
-            ConnectionManager.External_GetCurrentConnectionIDs = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
-            ConnectionManager.External_GetCurrentConnectionInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
-            ConnectionManager.External_GetProtocolInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerRenderer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);
-            device.AddService(ConnectionManager);
-            RenderingControl = new MyUPnPSupport.UPnP.Services.RenderingControl();
-            RenderingControl.External_GetBlueVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetBlueVideoBlackLevel(RenderingControl_GetBlueVideoBlackLevel);
-            RenderingControl.External_GetBlueVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetBlueVideoGain(RenderingControl_GetBlueVideoGain);
-            RenderingControl.External_GetBrightness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetBrightness(RenderingControl_GetBrightness);
-            RenderingControl.External_GetColorTemperature = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetColorTemperature(RenderingControl_GetColorTemperature);
-            RenderingControl.External_GetContrast = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetContrast(RenderingControl_GetContrast);
-            RenderingControl.External_GetGreenVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetGreenVideoBlackLevel(RenderingControl_GetGreenVideoBlackLevel);
-            RenderingControl.External_GetGreenVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetGreenVideoGain(RenderingControl_GetGreenVideoGain);
-            RenderingControl.External_GetHorizontalKeystone = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetHorizontalKeystone(RenderingControl_GetHorizontalKeystone);
-            RenderingControl.External_GetLoudness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetLoudness(RenderingControl_GetLoudness);
-            RenderingControl.External_GetMute = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetMute(RenderingControl_GetMute);
-            RenderingControl.External_GetRedVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetRedVideoBlackLevel(RenderingControl_GetRedVideoBlackLevel);
-            RenderingControl.External_GetRedVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetRedVideoGain(RenderingControl_GetRedVideoGain);
-            RenderingControl.External_GetSharpness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetSharpness(RenderingControl_GetSharpness);
-            RenderingControl.External_GetVerticalKeystone = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetVerticalKeystone(RenderingControl_GetVerticalKeystone);
-            RenderingControl.External_GetVolume = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetVolume(RenderingControl_GetVolume);
-            RenderingControl.External_GetVolumeDB = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetVolumeDB(RenderingControl_GetVolumeDB);
-            RenderingControl.External_GetVolumeDBRange = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_GetVolumeDBRange(RenderingControl_GetVolumeDBRange);
-            RenderingControl.External_ListPresets = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_ListPresets(RenderingControl_ListPresets);
-            RenderingControl.External_SelectPreset = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SelectPreset(RenderingControl_SelectPreset);
-            RenderingControl.External_SetBlueVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetBlueVideoBlackLevel(RenderingControl_SetBlueVideoBlackLevel);
-            RenderingControl.External_SetBlueVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetBlueVideoGain(RenderingControl_SetBlueVideoGain);
-            RenderingControl.External_SetBrightness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetBrightness(RenderingControl_SetBrightness);
-            RenderingControl.External_SetColorTemperature = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetColorTemperature(RenderingControl_SetColorTemperature);
-            RenderingControl.External_SetContrast = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetContrast(RenderingControl_SetContrast);
-            RenderingControl.External_SetGreenVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetGreenVideoBlackLevel(RenderingControl_SetGreenVideoBlackLevel);
-            RenderingControl.External_SetGreenVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetGreenVideoGain(RenderingControl_SetGreenVideoGain);
-            RenderingControl.External_SetHorizontalKeystone = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetHorizontalKeystone(RenderingControl_SetHorizontalKeystone);
-            RenderingControl.External_SetLoudness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetLoudness(RenderingControl_SetLoudness);
-            RenderingControl.External_SetMute = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetMute(RenderingControl_SetMute);
-            RenderingControl.External_SetRedVideoBlackLevel = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetRedVideoBlackLevel(RenderingControl_SetRedVideoBlackLevel);
-            RenderingControl.External_SetRedVideoGain = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetRedVideoGain(RenderingControl_SetRedVideoGain);
-            RenderingControl.External_SetSharpness = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetSharpness(RenderingControl_SetSharpness);
-            RenderingControl.External_SetVerticalKeystone = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetVerticalKeystone(RenderingControl_SetVerticalKeystone);
-            RenderingControl.External_SetVolume = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetVolume(RenderingControl_SetVolume);
-            RenderingControl.External_SetVolumeDB = new MyUPnPSupport.UPnP.Services.RenderingControl.Delegate_SetVolumeDB(RenderingControl_SetVolumeDB);
-            device.AddService(RenderingControl);
+            _aVTransport = new UPnPDevices.Services.AVTransport();
+            _aVTransport.External_GetCurrentTransportActions = new UPnPDevices.Services.AVTransport.Delegate_GetCurrentTransportActions(AVTransport_GetCurrentTransportActions);
+            _aVTransport.External_GetDeviceCapabilities = new UPnPDevices.Services.AVTransport.Delegate_GetDeviceCapabilities(AVTransport_GetDeviceCapabilities);
+            _aVTransport.External_GetMediaInfo = new UPnPDevices.Services.AVTransport.Delegate_GetMediaInfo(AVTransport_GetMediaInfo);
+            _aVTransport.External_GetPositionInfo = new UPnPDevices.Services.AVTransport.Delegate_GetPositionInfo(AVTransport_GetPositionInfo);
+            _aVTransport.External_GetTransportInfo = new UPnPDevices.Services.AVTransport.Delegate_GetTransportInfo(AVTransport_GetTransportInfo);
+            _aVTransport.External_GetTransportSettings = new UPnPDevices.Services.AVTransport.Delegate_GetTransportSettings(AVTransport_GetTransportSettings);
+            _aVTransport.External_Next = new UPnPDevices.Services.AVTransport.Delegate_Next(AVTransport_Next);
+            _aVTransport.External_Pause = new UPnPDevices.Services.AVTransport.Delegate_Pause(AVTransport_Pause);
+            _aVTransport.External_Play = new UPnPDevices.Services.AVTransport.Delegate_Play(AVTransport_Play);
+            _aVTransport.External_Previous = new UPnPDevices.Services.AVTransport.Delegate_Previous(AVTransport_Previous);
+            _aVTransport.External_Seek = new UPnPDevices.Services.AVTransport.Delegate_Seek(AVTransport_Seek);
+            _aVTransport.External_SetAVTransportURI = new UPnPDevices.Services.AVTransport.Delegate_SetAVTransportURI(AVTransport_SetAVTransportURI);
+            _aVTransport.External_SetPlayMode = new UPnPDevices.Services.AVTransport.Delegate_SetPlayMode(AVTransport_SetPlayMode);
+            _aVTransport.External_Stop = new UPnPDevices.Services.AVTransport.Delegate_Stop(AVTransport_Stop);
+            device.AddService(_aVTransport);
+            _connectionManager = new UPnPDevices.Services.ConnectionManagerRenderer();
+            _connectionManager.External_GetCurrentConnectionIDs = new UPnPDevices.Services.ConnectionManagerRenderer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
+            _connectionManager.External_GetCurrentConnectionInfo = new UPnPDevices.Services.ConnectionManagerRenderer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
+            _connectionManager.External_GetProtocolInfo = new UPnPDevices.Services.ConnectionManagerRenderer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);            
+            device.AddService(_connectionManager);
+            _renderingControl = new UPnPDevices.Services.RenderingControl();
+            _renderingControl.External_GetBlueVideoBlackLevel = new UPnPDevices.Services.RenderingControl.Delegate_GetBlueVideoBlackLevel(RenderingControl_GetBlueVideoBlackLevel);
+            _renderingControl.External_GetBlueVideoGain = new UPnPDevices.Services.RenderingControl.Delegate_GetBlueVideoGain(RenderingControl_GetBlueVideoGain);
+            _renderingControl.External_GetBrightness = new UPnPDevices.Services.RenderingControl.Delegate_GetBrightness(RenderingControl_GetBrightness);
+            _renderingControl.External_GetColorTemperature = new UPnPDevices.Services.RenderingControl.Delegate_GetColorTemperature(RenderingControl_GetColorTemperature);
+            _renderingControl.External_GetContrast = new UPnPDevices.Services.RenderingControl.Delegate_GetContrast(RenderingControl_GetContrast);
+            _renderingControl.External_GetGreenVideoBlackLevel = new UPnPDevices.Services.RenderingControl.Delegate_GetGreenVideoBlackLevel(RenderingControl_GetGreenVideoBlackLevel);
+            _renderingControl.External_GetGreenVideoGain = new UPnPDevices.Services.RenderingControl.Delegate_GetGreenVideoGain(RenderingControl_GetGreenVideoGain);
+            _renderingControl.External_GetHorizontalKeystone = new UPnPDevices.Services.RenderingControl.Delegate_GetHorizontalKeystone(RenderingControl_GetHorizontalKeystone);
+            _renderingControl.External_GetLoudness = new UPnPDevices.Services.RenderingControl.Delegate_GetLoudness(RenderingControl_GetLoudness);
+            _renderingControl.External_GetMute = new UPnPDevices.Services.RenderingControl.Delegate_GetMute(RenderingControl_GetMute);
+            _renderingControl.External_GetRedVideoBlackLevel = new UPnPDevices.Services.RenderingControl.Delegate_GetRedVideoBlackLevel(RenderingControl_GetRedVideoBlackLevel);
+            _renderingControl.External_GetRedVideoGain = new UPnPDevices.Services.RenderingControl.Delegate_GetRedVideoGain(RenderingControl_GetRedVideoGain);
+            _renderingControl.External_GetSharpness = new UPnPDevices.Services.RenderingControl.Delegate_GetSharpness(RenderingControl_GetSharpness);
+            _renderingControl.External_GetVerticalKeystone = new UPnPDevices.Services.RenderingControl.Delegate_GetVerticalKeystone(RenderingControl_GetVerticalKeystone);
+            _renderingControl.External_GetVolume = new UPnPDevices.Services.RenderingControl.Delegate_GetVolume(RenderingControl_GetVolume);
+            _renderingControl.External_GetVolumeDB = new UPnPDevices.Services.RenderingControl.Delegate_GetVolumeDB(RenderingControl_GetVolumeDB);
+            _renderingControl.External_GetVolumeDBRange = new UPnPDevices.Services.RenderingControl.Delegate_GetVolumeDBRange(RenderingControl_GetVolumeDBRange);
+            _renderingControl.External_ListPresets = new UPnPDevices.Services.RenderingControl.Delegate_ListPresets(RenderingControl_ListPresets);
+            _renderingControl.External_SelectPreset = new UPnPDevices.Services.RenderingControl.Delegate_SelectPreset(RenderingControl_SelectPreset);
+            _renderingControl.External_SetBlueVideoBlackLevel = new UPnPDevices.Services.RenderingControl.Delegate_SetBlueVideoBlackLevel(RenderingControl_SetBlueVideoBlackLevel);
+            _renderingControl.External_SetBlueVideoGain = new UPnPDevices.Services.RenderingControl.Delegate_SetBlueVideoGain(RenderingControl_SetBlueVideoGain);
+            _renderingControl.External_SetBrightness = new UPnPDevices.Services.RenderingControl.Delegate_SetBrightness(RenderingControl_SetBrightness);
+            _renderingControl.External_SetColorTemperature = new UPnPDevices.Services.RenderingControl.Delegate_SetColorTemperature(RenderingControl_SetColorTemperature);
+            _renderingControl.External_SetContrast = new UPnPDevices.Services.RenderingControl.Delegate_SetContrast(RenderingControl_SetContrast);
+            _renderingControl.External_SetGreenVideoBlackLevel = new UPnPDevices.Services.RenderingControl.Delegate_SetGreenVideoBlackLevel(RenderingControl_SetGreenVideoBlackLevel);
+            _renderingControl.External_SetGreenVideoGain = new UPnPDevices.Services.RenderingControl.Delegate_SetGreenVideoGain(RenderingControl_SetGreenVideoGain);
+            _renderingControl.External_SetHorizontalKeystone = new UPnPDevices.Services.RenderingControl.Delegate_SetHorizontalKeystone(RenderingControl_SetHorizontalKeystone);
+            _renderingControl.External_SetLoudness = new UPnPDevices.Services.RenderingControl.Delegate_SetLoudness(RenderingControl_SetLoudness);
+            _renderingControl.External_SetMute = new UPnPDevices.Services.RenderingControl.Delegate_SetMute(RenderingControl_SetMute);
+            _renderingControl.External_SetRedVideoBlackLevel = new UPnPDevices.Services.RenderingControl.Delegate_SetRedVideoBlackLevel(RenderingControl_SetRedVideoBlackLevel);
+            _renderingControl.External_SetRedVideoGain = new UPnPDevices.Services.RenderingControl.Delegate_SetRedVideoGain(RenderingControl_SetRedVideoGain);
+            _renderingControl.External_SetSharpness = new UPnPDevices.Services.RenderingControl.Delegate_SetSharpness(RenderingControl_SetSharpness);
+            _renderingControl.External_SetVerticalKeystone = new UPnPDevices.Services.RenderingControl.Delegate_SetVerticalKeystone(RenderingControl_SetVerticalKeystone);
+            _renderingControl.External_SetVolume = new UPnPDevices.Services.RenderingControl.Delegate_SetVolume(RenderingControl_SetVolume);
+            _renderingControl.External_SetVolumeDB = new UPnPDevices.Services.RenderingControl.Delegate_SetVolumeDB(RenderingControl_SetVolumeDB);            
+            device.AddService(_renderingControl);
 
             // Setting the initial value of evented variables
-            AVTransport.Evented_LastChange = "Sample String";
-            ConnectionManager.Evented_SinkProtocolInfo = "http-get:*:audio/mpegurl:*,http-get:*:audio/mp3:*,http-get:*:audio/mpeg:*,http-get:*:audio/x-ms-wma:*,http-get:*:audio/wma:*,http-get:*:audio/mpeg3:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-ms-asf:*,http-get:*:video/x-ms-avi:*,http-get:*:video/mpeg:*";
-            ConnectionManager.Evented_SourceProtocolInfo = "Sample String";
-            ConnectionManager.Evented_CurrentConnectionIDs = "Sample String";
-            RenderingControl.Evented_LastChange = "Sample String";
+            _aVTransport.Evented_LastChange = "";
+            _connectionManager.Evented_SinkProtocolInfo = "http-get:*:audio/mpegurl:*,http-get:*:audio/mp3:*,http-get:*:audio/mpeg:*,http-get:*:audio/x-ms-wma:*,http-get:*:audio/wma:*,http-get:*:audio/mpeg3:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-ms-asf:*,http-get:*:video/x-ms-avi:*,http-get:*:video/mpeg:*";
+            _connectionManager.Evented_SourceProtocolInfo = "Sample String";
+            _connectionManager.Evented_CurrentConnectionIDs = "Sample String";
+            _renderingControl.Evented_LastChange = "";
         }
 
         public void Start() {
@@ -323,7 +320,7 @@ namespace MyUPnPSupport.UPnP.Devices {
         }
 
         public virtual void RenderingControl_GetVolumeDB(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume) {
-            CurrentVolume = 50;
+            CurrentVolume = 50;            
             Console.WriteLine("RenderingControl_GetVolumeDB(" + InstanceID.ToString() + Channel.ToString() + ")");
         }
 
@@ -334,11 +331,12 @@ namespace MyUPnPSupport.UPnP.Devices {
         }
 
         public virtual void RenderingControl_ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList) {
-            CurrentPresetNameList = "Sample String";
+            CurrentPresetNameList = "FactoryDefaults,InstallationDefaults";		
             Console.WriteLine("RenderingControl_ListPresets(" + InstanceID.ToString() + ")");
         }
 
         public virtual void RenderingControl_SelectPreset(System.UInt32 InstanceID, RenderingControl.Enum_A_ARG_TYPE_PresetName PresetName) {
+            
             Console.WriteLine("RenderingControl_SelectPreset(" + InstanceID.ToString() + PresetName.ToString() + ")");
         }
 
