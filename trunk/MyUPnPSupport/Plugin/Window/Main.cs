@@ -24,8 +24,9 @@ using MediaPortal.GUI.Library;
 using MyUPnPSupport.Plugin.Config;
 using MyUPnPSupport.Plugin.Window.Items;
 using WindowPlugins;
-using MyUPnPSupport.UPnP;
+using UPnPDevices;
 using System.Windows.Forms;
+using MyUPnPSupport.Plugin.Devices;
 
 namespace MyUPnPSupport.Plugin.Window {
     public partial class Main : WindowPluginBase {

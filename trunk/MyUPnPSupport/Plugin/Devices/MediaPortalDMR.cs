@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MyUPnPSupport.UPnP.Devices;
-using MediaPortal.Playlists;
+using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.Player;
-using MyUPnPSupport.UPnP.Services;
-using System.Windows.Forms;
+using MediaPortal.Playlists;
+using UPnPDevices.Devices;
+using UPnPDevices.Services;
 using MediaPortal.Util;
-using OpenSource.UPnP;
 
 namespace MyUPnPSupport.Plugin.Devices {
     class MediaPortalDMR : DigitalMediaRenderer {
@@ -37,42 +33,50 @@ namespace MyUPnPSupport.Plugin.Devices {
             g_Player.PlayBackStopped += new g_Player.StoppedHandler(g_Player_PlayBackStopped);
             g_Player.PlayBackStarted += new g_Player.StartedHandler(g_Player_PlayBackStarted);
             g_Player.PlayBackEnded += new g_Player.EndedHandler(g_Player_PlayBackEnded);
-            g_Player.PlayBackChanged += new g_Player.ChangedHandler(g_Player_PlayBackChanged);
             PositionTimer = new Timer();
             PositionTimer.Interval = 1000;
             PositionTimer.Tick += new EventHandler(PositionTimer_Tick);
         }
 
-        void g_Player_PlayBackChanged(g_Player.MediaType type, int stoptime, string filename) {
-            throw new NotImplementedException();
-        }
-
         void g_Player_PlayBackEnded(g_Player.MediaType type, string filename) {
-            AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.NO_MEDIA_PRESENT;
+            _aVTransport.TransportState = AVTransport.Enum_TransportState.NO_MEDIA_PRESENT;
             PositionTimer.Stop();
         }
 
         void g_Player_PlayBackStarted(g_Player.MediaType type, string filename) {
-            AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.PLAYING;
-            PositionTimer.Start();           
+            _aVTransport.TransportState = AVTransport.Enum_TransportState.PLAYING;
+            PositionTimer.Start();
         }
 
         void g_Player_PlayBackStopped(g_Player.MediaType type, int stoptime, string filename) {
-            AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.STOPPED;
-            PositionTimer.Stop();          
+            _aVTransport.TransportState = AVTransport.Enum_TransportState.STOPPED;
+            PositionTimer.Stop();
         }
 
-        //protected void AVT_LastChange(string VarName, string VarValue) {
-        //    StringBuilder s = new StringBuilder();
-        //    s.Append("<Event xmlns = \"urn:schemas-upnp-org:metadata-1-0/AVT/\">\r\n");
-        //    s.Append("   <InstanceID val=\"" + "0" + "\">\r\n");
-        //    s.Append("        <" + VarName + " val=\"" + UPnPStringFormatter.EscapeString(VarValue) + "\"/>\r\n");
-        //    s.Append("   </InstanceID>\r\n");
-        //    s.Append("</Event>");
-        //    AVTransport.Evented_LastChange = UPnPStringFormatter.EscapeString(s.ToString());
-        //}
 
-        public override void AVTransport_GetTransportInfo(uint InstanceID, out UPnP.Services.AVTransport.Enum_TransportState CurrentTransportState, out UPnP.Services.AVTransport.Enum_TransportStatus CurrentTransportStatus, out UPnP.Services.AVTransport.Enum_TransportPlaySpeed CurrentSpeed) {
+        private string GetFormattedTime(double dTime) {
+            return String.Format("{0:00}:{1:00}:{2:00}", (int)(dTime / 3600d), (int)((dTime % 3600d) / 60d), (int)(dTime % 60d));
+        }
+
+        private double LastPosition = 0;
+
+        void PositionTimer_Tick(object sender, EventArgs e) {
+            double CurrentPosition = g_Player.CurrentPosition;
+            if (CurrentPosition > 0 || CurrentPosition != LastPosition) {
+                LastPosition = CurrentPosition;
+                if (g_Player.Duration < 0) {
+                    _aVTransport.CurrentMediaDuration = "NOT_IMPLEMENTED";
+                    _aVTransport.CurrentTrackDuration = _aVTransport.CurrentMediaDuration;
+                } else {
+                    _aVTransport.CurrentMediaDuration = GetFormattedTime(g_Player.Duration);
+                    _aVTransport.CurrentTrackDuration = _aVTransport.CurrentMediaDuration;
+                }
+                _aVTransport.AbsoluteTimePosition = GetFormattedTime(CurrentPosition);
+                _aVTransport.RelativeTimePosition = GetFormattedTime(CurrentPosition);
+            }
+        }
+
+        public override void AVTransport_GetTransportInfo(uint InstanceID, out AVTransport.Enum_TransportState CurrentTransportState, out AVTransport.Enum_TransportStatus CurrentTransportStatus, out AVTransport.Enum_TransportPlaySpeed CurrentSpeed) {
             if (g_Player.Player == null || g_Player.Stopped) {
                 CurrentTransportState = AVTransport.Enum_TransportState.STOPPED;
             } else if (g_Player.Paused) {
@@ -86,27 +90,38 @@ namespace MyUPnPSupport.Plugin.Devices {
             CurrentSpeed = AVTransport.Enum_TransportPlaySpeed._1;
         }
 
-        void PositionTimer_Tick(object sender, EventArgs e) {
-            if ((g_Player.CurrentPosition > 0)) {// && (g_Player.CurrentPosition <= g_Player.Duration)) {
-                //AVTransport.CurrentMediaDuration = GetFormattedTime(g_Player.Duration);
-                //AVTransport.CurrentTrackDuration = AVTransport.CurrentMediaDuration;
-                AVTransport.AbsoluteTimePosition = GetFormattedTime(g_Player.CurrentPosition);                
-                // AVTransport.RelativeTimePosition =  Utils.SecondsToHMSString((int)g_Player.CurrentPosition);
-            }
+        public override void AVTransport_GetDeviceCapabilities(uint InstanceID, out string PlayMedia, out string RecMedia, out string RecQualityModes) {
+            RecMedia = "NOT_IMPLEMENTED";
+            RecQualityModes = "NOT_IMPLEMENTED";
+            PlayMedia = String.Join(",", Enum.GetNames(typeof(AVTransport.Enum_PlaybackStorageMedium))).Replace(",NOT_IMPLEMENTED", "");
         }
-        private string GetFormattedTime(double dTime) {
-            return String.Format("{0:00}:{1:00}:{2:00}", (int)(dTime / 3600d), (int)((dTime % 3600d) / 60d), (int)(dTime % 60d));
+
+        public override void AVTransport_GetMediaInfo(uint InstanceID, out uint NrTracks, out string MediaDuration, out string CurrentURI, out string CurrentURIMetaData, out string NextURI, out string NextURIMetaData, out AVTransport.Enum_PlaybackStorageMedium PlayMedium, out AVTransport.Enum_RecordStorageMedium RecordMedium, out AVTransport.Enum_RecordMediumWriteStatus WriteStatus) {
+            base.AVTransport_GetMediaInfo(InstanceID, out NrTracks, out MediaDuration, out CurrentURI, out CurrentURIMetaData, out NextURI, out NextURIMetaData, out PlayMedium, out RecordMedium, out WriteStatus);
+        }
+
+        public override void AVTransport_GetTransportSettings(uint InstanceID, out AVTransport.Enum_CurrentPlayMode PlayMode, out AVTransport.Enum_CurrentRecordQualityMode RecQualityMode) {
+            PlayMode = _aVTransport.CurrentPlayMode;
+            RecQualityMode = UPnPDevices.Services.AVTransport.Enum_CurrentRecordQualityMode.NOT_IMPLEMENTED;
+        }
+
+        public override void AVTransport_GetCurrentTransportActions(uint InstanceID, out string Actions) {
+            Actions = "Play,Stop,Pause,Next,Previous";
+        }
+
+        public override void AVTransport_SetPlayMode(uint InstanceID, AVTransport.Enum_CurrentPlayMode NewPlayMode) {
+            _aVTransport.CurrentPlayMode = NewPlayMode;
         }
 
         public override void AVTransport_GetPositionInfo(uint InstanceID, out uint Track, out string TrackDuration, out string TrackMetaData, out string TrackURI, out string RelTime, out string AbsTime, out int RelCount, out int AbsCount) {
-            Track = 0;
-            TrackDuration = "00:05:00"; //GetFormattedTime(g_Player.Duration);
+            Track = 1;
+            TrackDuration = GetFormattedTime(g_Player.Duration);
             TrackMetaData = "<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\"><item id=\"X\" parentID=\"Y\" restricted=\"1\"><dc:title>Test-Title</dc:title><dc:creator>Anthrax</dc:creator><upnp:class>object.item.audioItem</upnp:class></item></DIDL-Lite>";
             TrackURI = g_Player.CurrentFile;
             RelTime = GetFormattedTime(g_Player.CurrentPosition);
             AbsTime = GetFormattedTime(g_Player.CurrentPosition);
-            RelCount = 0;
-            AbsCount = 0;
+            RelCount = int.MaxValue;
+            AbsCount = int.MaxValue;
         }
 
         public override void AVTransport_SetAVTransportURI(uint InstanceID, string CurrentURI, string CurrentURIMetaData) {
@@ -114,16 +129,29 @@ namespace MyUPnPSupport.Plugin.Devices {
                 GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_SetAVTransportURI(InstanceID, CurrentURI, CurrentURIMetaData)));
                 return;
             }
-            AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.PLAYING;
-            g_Player.Play(CurrentURI);
+            if (String.IsNullOrEmpty(CurrentURI)) {
+                g_Player.Stop();
+                _aVTransport.TransportState = AVTransport.Enum_TransportState.STOPPED;
+            } else {
+                _aVTransport.TransportState = AVTransport.Enum_TransportState.TRANSITIONING;
+                g_Player.Play(CurrentURI);
+            }
             Log.Debug("AVTransport_SetAVTransportURI(" + InstanceID.ToString() + CurrentURI.ToString() + CurrentURIMetaData.ToString() + ")");
         }
 
         public override void AVTransport_Next(uint InstanceID) {
+            if (GUIGraphicsContext.form.InvokeRequired) {
+                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Next(InstanceID)));
+                return;
+            }
             Player.PlayNext();
         }
 
         public override void AVTransport_Previous(uint InstanceID) {
+            if (GUIGraphicsContext.form.InvokeRequired) {
+                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Previous(InstanceID)));
+                return;
+            }
             Player.PlayPrevious();
         }
 
@@ -137,7 +165,7 @@ namespace MyUPnPSupport.Plugin.Devices {
             }
         }
 
-        public override void AVTransport_Play(uint InstanceID, UPnP.Services.AVTransport.Enum_TransportPlaySpeed Speed) {
+        public override void AVTransport_Play(uint InstanceID, AVTransport.Enum_TransportPlaySpeed Speed) {
             if (GUIGraphicsContext.form.InvokeRequired) {
                 GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Play(InstanceID, Speed)));
                 return;
@@ -150,56 +178,43 @@ namespace MyUPnPSupport.Plugin.Devices {
         }
 
         public override void AVTransport_Stop(uint InstanceID) {
+            if (GUIGraphicsContext.form.InvokeRequired) {
+                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Stop(InstanceID)));
+                return;
+            } 
             g_Player.Stop();
         }
 
-        public override void AVTransport_Seek(uint InstanceID, UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode Unit, string Target) {
+        public override void AVTransport_Seek(uint InstanceID, AVTransport.Enum_A_ARG_TYPE_SeekMode Unit, string Target) {
             if (GUIGraphicsContext.form.InvokeRequired) {
                 GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Seek(InstanceID, Unit, Target)));
                 return;
             }
-            if (g_Player.CanSeek && !Target.Contains("00:00:00")) {
-                UPnP.Services.AVTransport.Enum_TransportState last = AVTransport.TransportState;
-                AVTransport.TransportState = UPnP.Services.AVTransport.Enum_TransportState.TRANSITIONING;
-                switch (Unit) {
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.ABS_TIME:
-                        g_Player.SeekAbsolute(double.Parse(Target));
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.REL_TIME:
-                        g_Player.SeekRelative(double.Parse(Target));
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.ABS_COUNT:
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.REL_COUNT:
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.TRACK_NR:
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.CHANNEL_FREQ:
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.TAPE_INDEX:
-                        break;
-                    case MyUPnPSupport.UPnP.Services.AVTransport.Enum_A_ARG_TYPE_SeekMode.FRAME:
-                        break;
-                    default:
-                        break;
-                }
-                AVTransport.TransportState = last;
+            if (!g_Player.CanSeek) {
+                return;
+            }
+            TimeSpan seekSpan;
+            if (Unit == AVTransport.Enum_A_ARG_TYPE_SeekMode.REL_TIME && TimeSpan.TryParse(Target, out seekSpan)) {
+                AVTransport.Enum_TransportState last = _aVTransport.TransportState;
+                _aVTransport.TransportState = AVTransport.Enum_TransportState.TRANSITIONING;
+                g_Player.SeekRelative(seekSpan.TotalSeconds);
+                _aVTransport.TransportState = last;
             }
         }
 
-        public override void RenderingControl_GetVolume(uint InstanceID, UPnP.Services.RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out ushort CurrentVolume) {
+        public override void RenderingControl_GetVolume(uint InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out ushort CurrentVolume) {
             CurrentVolume = ConvertToUPnP(VolumeHandler.Instance.Volume);
         }
 
-        public override void RenderingControl_SetVolume(uint InstanceID, UPnP.Services.RenderingControl.Enum_A_ARG_TYPE_Channel Channel, ushort DesiredVolume) {
+        public override void RenderingControl_SetVolume(uint InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, ushort DesiredVolume) {
             VolumeHandler.Instance.Volume = ConvertToMePo(DesiredVolume);
         }
 
-        public override void RenderingControl_GetMute(uint InstanceID, UPnP.Services.RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out bool CurrentMute) {
+        public override void RenderingControl_GetMute(uint InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, out bool CurrentMute) {
             CurrentMute = VolumeHandler.Instance.IsMuted;
         }
 
-        public override void RenderingControl_SetMute(uint InstanceID, UPnP.Services.RenderingControl.Enum_A_ARG_TYPE_Channel Channel, bool DesiredMute) {
+        public override void RenderingControl_SetMute(uint InstanceID, RenderingControl.Enum_A_ARG_TYPE_Channel Channel, bool DesiredMute) {
             VolumeHandler.Instance.IsMuted = DesiredMute;
         }
 
@@ -211,6 +226,5 @@ namespace MyUPnPSupport.Plugin.Devices {
             return (upnpVolume * ushort.MaxValue) / 100;
         }
 
-        public bool Seeking { get; set; }
     }
 }

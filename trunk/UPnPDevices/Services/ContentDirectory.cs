@@ -1,6 +1,6 @@
 using OpenSource.UPnP;
 
-namespace MyUPnPSupport.UPnP.Services
+namespace UPnPDevices.Services
 {
     /// <summary>
     /// Transparent DeviceSide UPnP Service

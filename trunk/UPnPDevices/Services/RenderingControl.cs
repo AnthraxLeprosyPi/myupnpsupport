@@ -1,12 +1,11 @@
 using OpenSource.UPnP;
+using System.Text;
 
-namespace MyUPnPSupport.UPnP.Services
-{
+namespace UPnPDevices.Services {
     /// <summary>
     /// Transparent DeviceSide UPnP Service
     /// </summary>
-    public class RenderingControl : IUPnPService
-    {
+    public class RenderingControl : IUPnPService {
 
         // Place your declarations above this line
 
@@ -15,107 +14,175 @@ namespace MyUPnPSupport.UPnP.Services
 
         private _DvRenderingControl _S;
         public static string URN = "urn:schemas-upnp-org:service:RenderingControl:1";
-        public double VERSION
-        {
-           get
-           {
-               return(double.Parse(_S.GetUPnPService().Version));
-           }
+        public double VERSION {
+            get {
+                return (double.Parse(_S.GetUPnPService().Version));
+            }
         }
 
-        public enum Enum_A_ARG_TYPE_PresetName
-        {
+        public enum Enum_A_ARG_TYPE_PresetName {
             FACTORYDEFAULTS,
             INSTALLATIONDEFAULTS,
             VENDOR_DEFINED,
         }
-        public Enum_A_ARG_TYPE_PresetName A_ARG_TYPE_PresetName
-        {
-            set
-            {
-               string v = "";
-               switch(value)
-               {
-                  case Enum_A_ARG_TYPE_PresetName.FACTORYDEFAULTS:
-                     v = "FactoryDefaults";
-                     break;
-                  case Enum_A_ARG_TYPE_PresetName.INSTALLATIONDEFAULTS:
-                     v = "InstallationDefaults";
-                     break;
-                  case Enum_A_ARG_TYPE_PresetName.VENDOR_DEFINED:
-                     v = "Vendor defined";
-                     break;
-               }
-               _S.SetStateVariable("A_ARG_TYPE_PresetName",v);
+        public Enum_A_ARG_TYPE_PresetName A_ARG_TYPE_PresetName {
+            set {
+                string v = "";
+                switch (value) {
+                    case Enum_A_ARG_TYPE_PresetName.FACTORYDEFAULTS:
+                        v = "FactoryDefaults";
+                        break;
+                    case Enum_A_ARG_TYPE_PresetName.INSTALLATIONDEFAULTS:
+                        v = "InstallationDefaults";
+                        break;
+                    case Enum_A_ARG_TYPE_PresetName.VENDOR_DEFINED:
+                        v = "Vendor defined";
+                        break;
+                }
+                _S.SetStateVariable("A_ARG_TYPE_PresetName", v);
             }
-            get
-            {
-               Enum_A_ARG_TYPE_PresetName RetVal = 0;
-               string v = (string)_S.GetStateVariable("A_ARG_TYPE_PresetName");
-               switch(v)
-               {
-                  case "FactoryDefaults":
-                     RetVal = Enum_A_ARG_TYPE_PresetName.FACTORYDEFAULTS;
-                     break;
-                  case "InstallationDefaults":
-                     RetVal = Enum_A_ARG_TYPE_PresetName.INSTALLATIONDEFAULTS;
-                     break;
-                  case "Vendor defined":
-                     RetVal = Enum_A_ARG_TYPE_PresetName.VENDOR_DEFINED;
-                     break;
-               }
-               return(RetVal);
-           }
+            get {
+                Enum_A_ARG_TYPE_PresetName RetVal = 0;
+                string v = (string)_S.GetStateVariable("A_ARG_TYPE_PresetName");
+                switch (v) {
+                    case "FactoryDefaults":
+                        RetVal = Enum_A_ARG_TYPE_PresetName.FACTORYDEFAULTS;
+                        break;
+                    case "InstallationDefaults":
+                        RetVal = Enum_A_ARG_TYPE_PresetName.INSTALLATIONDEFAULTS;
+                        break;
+                    case "Vendor defined":
+                        RetVal = Enum_A_ARG_TYPE_PresetName.VENDOR_DEFINED;
+                        break;
+                }
+                return (RetVal);
+            }
         }
-        public enum Enum_A_ARG_TYPE_Channel
-        {
+        public enum Enum_A_ARG_TYPE_Channel {
             MASTER,
             LF,
             RF,
+            CF,
+            LFE,
+            LS,
+            RS,
+            LFC,
+            RFC,
+            SD,
+            SL,
+            SR,
+            T,
+            B,
+            VENDOR_DEFINED,
         }
-        public Enum_A_ARG_TYPE_Channel A_ARG_TYPE_Channel
-        {
-            set
-            {
-               string v = "";
-               switch(value)
-               {
-                  case Enum_A_ARG_TYPE_Channel.MASTER:
-                     v = "Master";
-                     break;
-                  case Enum_A_ARG_TYPE_Channel.LF:
-                     v = "LF";
-                     break;
-                  case Enum_A_ARG_TYPE_Channel.RF:
-                     v = "RF";
-                     break;
-               }
-               _S.SetStateVariable("A_ARG_TYPE_Channel",v);
+        public Enum_A_ARG_TYPE_Channel A_ARG_TYPE_Channel {
+            set {
+                string v = "";
+                switch (value) {
+                    case Enum_A_ARG_TYPE_Channel.MASTER:
+                        v = "Master";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.LF:
+                        v = "LF";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.RF:
+                        v = "RF";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.CF:
+                        v = "CF";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.LFE:
+                        v = "LFE";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.LS:
+                        v = "LS";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.RS:
+                        v = "RS";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.LFC:
+                        v = "LFC";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.RFC:
+                        v = "RFC";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.SD:
+                        v = "SD";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.SL:
+                        v = "SL";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.SR:
+                        v = "SR";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.T:
+                        v = "T";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.B:
+                        v = "B";
+                        break;
+                    case Enum_A_ARG_TYPE_Channel.VENDOR_DEFINED:
+                        v = "Vendor defined";
+                        break;
+                }
+                _S.SetStateVariable("A_ARG_TYPE_Channel", v);
             }
-            get
-            {
-               Enum_A_ARG_TYPE_Channel RetVal = 0;
-               string v = (string)_S.GetStateVariable("A_ARG_TYPE_Channel");
-               switch(v)
-               {
-                  case "Master":
-                     RetVal = Enum_A_ARG_TYPE_Channel.MASTER;
-                     break;
-                  case "LF":
-                     RetVal = Enum_A_ARG_TYPE_Channel.LF;
-                     break;
-                  case "RF":
-                     RetVal = Enum_A_ARG_TYPE_Channel.RF;
-                     break;
-               }
-               return(RetVal);
-           }
+            get {
+                Enum_A_ARG_TYPE_Channel RetVal = 0;
+                string v = (string)_S.GetStateVariable("A_ARG_TYPE_Channel");
+                switch (v) {
+                    case "Master":
+                        RetVal = Enum_A_ARG_TYPE_Channel.MASTER;
+                        break;
+                    case "LF":
+                        RetVal = Enum_A_ARG_TYPE_Channel.LF;
+                        break;
+                    case "RF":
+                        RetVal = Enum_A_ARG_TYPE_Channel.RF;
+                        break;
+                    case "CF":
+                        RetVal = Enum_A_ARG_TYPE_Channel.CF;
+                        break;
+                    case "LFE":
+                        RetVal = Enum_A_ARG_TYPE_Channel.LFE;
+                        break;
+                    case "LS":
+                        RetVal = Enum_A_ARG_TYPE_Channel.LS;
+                        break;
+                    case "RS":
+                        RetVal = Enum_A_ARG_TYPE_Channel.RS;
+                        break;
+                    case "LFC":
+                        RetVal = Enum_A_ARG_TYPE_Channel.LFC;
+                        break;
+                    case "RFC":
+                        RetVal = Enum_A_ARG_TYPE_Channel.RFC;
+                        break;
+                    case "SD":
+                        RetVal = Enum_A_ARG_TYPE_Channel.SD;
+                        break;
+                    case "SL":
+                        RetVal = Enum_A_ARG_TYPE_Channel.SL;
+                        break;
+                    case "SR":
+                        RetVal = Enum_A_ARG_TYPE_Channel.SR;
+                        break;
+                    case "T":
+                        RetVal = Enum_A_ARG_TYPE_Channel.T;
+                        break;
+                    case "B":
+                        RetVal = Enum_A_ARG_TYPE_Channel.B;
+                        break;
+                    case "Vendor defined":
+                        RetVal = Enum_A_ARG_TYPE_Channel.VENDOR_DEFINED;
+                        break;
+                }
+                return (RetVal);
+            }
         }
-        static public string Enum_A_ARG_TYPE_PresetName_ToString(Enum_A_ARG_TYPE_PresetName en)
-        {
+        static public string Enum_A_ARG_TYPE_PresetName_ToString(Enum_A_ARG_TYPE_PresetName en) {
             string RetVal = "";
-            switch(en)
-            {
+            switch (en) {
                 case Enum_A_ARG_TYPE_PresetName.FACTORYDEFAULTS:
                     RetVal = "FactoryDefaults";
                     break;
@@ -126,21 +193,17 @@ namespace MyUPnPSupport.UPnP.Services
                     RetVal = "Vendor defined";
                     break;
             }
-            return(RetVal);
+            return (RetVal);
         }
-        static public string[] Values_A_ARG_TYPE_PresetName
-        {
-            get
-            {
-                string[] RetVal = new string[3]{"Vendor defined","InstallationDefaults","FactoryDefaults"};
-                return(RetVal);
+        static public string[] Values_A_ARG_TYPE_PresetName {
+            get {
+                string[] RetVal = new string[3] { "Vendor defined", "InstallationDefaults", "FactoryDefaults" };
+                return (RetVal);
             }
         }
-        static public string Enum_A_ARG_TYPE_Channel_ToString(Enum_A_ARG_TYPE_Channel en)
-        {
+        static public string Enum_A_ARG_TYPE_Channel_ToString(Enum_A_ARG_TYPE_Channel en) {
             string RetVal = "";
-            switch(en)
-            {
+            switch (en) {
                 case Enum_A_ARG_TYPE_Channel.MASTER:
                     RetVal = "Master";
                     break;
@@ -151,14 +214,12 @@ namespace MyUPnPSupport.UPnP.Services
                     RetVal = "RF";
                     break;
             }
-            return(RetVal);
+            return (RetVal);
         }
-        static public string[] Values_A_ARG_TYPE_Channel
-        {
-            get
-            {
-                string[] RetVal = new string[3]{"RF","LF","Master"};
-                return(RetVal);
+        static public string[] Values_A_ARG_TYPE_Channel {
+            get {
+                string[] RetVal = new string[3] { "RF", "LF", "Master" };
+                return (RetVal);
             }
         }
         public delegate void OnStateVariableModifiedHandler(RenderingControl sender);
@@ -183,675 +244,492 @@ namespace MyUPnPSupport.UPnP.Services
         public event OnStateVariableModifiedHandler OnStateVariableModified_PresetNameList;
         public event OnStateVariableModifiedHandler OnStateVariableModified_VolumeDB;
         public event OnStateVariableModifiedHandler OnStateVariableModified_Brightness;
-        public System.UInt16 GreenVideoGain
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("GreenVideoGain"));
+        public System.UInt16 GreenVideoGain {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("GreenVideoGain"));
             }
-            set
-            {
-               _S.SetStateVariable("GreenVideoGain", value);
+            set {
+                _S.SetStateVariable("GreenVideoGain", value);
             }
         }
-        public System.UInt16 BlueVideoBlackLevel
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("BlueVideoBlackLevel"));
+        public System.UInt16 BlueVideoBlackLevel {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("BlueVideoBlackLevel"));
             }
-            set
-            {
-               _S.SetStateVariable("BlueVideoBlackLevel", value);
+            set {
+                _S.SetStateVariable("BlueVideoBlackLevel", value);
             }
         }
-        public System.Int16 VerticalKeystone
-        {
-            get
-            {
-               return((System.Int16)_S.GetStateVariable("VerticalKeystone"));
+        public System.Int16 VerticalKeystone {
+            get {
+                return ((System.Int16)_S.GetStateVariable("VerticalKeystone"));
             }
-            set
-            {
-               _S.SetStateVariable("VerticalKeystone", value);
+            set {
+                _S.SetStateVariable("VerticalKeystone", value);
             }
         }
-        public System.UInt16 GreenVideoBlackLevel
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("GreenVideoBlackLevel"));
+        public System.UInt16 GreenVideoBlackLevel {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("GreenVideoBlackLevel"));
             }
-            set
-            {
-               _S.SetStateVariable("GreenVideoBlackLevel", value);
+            set {
+                _S.SetStateVariable("GreenVideoBlackLevel", value);
             }
         }
-        public System.UInt16 Volume
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("Volume"));
+        public System.UInt16 Volume {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("Volume"));
             }
-            set
-            {
-               _S.SetStateVariable("Volume", value);
+            set {
+                _S.SetStateVariable("Volume", value);
             }
         }
-        public System.Boolean Loudness
-        {
-            get
-            {
-               return((System.Boolean)_S.GetStateVariable("Loudness"));
+        public System.Boolean Loudness {
+            get {
+                return ((System.Boolean)_S.GetStateVariable("Loudness"));
             }
-            set
-            {
-               _S.SetStateVariable("Loudness", value);
+            set {
+                _S.SetStateVariable("Loudness", value);
             }
         }
-        public System.UInt32 A_ARG_TYPE_InstanceID
-        {
-            get
-            {
-               return((System.UInt32)_S.GetStateVariable("A_ARG_TYPE_InstanceID"));
+        public System.UInt32 A_ARG_TYPE_InstanceID {
+            get {
+                return ((System.UInt32)_S.GetStateVariable("A_ARG_TYPE_InstanceID"));
             }
-            set
-            {
-               _S.SetStateVariable("A_ARG_TYPE_InstanceID", value);
+            set {
+                _S.SetStateVariable("A_ARG_TYPE_InstanceID", value);
             }
         }
-        public System.UInt16 RedVideoGain
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("RedVideoGain"));
+        public System.UInt16 RedVideoGain {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("RedVideoGain"));
             }
-            set
-            {
-               _S.SetStateVariable("RedVideoGain", value);
+            set {
+                _S.SetStateVariable("RedVideoGain", value);
             }
         }
-        public System.UInt16 Contrast
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("Contrast"));
+        public System.UInt16 Contrast {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("Contrast"));
             }
-            set
-            {
-               _S.SetStateVariable("Contrast", value);
+            set {
+                _S.SetStateVariable("Contrast", value);
             }
         }
-        public System.UInt16 Sharpness
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("Sharpness"));
+        public System.UInt16 Sharpness {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("Sharpness"));
             }
-            set
-            {
-               _S.SetStateVariable("Sharpness", value);
+            set {
+                _S.SetStateVariable("Sharpness", value);
             }
         }
-        public System.UInt16 RedVideoBlackLevel
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("RedVideoBlackLevel"));
+        public System.UInt16 RedVideoBlackLevel {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("RedVideoBlackLevel"));
             }
-            set
-            {
-               _S.SetStateVariable("RedVideoBlackLevel", value);
+            set {
+                _S.SetStateVariable("RedVideoBlackLevel", value);
             }
         }
-        public System.UInt16 BlueVideoGain
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("BlueVideoGain"));
+        public System.UInt16 BlueVideoGain {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("BlueVideoGain"));
             }
-            set
-            {
-               _S.SetStateVariable("BlueVideoGain", value);
+            set {
+                _S.SetStateVariable("BlueVideoGain", value);
             }
         }
-        public System.Boolean Mute
-        {
-            get
-            {
-               return((System.Boolean)_S.GetStateVariable("Mute"));
+        public System.Boolean Mute {
+            get {
+                return ((System.Boolean)_S.GetStateVariable("Mute"));
             }
-            set
-            {
-               _S.SetStateVariable("Mute", value);
+            set {
+                _S.SetStateVariable("Mute", value);
             }
         }
-        public System.String Evented_LastChange
-        {
-            get
-            {
-               return((System.String)_S.GetStateVariable("LastChange"));
+        public System.String Evented_LastChange {
+            get {
+                return ((System.String)_S.GetStateVariable("LastChange"));
             }
-            set
-            {
-               _S.SetStateVariable("LastChange", value);
+            set {
+                _S.SetStateVariable("LastChange", value);
             }
         }
-        public System.Int16 HorizontalKeystone
-        {
-            get
-            {
-               return((System.Int16)_S.GetStateVariable("HorizontalKeystone"));
+        public System.Int16 HorizontalKeystone {
+            get {
+                return ((System.Int16)_S.GetStateVariable("HorizontalKeystone"));
             }
-            set
-            {
-               _S.SetStateVariable("HorizontalKeystone", value);
+            set {
+                _S.SetStateVariable("HorizontalKeystone", value);
             }
         }
-        public System.UInt16 ColorTemperature
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("ColorTemperature"));
+        public System.UInt16 ColorTemperature {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("ColorTemperature"));
             }
-            set
-            {
-               _S.SetStateVariable("ColorTemperature", value);
+            set {
+                _S.SetStateVariable("ColorTemperature", value);
             }
         }
-        public System.String PresetNameList
-        {
-            get
-            {
-               return((System.String)_S.GetStateVariable("PresetNameList"));
+        public System.String PresetNameList {
+            get {
+                return ((System.String)_S.GetStateVariable("PresetNameList"));
             }
-            set
-            {
-               _S.SetStateVariable("PresetNameList", value);
+            set {
+                _S.SetStateVariable("PresetNameList", value);
             }
         }
-        public System.Int16 VolumeDB
-        {
-            get
-            {
-               return((System.Int16)_S.GetStateVariable("VolumeDB"));
+        public System.Int16 VolumeDB {
+            get {
+                return ((System.Int16)_S.GetStateVariable("VolumeDB"));
             }
-            set
-            {
-               _S.SetStateVariable("VolumeDB", value);
+            set {
+                _S.SetStateVariable("VolumeDB", value);
             }
         }
-        public System.UInt16 Brightness
-        {
-            get
-            {
-               return((System.UInt16)_S.GetStateVariable("Brightness"));
+        public System.UInt16 Brightness {
+            get {
+                return ((System.UInt16)_S.GetStateVariable("Brightness"));
             }
-            set
-            {
-               _S.SetStateVariable("Brightness", value);
+            set {
+                _S.SetStateVariable("Brightness", value);
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_GreenVideoGain
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_GreenVideoGain {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).Accumulator = value;
             }
         }
-        public double ModerationDuration_GreenVideoGain
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).ModerationPeriod);
+        public double ModerationDuration_GreenVideoGain {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoGain")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_BlueVideoBlackLevel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_BlueVideoBlackLevel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).Accumulator = value;
             }
         }
-        public double ModerationDuration_BlueVideoBlackLevel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).ModerationPeriod);
+        public double ModerationDuration_BlueVideoBlackLevel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_VerticalKeystone
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_VerticalKeystone {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).Accumulator = value;
             }
         }
-        public double ModerationDuration_VerticalKeystone
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).ModerationPeriod);
+        public double ModerationDuration_VerticalKeystone {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VerticalKeystone")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_GreenVideoBlackLevel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_GreenVideoBlackLevel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).Accumulator = value;
             }
         }
-        public double ModerationDuration_GreenVideoBlackLevel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).ModerationPeriod);
+        public double ModerationDuration_GreenVideoBlackLevel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_Volume
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_Volume {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).Accumulator = value;
             }
         }
-        public double ModerationDuration_Volume
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).ModerationPeriod);
+        public double ModerationDuration_Volume {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Volume")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_Loudness
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_Loudness {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).Accumulator = value;
             }
         }
-        public double ModerationDuration_Loudness
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).ModerationPeriod);
+        public double ModerationDuration_Loudness {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Loudness")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_A_ARG_TYPE_InstanceID
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_A_ARG_TYPE_InstanceID {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).Accumulator = value;
             }
         }
-        public double ModerationDuration_A_ARG_TYPE_InstanceID
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).ModerationPeriod);
+        public double ModerationDuration_A_ARG_TYPE_InstanceID {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_RedVideoGain
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_RedVideoGain {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).Accumulator = value;
             }
         }
-        public double ModerationDuration_RedVideoGain
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).ModerationPeriod);
+        public double ModerationDuration_RedVideoGain {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoGain")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_Contrast
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_Contrast {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).Accumulator = value;
             }
         }
-        public double ModerationDuration_Contrast
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).ModerationPeriod);
+        public double ModerationDuration_Contrast {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Contrast")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_Sharpness
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_Sharpness {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).Accumulator = value;
             }
         }
-        public double ModerationDuration_Sharpness
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).ModerationPeriod);
+        public double ModerationDuration_Sharpness {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Sharpness")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_A_ARG_TYPE_PresetName
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_A_ARG_TYPE_PresetName {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).Accumulator = value;
             }
         }
-        public double ModerationDuration_A_ARG_TYPE_PresetName
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).ModerationPeriod);
+        public double ModerationDuration_A_ARG_TYPE_PresetName {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_RedVideoBlackLevel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_RedVideoBlackLevel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).Accumulator = value;
             }
         }
-        public double ModerationDuration_RedVideoBlackLevel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).ModerationPeriod);
+        public double ModerationDuration_RedVideoBlackLevel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_BlueVideoGain
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_BlueVideoGain {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).Accumulator = value;
             }
         }
-        public double ModerationDuration_BlueVideoGain
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).ModerationPeriod);
+        public double ModerationDuration_BlueVideoGain {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("BlueVideoGain")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_Mute
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_Mute {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).Accumulator = value;
             }
         }
-        public double ModerationDuration_Mute
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).ModerationPeriod);
+        public double ModerationDuration_Mute {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Mute")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_LastChange
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_LastChange {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).Accumulator = value;
             }
         }
-        public double ModerationDuration_LastChange
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).ModerationPeriod);
+        public double ModerationDuration_LastChange {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("LastChange")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_A_ARG_TYPE_Channel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_A_ARG_TYPE_Channel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).Accumulator = value;
             }
         }
-        public double ModerationDuration_A_ARG_TYPE_Channel
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).ModerationPeriod);
+        public double ModerationDuration_A_ARG_TYPE_Channel {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_HorizontalKeystone
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_HorizontalKeystone {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).Accumulator = value;
             }
         }
-        public double ModerationDuration_HorizontalKeystone
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).ModerationPeriod);
+        public double ModerationDuration_HorizontalKeystone {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_ColorTemperature
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_ColorTemperature {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).Accumulator = value;
             }
         }
-        public double ModerationDuration_ColorTemperature
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).ModerationPeriod);
+        public double ModerationDuration_ColorTemperature {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("ColorTemperature")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_PresetNameList
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_PresetNameList {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).Accumulator = value;
             }
         }
-        public double ModerationDuration_PresetNameList
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).ModerationPeriod);
+        public double ModerationDuration_PresetNameList {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("PresetNameList")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_VolumeDB
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_VolumeDB {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).Accumulator = value;
             }
         }
-        public double ModerationDuration_VolumeDB
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).ModerationPeriod);
+        public double ModerationDuration_VolumeDB {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("VolumeDB")).ModerationPeriod = value;
             }
         }
-        public UPnPModeratedStateVariable.IAccumulator Accumulator_Brightness
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).Accumulator);
+        public UPnPModeratedStateVariable.IAccumulator Accumulator_Brightness {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).Accumulator);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).Accumulator = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).Accumulator = value;
             }
         }
-        public double ModerationDuration_Brightness
-        {
-            get
-            {
-                 return(((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).ModerationPeriod);
+        public double ModerationDuration_Brightness {
+            get {
+                return (((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).ModerationPeriod);
             }
-            set
-            {
-                 ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).ModerationPeriod = value;
+            set {
+                ((UPnPModeratedStateVariable)_S.GetUPnPService().GetStateVariableObject("Brightness")).ModerationPeriod = value;
             }
         }
         public delegate void Delegate_GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel);
@@ -926,281 +804,231 @@ namespace MyUPnPSupport.UPnP.Services
         public Delegate_SetVolume External_SetVolume = null;
         public Delegate_SetVolumeDB External_SetVolumeDB = null;
 
-        public void RemoveStateVariable_GreenVideoGain()
-        {
+        public void RemoveStateVariable_GreenVideoGain() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("GreenVideoGain"));
         }
-        public void RemoveStateVariable_BlueVideoBlackLevel()
-        {
+        public void RemoveStateVariable_BlueVideoBlackLevel() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel"));
         }
-        public void RemoveStateVariable_VerticalKeystone()
-        {
+        public void RemoveStateVariable_VerticalKeystone() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("VerticalKeystone"));
         }
-        public void RemoveStateVariable_GreenVideoBlackLevel()
-        {
+        public void RemoveStateVariable_GreenVideoBlackLevel() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("GreenVideoBlackLevel"));
         }
-        public void RemoveStateVariable_Volume()
-        {
+        public void RemoveStateVariable_Volume() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("Volume"));
         }
-        public void RemoveStateVariable_Loudness()
-        {
+        public void RemoveStateVariable_Loudness() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("Loudness"));
         }
-        public void RemoveStateVariable_A_ARG_TYPE_InstanceID()
-        {
+        public void RemoveStateVariable_A_ARG_TYPE_InstanceID() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_InstanceID"));
         }
-        public void RemoveStateVariable_RedVideoGain()
-        {
+        public void RemoveStateVariable_RedVideoGain() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("RedVideoGain"));
         }
-        public void RemoveStateVariable_Contrast()
-        {
+        public void RemoveStateVariable_Contrast() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("Contrast"));
         }
-        public void RemoveStateVariable_Sharpness()
-        {
+        public void RemoveStateVariable_Sharpness() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("Sharpness"));
         }
-        public void RemoveStateVariable_A_ARG_TYPE_PresetName()
-        {
+        public void RemoveStateVariable_A_ARG_TYPE_PresetName() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_PresetName"));
         }
-        public void RemoveStateVariable_RedVideoBlackLevel()
-        {
+        public void RemoveStateVariable_RedVideoBlackLevel() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("RedVideoBlackLevel"));
         }
-        public void RemoveStateVariable_BlueVideoGain()
-        {
+        public void RemoveStateVariable_BlueVideoGain() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("BlueVideoGain"));
         }
-        public void RemoveStateVariable_Mute()
-        {
+        public void RemoveStateVariable_Mute() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("Mute"));
         }
-        public void RemoveStateVariable_LastChange()
-        {
+        public void RemoveStateVariable_LastChange() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("LastChange"));
         }
-        public void RemoveStateVariable_A_ARG_TYPE_Channel()
-        {
+        public void RemoveStateVariable_A_ARG_TYPE_Channel() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("A_ARG_TYPE_Channel"));
         }
-        public void RemoveStateVariable_HorizontalKeystone()
-        {
+        public void RemoveStateVariable_HorizontalKeystone() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("HorizontalKeystone"));
         }
-        public void RemoveStateVariable_ColorTemperature()
-        {
+        public void RemoveStateVariable_ColorTemperature() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("ColorTemperature"));
         }
-        public void RemoveStateVariable_PresetNameList()
-        {
+        public void RemoveStateVariable_PresetNameList() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("PresetNameList"));
         }
-        public void RemoveStateVariable_VolumeDB()
-        {
+        public void RemoveStateVariable_VolumeDB() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("VolumeDB"));
         }
-        public void RemoveStateVariable_Brightness()
-        {
+        public void RemoveStateVariable_Brightness() {
             _S.GetUPnPService().RemoveStateVariable(_S.GetUPnPService().GetStateVariableObject("Brightness"));
         }
-        public void RemoveAction_GetBlueVideoBlackLevel()
-        {
-             _S.GetUPnPService().RemoveMethod("GetBlueVideoBlackLevel");
+        public void RemoveAction_GetBlueVideoBlackLevel() {
+            _S.GetUPnPService().RemoveMethod("GetBlueVideoBlackLevel");
         }
-        public void RemoveAction_GetBlueVideoGain()
-        {
-             _S.GetUPnPService().RemoveMethod("GetBlueVideoGain");
+        public void RemoveAction_GetBlueVideoGain() {
+            _S.GetUPnPService().RemoveMethod("GetBlueVideoGain");
         }
-        public void RemoveAction_GetBrightness()
-        {
-             _S.GetUPnPService().RemoveMethod("GetBrightness");
+        public void RemoveAction_GetBrightness() {
+            _S.GetUPnPService().RemoveMethod("GetBrightness");
         }
-        public void RemoveAction_GetColorTemperature()
-        {
-             _S.GetUPnPService().RemoveMethod("GetColorTemperature");
+        public void RemoveAction_GetColorTemperature() {
+            _S.GetUPnPService().RemoveMethod("GetColorTemperature");
         }
-        public void RemoveAction_GetContrast()
-        {
-             _S.GetUPnPService().RemoveMethod("GetContrast");
+        public void RemoveAction_GetContrast() {
+            _S.GetUPnPService().RemoveMethod("GetContrast");
         }
-        public void RemoveAction_GetGreenVideoBlackLevel()
-        {
-             _S.GetUPnPService().RemoveMethod("GetGreenVideoBlackLevel");
+        public void RemoveAction_GetGreenVideoBlackLevel() {
+            _S.GetUPnPService().RemoveMethod("GetGreenVideoBlackLevel");
         }
-        public void RemoveAction_GetGreenVideoGain()
-        {
-             _S.GetUPnPService().RemoveMethod("GetGreenVideoGain");
+        public void RemoveAction_GetGreenVideoGain() {
+            _S.GetUPnPService().RemoveMethod("GetGreenVideoGain");
         }
-        public void RemoveAction_GetHorizontalKeystone()
-        {
-             _S.GetUPnPService().RemoveMethod("GetHorizontalKeystone");
+        public void RemoveAction_GetHorizontalKeystone() {
+            _S.GetUPnPService().RemoveMethod("GetHorizontalKeystone");
         }
-        public void RemoveAction_GetLoudness()
-        {
-             _S.GetUPnPService().RemoveMethod("GetLoudness");
+        public void RemoveAction_GetLoudness() {
+            _S.GetUPnPService().RemoveMethod("GetLoudness");
         }
-        public void RemoveAction_GetMute()
-        {
-             _S.GetUPnPService().RemoveMethod("GetMute");
+        public void RemoveAction_GetMute() {
+            _S.GetUPnPService().RemoveMethod("GetMute");
         }
-        public void RemoveAction_GetRedVideoBlackLevel()
-        {
-             _S.GetUPnPService().RemoveMethod("GetRedVideoBlackLevel");
+        public void RemoveAction_GetRedVideoBlackLevel() {
+            _S.GetUPnPService().RemoveMethod("GetRedVideoBlackLevel");
         }
-        public void RemoveAction_GetRedVideoGain()
-        {
-             _S.GetUPnPService().RemoveMethod("GetRedVideoGain");
+        public void RemoveAction_GetRedVideoGain() {
+            _S.GetUPnPService().RemoveMethod("GetRedVideoGain");
         }
-        public void RemoveAction_GetSharpness()
-        {
-             _S.GetUPnPService().RemoveMethod("GetSharpness");
+        public void RemoveAction_GetSharpness() {
+            _S.GetUPnPService().RemoveMethod("GetSharpness");
         }
-        public void RemoveAction_GetVerticalKeystone()
-        {
-             _S.GetUPnPService().RemoveMethod("GetVerticalKeystone");
+        public void RemoveAction_GetVerticalKeystone() {
+            _S.GetUPnPService().RemoveMethod("GetVerticalKeystone");
         }
-        public void RemoveAction_GetVolume()
-        {
-             _S.GetUPnPService().RemoveMethod("GetVolume");
+        public void RemoveAction_GetVolume() {
+            _S.GetUPnPService().RemoveMethod("GetVolume");
         }
-        public void RemoveAction_GetVolumeDB()
-        {
-             _S.GetUPnPService().RemoveMethod("GetVolumeDB");
+        public void RemoveAction_GetVolumeDB() {
+            _S.GetUPnPService().RemoveMethod("GetVolumeDB");
         }
-        public void RemoveAction_GetVolumeDBRange()
-        {
-             _S.GetUPnPService().RemoveMethod("GetVolumeDBRange");
+        public void RemoveAction_GetVolumeDBRange() {
+            _S.GetUPnPService().RemoveMethod("GetVolumeDBRange");
         }
-        public void RemoveAction_ListPresets()
-        {
-             _S.GetUPnPService().RemoveMethod("ListPresets");
+        public void RemoveAction_ListPresets() {
+            _S.GetUPnPService().RemoveMethod("ListPresets");
         }
-        public void RemoveAction_SelectPreset()
-        {
-             _S.GetUPnPService().RemoveMethod("SelectPreset");
+        public void RemoveAction_SelectPreset() {
+            _S.GetUPnPService().RemoveMethod("SelectPreset");
         }
-        public void RemoveAction_SetBlueVideoBlackLevel()
-        {
-             _S.GetUPnPService().RemoveMethod("SetBlueVideoBlackLevel");
+        public void RemoveAction_SetBlueVideoBlackLevel() {
+            _S.GetUPnPService().RemoveMethod("SetBlueVideoBlackLevel");
         }
-        public void RemoveAction_SetBlueVideoGain()
-        {
-             _S.GetUPnPService().RemoveMethod("SetBlueVideoGain");
+        public void RemoveAction_SetBlueVideoGain() {
+            _S.GetUPnPService().RemoveMethod("SetBlueVideoGain");
         }
-        public void RemoveAction_SetBrightness()
-        {
-             _S.GetUPnPService().RemoveMethod("SetBrightness");
+        public void RemoveAction_SetBrightness() {
+            _S.GetUPnPService().RemoveMethod("SetBrightness");
         }
-        public void RemoveAction_SetColorTemperature()
-        {
-             _S.GetUPnPService().RemoveMethod("SetColorTemperature");
+        public void RemoveAction_SetColorTemperature() {
+            _S.GetUPnPService().RemoveMethod("SetColorTemperature");
         }
-        public void RemoveAction_SetContrast()
-        {
-             _S.GetUPnPService().RemoveMethod("SetContrast");
+        public void RemoveAction_SetContrast() {
+            _S.GetUPnPService().RemoveMethod("SetContrast");
         }
-        public void RemoveAction_SetGreenVideoBlackLevel()
-        {
-             _S.GetUPnPService().RemoveMethod("SetGreenVideoBlackLevel");
+        public void RemoveAction_SetGreenVideoBlackLevel() {
+            _S.GetUPnPService().RemoveMethod("SetGreenVideoBlackLevel");
         }
-        public void RemoveAction_SetGreenVideoGain()
-        {
-             _S.GetUPnPService().RemoveMethod("SetGreenVideoGain");
+        public void RemoveAction_SetGreenVideoGain() {
+            _S.GetUPnPService().RemoveMethod("SetGreenVideoGain");
         }
-        public void RemoveAction_SetHorizontalKeystone()
-        {
-             _S.GetUPnPService().RemoveMethod("SetHorizontalKeystone");
+        public void RemoveAction_SetHorizontalKeystone() {
+            _S.GetUPnPService().RemoveMethod("SetHorizontalKeystone");
         }
-        public void RemoveAction_SetLoudness()
-        {
-             _S.GetUPnPService().RemoveMethod("SetLoudness");
+        public void RemoveAction_SetLoudness() {
+            _S.GetUPnPService().RemoveMethod("SetLoudness");
         }
-        public void RemoveAction_SetMute()
-        {
-             _S.GetUPnPService().RemoveMethod("SetMute");
+        public void RemoveAction_SetMute() {
+            _S.GetUPnPService().RemoveMethod("SetMute");
         }
-        public void RemoveAction_SetRedVideoBlackLevel()
-        {
-             _S.GetUPnPService().RemoveMethod("SetRedVideoBlackLevel");
+        public void RemoveAction_SetRedVideoBlackLevel() {
+            _S.GetUPnPService().RemoveMethod("SetRedVideoBlackLevel");
         }
-        public void RemoveAction_SetRedVideoGain()
-        {
-             _S.GetUPnPService().RemoveMethod("SetRedVideoGain");
+        public void RemoveAction_SetRedVideoGain() {
+            _S.GetUPnPService().RemoveMethod("SetRedVideoGain");
         }
-        public void RemoveAction_SetSharpness()
-        {
-             _S.GetUPnPService().RemoveMethod("SetSharpness");
+        public void RemoveAction_SetSharpness() {
+            _S.GetUPnPService().RemoveMethod("SetSharpness");
         }
-        public void RemoveAction_SetVerticalKeystone()
-        {
-             _S.GetUPnPService().RemoveMethod("SetVerticalKeystone");
+        public void RemoveAction_SetVerticalKeystone() {
+            _S.GetUPnPService().RemoveMethod("SetVerticalKeystone");
         }
-        public void RemoveAction_SetVolume()
-        {
-             _S.GetUPnPService().RemoveMethod("SetVolume");
+        public void RemoveAction_SetVolume() {
+            _S.GetUPnPService().RemoveMethod("SetVolume");
         }
-        public void RemoveAction_SetVolumeDB()
-        {
-             _S.GetUPnPService().RemoveMethod("SetVolumeDB");
+        public void RemoveAction_SetVolumeDB() {
+            _S.GetUPnPService().RemoveMethod("SetVolumeDB");
         }
-        public System.Net.IPEndPoint GetCaller()
-        {
-             return(_S.GetUPnPService().GetCaller());
+        public System.Net.IPEndPoint GetCaller() {
+            return (_S.GetUPnPService().GetCaller());
         }
-        public System.Net.IPEndPoint GetReceiver()
-        {
-             return(_S.GetUPnPService().GetReceiver());
+        public System.Net.IPEndPoint GetReceiver() {
+            return (_S.GetUPnPService().GetReceiver());
         }
 
-        private class _DvRenderingControl
-        {
+        private class _DvRenderingControl {
             private RenderingControl Outer = null;
             private UPnPService S;
-            internal _DvRenderingControl(RenderingControl n)
-            {
+            internal _DvRenderingControl(RenderingControl n) {
                 Outer = n;
                 S = BuildUPnPService();
             }
-            public UPnPService GetUPnPService()
-            {
-                return(S);
+            public UPnPService GetUPnPService() {
+                return (S);
             }
-            public void SetStateVariable(string VarName, object VarValue)
-            {
-               S.SetStateVariable(VarName,VarValue);
+            public void SetStateVariable(string VarName, object VarValue) {
+                S.SetStateVariable(VarName, VarValue);
+                if (VarName != "LastChange") {
+                    RC_LastChange(VarName, VarValue.ToString());
+                }
             }
-            public object GetStateVariable(string VarName)
-            {
-               return(S.GetStateVariable(VarName));
+
+            protected void RC_LastChange(string VarName, string VarValue) {
+                StringBuilder s = new StringBuilder();
+                s.Append("<Event xmlns = \"urn:schemas-upnp-org:metadata-1-0/RCS/\">\r\n");
+                s.Append("   <InstanceID val=\"" + "0" + "\">\r\n");
+                s.Append("        <" + VarName + " val=\"" + UPnPStringFormatter.EscapeString(VarValue) + "\"/>\r\n");
+                s.Append("   </InstanceID>\r\n");
+                s.Append("</Event>");
+                Outer.Evented_LastChange = UPnPStringFormatter.EscapeString(s.ToString());
             }
-            protected UPnPService BuildUPnPService()
-            {
+
+            public object GetStateVariable(string VarName) {
+                return (S.GetStateVariable(VarName));
+            }
+            protected UPnPService BuildUPnPService() {
                 UPnPStateVariable[] RetVal = new UPnPStateVariable[21];
                 RetVal[0] = new UPnPModeratedStateVariable("GreenVideoGain", typeof(System.UInt16), false);
-                RetVal[0].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[0].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[0].AddAssociation("GetGreenVideoGain", "CurrentGreenVideoGain");
                 RetVal[0].AddAssociation("SetGreenVideoGain", "DesiredGreenVideoGain");
                 RetVal[1] = new UPnPModeratedStateVariable("BlueVideoBlackLevel", typeof(System.UInt16), false);
-                RetVal[1].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[1].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[1].AddAssociation("GetBlueVideoBlackLevel", "CurrentBlueVideoBlackLevel");
                 RetVal[1].AddAssociation("SetBlueVideoBlackLevel", "DesiredBlueVideoBlackLevel");
                 RetVal[2] = new UPnPModeratedStateVariable("VerticalKeystone", typeof(System.Int16), false);
-                RetVal[2].SetRange((System.Int16)(-32768),(System.Int16)(32767),(System.Int16)1);
+                RetVal[2].SetRange((System.Int16)(-32768), (System.Int16)(32767), (System.Int16)1);
                 RetVal[2].AddAssociation("GetVerticalKeystone", "CurrentVerticalKeystone");
                 RetVal[2].AddAssociation("SetVerticalKeystone", "DesiredVerticalKeystone");
                 RetVal[3] = new UPnPModeratedStateVariable("GreenVideoBlackLevel", typeof(System.UInt16), false);
-                RetVal[3].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[3].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[3].AddAssociation("GetGreenVideoBlackLevel", "CurrentGreenVideoBlackLevel");
                 RetVal[3].AddAssociation("SetGreenVideoBlackLevel", "DesiredGreenVideoBlackLevel");
                 RetVal[4] = new UPnPModeratedStateVariable("Volume", typeof(System.UInt16), false);
-                RetVal[4].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[4].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[4].AddAssociation("GetVolume", "CurrentVolume");
                 RetVal[4].AddAssociation("SetVolume", "DesiredVolume");
                 RetVal[5] = new UPnPModeratedStateVariable("Loudness", typeof(System.Boolean), false);
@@ -1243,26 +1071,26 @@ namespace MyUPnPSupport.UPnP.Services
                 RetVal[6].AddAssociation("SetVolume", "InstanceID");
                 RetVal[6].AddAssociation("SetVolumeDB", "InstanceID");
                 RetVal[7] = new UPnPModeratedStateVariable("RedVideoGain", typeof(System.UInt16), false);
-                RetVal[7].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[7].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[7].AddAssociation("GetRedVideoGain", "CurrentRedVideoGain");
                 RetVal[7].AddAssociation("SetRedVideoGain", "DesiredRedVideoGain");
                 RetVal[8] = new UPnPModeratedStateVariable("Contrast", typeof(System.UInt16), false);
-                RetVal[8].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[8].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[8].AddAssociation("GetContrast", "CurrentContrast");
                 RetVal[8].AddAssociation("SetContrast", "DesiredContrast");
                 RetVal[9] = new UPnPModeratedStateVariable("Sharpness", typeof(System.UInt16), false);
-                RetVal[9].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[9].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[9].AddAssociation("GetSharpness", "CurrentSharpness");
                 RetVal[9].AddAssociation("SetSharpness", "DesiredSharpness");
                 RetVal[10] = new UPnPModeratedStateVariable("A_ARG_TYPE_PresetName", typeof(System.String), false);
-                RetVal[10].AllowedStringValues = new string[3]{"FactoryDefaults", "InstallationDefaults", "Vendor defined"};
+                RetVal[10].AllowedStringValues = new string[3] { "FactoryDefaults", "InstallationDefaults", "Vendor defined" };
                 RetVal[10].AddAssociation("SelectPreset", "PresetName");
                 RetVal[11] = new UPnPModeratedStateVariable("RedVideoBlackLevel", typeof(System.UInt16), false);
-                RetVal[11].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[11].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[11].AddAssociation("GetRedVideoBlackLevel", "CurrentRedVideoBlackLevel");
                 RetVal[11].AddAssociation("SetRedVideoBlackLevel", "DesiredRedVideoBlackLevel");
                 RetVal[12] = new UPnPModeratedStateVariable("BlueVideoGain", typeof(System.UInt16), false);
-                RetVal[12].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[12].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[12].AddAssociation("GetBlueVideoGain", "CurrentBlueVideoGain");
                 RetVal[12].AddAssociation("SetBlueVideoGain", "DesiredBlueVideoGain");
                 RetVal[13] = new UPnPModeratedStateVariable("Mute", typeof(System.Boolean), false);
@@ -1270,7 +1098,7 @@ namespace MyUPnPSupport.UPnP.Services
                 RetVal[13].AddAssociation("SetMute", "DesiredMute");
                 RetVal[14] = new UPnPModeratedStateVariable("LastChange", typeof(System.String), true);
                 RetVal[15] = new UPnPModeratedStateVariable("A_ARG_TYPE_Channel", typeof(System.String), false);
-                RetVal[15].AllowedStringValues = new string[3]{"Master", "LF", "RF"};
+                RetVal[15].AllowedStringValues = new string[3] { "Master", "LF", "RF" };
                 RetVal[15].AddAssociation("GetLoudness", "Channel");
                 RetVal[15].AddAssociation("GetMute", "Channel");
                 RetVal[15].AddAssociation("GetVolume", "Channel");
@@ -1281,30 +1109,29 @@ namespace MyUPnPSupport.UPnP.Services
                 RetVal[15].AddAssociation("SetVolume", "Channel");
                 RetVal[15].AddAssociation("SetVolumeDB", "Channel");
                 RetVal[16] = new UPnPModeratedStateVariable("HorizontalKeystone", typeof(System.Int16), false);
-                RetVal[16].SetRange((System.Int16)(-32768),(System.Int16)(32767),(System.Int16)1);
+                RetVal[16].SetRange((System.Int16)(-32768), (System.Int16)(32767), (System.Int16)1);
                 RetVal[16].AddAssociation("GetHorizontalKeystone", "CurrentHorizontalKeystone");
                 RetVal[16].AddAssociation("SetHorizontalKeystone", "DesiredHorizontalKeystone");
                 RetVal[17] = new UPnPModeratedStateVariable("ColorTemperature", typeof(System.UInt16), false);
-                RetVal[17].SetRange((System.UInt16)(0),(System.UInt16)(65535),(System.UInt16)1);
+                RetVal[17].SetRange((System.UInt16)(0), (System.UInt16)(65535), (System.UInt16)1);
                 RetVal[17].AddAssociation("GetColorTemperature", "CurrentColorTemperature");
                 RetVal[17].AddAssociation("SetColorTemperature", "DesiredColorTemperature");
                 RetVal[18] = new UPnPModeratedStateVariable("PresetNameList", typeof(System.String), false);
                 RetVal[18].AddAssociation("ListPresets", "CurrentPresetNameList");
                 RetVal[19] = new UPnPModeratedStateVariable("VolumeDB", typeof(System.Int16), false);
-                RetVal[19].SetRange((System.Int16)(-32768),(System.Int16)(32767),null);
+                RetVal[19].SetRange((System.Int16)(-32768), (System.Int16)(32767), null);
                 RetVal[19].AddAssociation("GetVolumeDB", "CurrentVolume");
                 RetVal[19].AddAssociation("GetVolumeDBRange", "MinValue");
                 RetVal[19].AddAssociation("GetVolumeDBRange", "MaxValue");
                 RetVal[19].AddAssociation("SetVolumeDB", "DesiredVolume");
                 RetVal[20] = new UPnPModeratedStateVariable("Brightness", typeof(System.UInt16), false);
-                RetVal[20].SetRange((System.UInt16)(0),(System.UInt16)(100),(System.UInt16)1);
+                RetVal[20].SetRange((System.UInt16)(0), (System.UInt16)(100), (System.UInt16)1);
                 RetVal[20].AddAssociation("GetBrightness", "CurrentBrightness");
                 RetVal[20].AddAssociation("SetBrightness", "DesiredBrightness");
 
                 UPnPService S = new UPnPService(1, "urn:upnp-org:serviceId:RCS_0-88", URN, true, this);
-                for(int i=0;i<RetVal.Length;++i)
-                {
-                   S.AddStateVariable(RetVal[i]);
+                for (int i = 0; i < RetVal.Length; ++i) {
+                    S.AddStateVariable(RetVal[i]);
                 }
                 S.AddMethod("GetBlueVideoBlackLevel");
                 S.AddMethod("GetBlueVideoGain");
@@ -1341,102 +1168,68 @@ namespace MyUPnPSupport.UPnP.Services
                 S.AddMethod("SetVerticalKeystone");
                 S.AddMethod("SetVolume");
                 S.AddMethod("SetVolumeDB");
-                return(S);
+                return (S);
             }
 
-            public void GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel)
-            {
-                if (Outer.External_GetBlueVideoBlackLevel != null)
-                {
+            public void GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel) {
+                if (Outer.External_GetBlueVideoBlackLevel != null) {
                     Outer.External_GetBlueVideoBlackLevel(InstanceID, out CurrentBlueVideoBlackLevel);
-                }
-                else
-                {
+                } else {
                     Sink_GetBlueVideoBlackLevel(InstanceID, out CurrentBlueVideoBlackLevel);
                 }
             }
-            public void GetBlueVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoGain)
-            {
-                if (Outer.External_GetBlueVideoGain != null)
-                {
+            public void GetBlueVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoGain) {
+                if (Outer.External_GetBlueVideoGain != null) {
                     Outer.External_GetBlueVideoGain(InstanceID, out CurrentBlueVideoGain);
-                }
-                else
-                {
+                } else {
                     Sink_GetBlueVideoGain(InstanceID, out CurrentBlueVideoGain);
                 }
             }
-            public void GetBrightness(System.UInt32 InstanceID, out System.UInt16 CurrentBrightness)
-            {
-                if (Outer.External_GetBrightness != null)
-                {
+            public void GetBrightness(System.UInt32 InstanceID, out System.UInt16 CurrentBrightness) {
+                if (Outer.External_GetBrightness != null) {
                     Outer.External_GetBrightness(InstanceID, out CurrentBrightness);
-                }
-                else
-                {
+                } else {
                     Sink_GetBrightness(InstanceID, out CurrentBrightness);
                 }
             }
-            public void GetColorTemperature(System.UInt32 InstanceID, out System.UInt16 CurrentColorTemperature)
-            {
-                if (Outer.External_GetColorTemperature != null)
-                {
+            public void GetColorTemperature(System.UInt32 InstanceID, out System.UInt16 CurrentColorTemperature) {
+                if (Outer.External_GetColorTemperature != null) {
                     Outer.External_GetColorTemperature(InstanceID, out CurrentColorTemperature);
-                }
-                else
-                {
+                } else {
                     Sink_GetColorTemperature(InstanceID, out CurrentColorTemperature);
                 }
             }
-            public void GetContrast(System.UInt32 InstanceID, out System.UInt16 CurrentContrast)
-            {
-                if (Outer.External_GetContrast != null)
-                {
+            public void GetContrast(System.UInt32 InstanceID, out System.UInt16 CurrentContrast) {
+                if (Outer.External_GetContrast != null) {
                     Outer.External_GetContrast(InstanceID, out CurrentContrast);
-                }
-                else
-                {
+                } else {
                     Sink_GetContrast(InstanceID, out CurrentContrast);
                 }
             }
-            public void GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel)
-            {
-                if (Outer.External_GetGreenVideoBlackLevel != null)
-                {
+            public void GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel) {
+                if (Outer.External_GetGreenVideoBlackLevel != null) {
                     Outer.External_GetGreenVideoBlackLevel(InstanceID, out CurrentGreenVideoBlackLevel);
-                }
-                else
-                {
+                } else {
                     Sink_GetGreenVideoBlackLevel(InstanceID, out CurrentGreenVideoBlackLevel);
                 }
             }
-            public void GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain)
-            {
-                if (Outer.External_GetGreenVideoGain != null)
-                {
+            public void GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain) {
+                if (Outer.External_GetGreenVideoGain != null) {
                     Outer.External_GetGreenVideoGain(InstanceID, out CurrentGreenVideoGain);
-                }
-                else
-                {
+                } else {
                     Sink_GetGreenVideoGain(InstanceID, out CurrentGreenVideoGain);
                 }
             }
-            public void GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone)
-            {
-                if (Outer.External_GetHorizontalKeystone != null)
-                {
+            public void GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone) {
+                if (Outer.External_GetHorizontalKeystone != null) {
                     Outer.External_GetHorizontalKeystone(InstanceID, out CurrentHorizontalKeystone);
-                }
-                else
-                {
+                } else {
                     Sink_GetHorizontalKeystone(InstanceID, out CurrentHorizontalKeystone);
                 }
             }
-            public void GetLoudness(System.UInt32 InstanceID, System.String Channel, out System.Boolean CurrentLoudness)
-            {
+            public void GetLoudness(System.UInt32 InstanceID, System.String Channel, out System.Boolean CurrentLoudness) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1450,20 +1243,15 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_GetLoudness != null)
-                {
+                if (Outer.External_GetLoudness != null) {
                     Outer.External_GetLoudness(InstanceID, e_Channel, out CurrentLoudness);
-                }
-                else
-                {
+                } else {
                     Sink_GetLoudness(InstanceID, e_Channel, out CurrentLoudness);
                 }
             }
-            public void GetMute(System.UInt32 InstanceID, System.String Channel, out System.Boolean CurrentMute)
-            {
+            public void GetMute(System.UInt32 InstanceID, System.String Channel, out System.Boolean CurrentMute) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1477,64 +1265,43 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_GetMute != null)
-                {
+                if (Outer.External_GetMute != null) {
                     Outer.External_GetMute(InstanceID, e_Channel, out CurrentMute);
-                }
-                else
-                {
+                } else {
                     Sink_GetMute(InstanceID, e_Channel, out CurrentMute);
                 }
             }
-            public void GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel)
-            {
-                if (Outer.External_GetRedVideoBlackLevel != null)
-                {
+            public void GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel) {
+                if (Outer.External_GetRedVideoBlackLevel != null) {
                     Outer.External_GetRedVideoBlackLevel(InstanceID, out CurrentRedVideoBlackLevel);
-                }
-                else
-                {
+                } else {
                     Sink_GetRedVideoBlackLevel(InstanceID, out CurrentRedVideoBlackLevel);
                 }
             }
-            public void GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain)
-            {
-                if (Outer.External_GetRedVideoGain != null)
-                {
+            public void GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain) {
+                if (Outer.External_GetRedVideoGain != null) {
                     Outer.External_GetRedVideoGain(InstanceID, out CurrentRedVideoGain);
-                }
-                else
-                {
+                } else {
                     Sink_GetRedVideoGain(InstanceID, out CurrentRedVideoGain);
                 }
             }
-            public void GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness)
-            {
-                if (Outer.External_GetSharpness != null)
-                {
+            public void GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness) {
+                if (Outer.External_GetSharpness != null) {
                     Outer.External_GetSharpness(InstanceID, out CurrentSharpness);
-                }
-                else
-                {
+                } else {
                     Sink_GetSharpness(InstanceID, out CurrentSharpness);
                 }
             }
-            public void GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone)
-            {
-                if (Outer.External_GetVerticalKeystone != null)
-                {
+            public void GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone) {
+                if (Outer.External_GetVerticalKeystone != null) {
                     Outer.External_GetVerticalKeystone(InstanceID, out CurrentVerticalKeystone);
-                }
-                else
-                {
+                } else {
                     Sink_GetVerticalKeystone(InstanceID, out CurrentVerticalKeystone);
                 }
             }
-            public void GetVolume(System.UInt32 InstanceID, System.String Channel, out System.UInt16 CurrentVolume)
-            {
+            public void GetVolume(System.UInt32 InstanceID, System.String Channel, out System.UInt16 CurrentVolume) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1548,20 +1315,15 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_GetVolume != null)
-                {
+                if (Outer.External_GetVolume != null) {
                     Outer.External_GetVolume(InstanceID, e_Channel, out CurrentVolume);
-                }
-                else
-                {
+                } else {
                     Sink_GetVolume(InstanceID, e_Channel, out CurrentVolume);
                 }
             }
-            public void GetVolumeDB(System.UInt32 InstanceID, System.String Channel, out System.Int16 CurrentVolume)
-            {
+            public void GetVolumeDB(System.UInt32 InstanceID, System.String Channel, out System.Int16 CurrentVolume) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1575,20 +1337,15 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_GetVolumeDB != null)
-                {
+                if (Outer.External_GetVolumeDB != null) {
                     Outer.External_GetVolumeDB(InstanceID, e_Channel, out CurrentVolume);
-                }
-                else
-                {
+                } else {
                     Sink_GetVolumeDB(InstanceID, e_Channel, out CurrentVolume);
                 }
             }
-            public void GetVolumeDBRange(System.UInt32 InstanceID, System.String Channel, out System.Int16 MinValue, out System.Int16 MaxValue)
-            {
+            public void GetVolumeDBRange(System.UInt32 InstanceID, System.String Channel, out System.Int16 MinValue, out System.Int16 MaxValue) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1602,31 +1359,22 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_GetVolumeDBRange != null)
-                {
+                if (Outer.External_GetVolumeDBRange != null) {
                     Outer.External_GetVolumeDBRange(InstanceID, e_Channel, out MinValue, out MaxValue);
-                }
-                else
-                {
+                } else {
                     Sink_GetVolumeDBRange(InstanceID, e_Channel, out MinValue, out MaxValue);
                 }
             }
-            public void ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList)
-            {
-                if (Outer.External_ListPresets != null)
-                {
+            public void ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList) {
+                if (Outer.External_ListPresets != null) {
                     Outer.External_ListPresets(InstanceID, out CurrentPresetNameList);
-                }
-                else
-                {
+                } else {
                     Sink_ListPresets(InstanceID, out CurrentPresetNameList);
                 }
             }
-            public void SelectPreset(System.UInt32 InstanceID, System.String PresetName)
-            {
+            public void SelectPreset(System.UInt32 InstanceID, System.String PresetName) {
                 Enum_A_ARG_TYPE_PresetName e_PresetName;
-                switch(PresetName)
-                {
+                switch (PresetName) {
                     case "FactoryDefaults":
                         e_PresetName = Enum_A_ARG_TYPE_PresetName.FACTORYDEFAULTS;
                         break;
@@ -1640,108 +1388,71 @@ namespace MyUPnPSupport.UPnP.Services
                         e_PresetName = 0;
                         break;
                 }
-                if (Outer.External_SelectPreset != null)
-                {
+                if (Outer.External_SelectPreset != null) {
                     Outer.External_SelectPreset(InstanceID, e_PresetName);
-                }
-                else
-                {
+                } else {
                     Sink_SelectPreset(InstanceID, e_PresetName);
                 }
             }
-            public void SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel)
-            {
-                if (Outer.External_SetBlueVideoBlackLevel != null)
-                {
+            public void SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel) {
+                if (Outer.External_SetBlueVideoBlackLevel != null) {
                     Outer.External_SetBlueVideoBlackLevel(InstanceID, DesiredBlueVideoBlackLevel);
-                }
-                else
-                {
+                } else {
                     Sink_SetBlueVideoBlackLevel(InstanceID, DesiredBlueVideoBlackLevel);
                 }
             }
-            public void SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain)
-            {
-                if (Outer.External_SetBlueVideoGain != null)
-                {
+            public void SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain) {
+                if (Outer.External_SetBlueVideoGain != null) {
                     Outer.External_SetBlueVideoGain(InstanceID, DesiredBlueVideoGain);
-                }
-                else
-                {
+                } else {
                     Sink_SetBlueVideoGain(InstanceID, DesiredBlueVideoGain);
                 }
             }
-            public void SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness)
-            {
-                if (Outer.External_SetBrightness != null)
-                {
+            public void SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness) {
+                if (Outer.External_SetBrightness != null) {
                     Outer.External_SetBrightness(InstanceID, DesiredBrightness);
-                }
-                else
-                {
+                } else {
                     Sink_SetBrightness(InstanceID, DesiredBrightness);
                 }
             }
-            public void SetColorTemperature(System.UInt32 InstanceID, System.UInt16 DesiredColorTemperature)
-            {
-                if (Outer.External_SetColorTemperature != null)
-                {
+            public void SetColorTemperature(System.UInt32 InstanceID, System.UInt16 DesiredColorTemperature) {
+                if (Outer.External_SetColorTemperature != null) {
                     Outer.External_SetColorTemperature(InstanceID, DesiredColorTemperature);
-                }
-                else
-                {
+                } else {
                     Sink_SetColorTemperature(InstanceID, DesiredColorTemperature);
                 }
             }
-            public void SetContrast(System.UInt32 InstanceID, System.UInt16 DesiredContrast)
-            {
-                if (Outer.External_SetContrast != null)
-                {
+            public void SetContrast(System.UInt32 InstanceID, System.UInt16 DesiredContrast) {
+                if (Outer.External_SetContrast != null) {
                     Outer.External_SetContrast(InstanceID, DesiredContrast);
-                }
-                else
-                {
+                } else {
                     Sink_SetContrast(InstanceID, DesiredContrast);
                 }
             }
-            public void SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel)
-            {
-                if (Outer.External_SetGreenVideoBlackLevel != null)
-                {
+            public void SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel) {
+                if (Outer.External_SetGreenVideoBlackLevel != null) {
                     Outer.External_SetGreenVideoBlackLevel(InstanceID, DesiredGreenVideoBlackLevel);
-                }
-                else
-                {
+                } else {
                     Sink_SetGreenVideoBlackLevel(InstanceID, DesiredGreenVideoBlackLevel);
                 }
             }
-            public void SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain)
-            {
-                if (Outer.External_SetGreenVideoGain != null)
-                {
+            public void SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain) {
+                if (Outer.External_SetGreenVideoGain != null) {
                     Outer.External_SetGreenVideoGain(InstanceID, DesiredGreenVideoGain);
-                }
-                else
-                {
+                } else {
                     Sink_SetGreenVideoGain(InstanceID, DesiredGreenVideoGain);
                 }
             }
-            public void SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone)
-            {
-                if (Outer.External_SetHorizontalKeystone != null)
-                {
+            public void SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone) {
+                if (Outer.External_SetHorizontalKeystone != null) {
                     Outer.External_SetHorizontalKeystone(InstanceID, DesiredHorizontalKeystone);
-                }
-                else
-                {
+                } else {
                     Sink_SetHorizontalKeystone(InstanceID, DesiredHorizontalKeystone);
                 }
             }
-            public void SetLoudness(System.UInt32 InstanceID, System.String Channel, System.Boolean DesiredLoudness)
-            {
+            public void SetLoudness(System.UInt32 InstanceID, System.String Channel, System.Boolean DesiredLoudness) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1755,20 +1466,15 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_SetLoudness != null)
-                {
+                if (Outer.External_SetLoudness != null) {
                     Outer.External_SetLoudness(InstanceID, e_Channel, DesiredLoudness);
-                }
-                else
-                {
+                } else {
                     Sink_SetLoudness(InstanceID, e_Channel, DesiredLoudness);
                 }
             }
-            public void SetMute(System.UInt32 InstanceID, System.String Channel, System.Boolean DesiredMute)
-            {
+            public void SetMute(System.UInt32 InstanceID, System.String Channel, System.Boolean DesiredMute) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1782,64 +1488,43 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_SetMute != null)
-                {
+                if (Outer.External_SetMute != null) {
                     Outer.External_SetMute(InstanceID, e_Channel, DesiredMute);
-                }
-                else
-                {
+                } else {
                     Sink_SetMute(InstanceID, e_Channel, DesiredMute);
                 }
             }
-            public void SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel)
-            {
-                if (Outer.External_SetRedVideoBlackLevel != null)
-                {
+            public void SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel) {
+                if (Outer.External_SetRedVideoBlackLevel != null) {
                     Outer.External_SetRedVideoBlackLevel(InstanceID, DesiredRedVideoBlackLevel);
-                }
-                else
-                {
+                } else {
                     Sink_SetRedVideoBlackLevel(InstanceID, DesiredRedVideoBlackLevel);
                 }
             }
-            public void SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain)
-            {
-                if (Outer.External_SetRedVideoGain != null)
-                {
+            public void SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain) {
+                if (Outer.External_SetRedVideoGain != null) {
                     Outer.External_SetRedVideoGain(InstanceID, DesiredRedVideoGain);
-                }
-                else
-                {
+                } else {
                     Sink_SetRedVideoGain(InstanceID, DesiredRedVideoGain);
                 }
             }
-            public void SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness)
-            {
-                if (Outer.External_SetSharpness != null)
-                {
+            public void SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness) {
+                if (Outer.External_SetSharpness != null) {
                     Outer.External_SetSharpness(InstanceID, DesiredSharpness);
-                }
-                else
-                {
+                } else {
                     Sink_SetSharpness(InstanceID, DesiredSharpness);
                 }
             }
-            public void SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone)
-            {
-                if (Outer.External_SetVerticalKeystone != null)
-                {
+            public void SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone) {
+                if (Outer.External_SetVerticalKeystone != null) {
                     Outer.External_SetVerticalKeystone(InstanceID, DesiredVerticalKeystone);
-                }
-                else
-                {
+                } else {
                     Sink_SetVerticalKeystone(InstanceID, DesiredVerticalKeystone);
                 }
             }
-            public void SetVolume(System.UInt32 InstanceID, System.String Channel, System.UInt16 DesiredVolume)
-            {
+            public void SetVolume(System.UInt32 InstanceID, System.String Channel, System.UInt16 DesiredVolume) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1853,20 +1538,15 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_SetVolume != null)
-                {
+                if (Outer.External_SetVolume != null) {
                     Outer.External_SetVolume(InstanceID, e_Channel, DesiredVolume);
-                }
-                else
-                {
+                } else {
                     Sink_SetVolume(InstanceID, e_Channel, DesiredVolume);
                 }
             }
-            public void SetVolumeDB(System.UInt32 InstanceID, System.String Channel, System.Int16 DesiredVolume)
-            {
+            public void SetVolumeDB(System.UInt32 InstanceID, System.String Channel, System.Int16 DesiredVolume) {
                 Enum_A_ARG_TYPE_Channel e_Channel;
-                switch(Channel)
-                {
+                switch (Channel) {
                     case "Master":
                         e_Channel = Enum_A_ARG_TYPE_Channel.MASTER;
                         break;
@@ -1880,12 +1560,9 @@ namespace MyUPnPSupport.UPnP.Services
                         e_Channel = 0;
                         break;
                 }
-                if (Outer.External_SetVolumeDB != null)
-                {
+                if (Outer.External_SetVolumeDB != null) {
                     Outer.External_SetVolumeDB(InstanceID, e_Channel, DesiredVolume);
-                }
-                else
-                {
+                } else {
                     Sink_SetVolumeDB(InstanceID, e_Channel, DesiredVolume);
                 }
             }
@@ -1926,8 +1603,7 @@ namespace MyUPnPSupport.UPnP.Services
             public Delegate_SetVolume Sink_SetVolume;
             public Delegate_SetVolumeDB Sink_SetVolumeDB;
         }
-        public RenderingControl()
-        {
+        public RenderingControl() {
             _S = new _DvRenderingControl(this);
             _S.GetUPnPService().GetStateVariableObject("GreenVideoGain").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_GreenVideoGain);
             _S.GetUPnPService().GetStateVariableObject("BlueVideoBlackLevel").OnModified += new UPnPStateVariable.ModifiedHandler(OnModifiedSink_BlueVideoBlackLevel);
@@ -1986,96 +1662,74 @@ namespace MyUPnPSupport.UPnP.Services
             _S.Sink_SetVolume = new Delegate_SetVolume(SetVolume);
             _S.Sink_SetVolumeDB = new Delegate_SetVolumeDB(SetVolumeDB);
         }
-        public RenderingControl(string ID):this()
-        {
+        public RenderingControl(string ID)
+            : this() {
             _S.GetUPnPService().ServiceID = ID;
         }
-        public UPnPService GetUPnPService()
-        {
-            return(_S.GetUPnPService());
+        public UPnPService GetUPnPService() {
+            return (_S.GetUPnPService());
         }
-        private void OnModifiedSink_GreenVideoGain(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_GreenVideoGain(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_GreenVideoGain != null) OnStateVariableModified_GreenVideoGain(this);
         }
-        private void OnModifiedSink_BlueVideoBlackLevel(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_BlueVideoBlackLevel(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_BlueVideoBlackLevel != null) OnStateVariableModified_BlueVideoBlackLevel(this);
         }
-        private void OnModifiedSink_VerticalKeystone(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_VerticalKeystone(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_VerticalKeystone != null) OnStateVariableModified_VerticalKeystone(this);
         }
-        private void OnModifiedSink_GreenVideoBlackLevel(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_GreenVideoBlackLevel(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_GreenVideoBlackLevel != null) OnStateVariableModified_GreenVideoBlackLevel(this);
         }
-        private void OnModifiedSink_Volume(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_Volume(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_Volume != null) OnStateVariableModified_Volume(this);
         }
-        private void OnModifiedSink_Loudness(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_Loudness(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_Loudness != null) OnStateVariableModified_Loudness(this);
         }
-        private void OnModifiedSink_A_ARG_TYPE_InstanceID(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_A_ARG_TYPE_InstanceID(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_A_ARG_TYPE_InstanceID != null) OnStateVariableModified_A_ARG_TYPE_InstanceID(this);
         }
-        private void OnModifiedSink_RedVideoGain(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_RedVideoGain(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_RedVideoGain != null) OnStateVariableModified_RedVideoGain(this);
         }
-        private void OnModifiedSink_Contrast(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_Contrast(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_Contrast != null) OnStateVariableModified_Contrast(this);
         }
-        private void OnModifiedSink_Sharpness(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_Sharpness(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_Sharpness != null) OnStateVariableModified_Sharpness(this);
         }
-        private void OnModifiedSink_A_ARG_TYPE_PresetName(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_A_ARG_TYPE_PresetName(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_A_ARG_TYPE_PresetName != null) OnStateVariableModified_A_ARG_TYPE_PresetName(this);
         }
-        private void OnModifiedSink_RedVideoBlackLevel(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_RedVideoBlackLevel(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_RedVideoBlackLevel != null) OnStateVariableModified_RedVideoBlackLevel(this);
         }
-        private void OnModifiedSink_BlueVideoGain(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_BlueVideoGain(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_BlueVideoGain != null) OnStateVariableModified_BlueVideoGain(this);
         }
-        private void OnModifiedSink_Mute(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_Mute(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_Mute != null) OnStateVariableModified_Mute(this);
         }
-        private void OnModifiedSink_LastChange(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_LastChange(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_LastChange != null) OnStateVariableModified_LastChange(this);
         }
-        private void OnModifiedSink_A_ARG_TYPE_Channel(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_A_ARG_TYPE_Channel(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_A_ARG_TYPE_Channel != null) OnStateVariableModified_A_ARG_TYPE_Channel(this);
         }
-        private void OnModifiedSink_HorizontalKeystone(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_HorizontalKeystone(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_HorizontalKeystone != null) OnStateVariableModified_HorizontalKeystone(this);
         }
-        private void OnModifiedSink_ColorTemperature(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_ColorTemperature(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_ColorTemperature != null) OnStateVariableModified_ColorTemperature(this);
         }
-        private void OnModifiedSink_PresetNameList(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_PresetNameList(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_PresetNameList != null) OnStateVariableModified_PresetNameList(this);
         }
-        private void OnModifiedSink_VolumeDB(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_VolumeDB(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_VolumeDB != null) OnStateVariableModified_VolumeDB(this);
         }
-        private void OnModifiedSink_Brightness(UPnPStateVariable sender, object NewValue)
-        {
+        private void OnModifiedSink_Brightness(UPnPStateVariable sender, object NewValue) {
             if (OnStateVariableModified_Brightness != null) OnStateVariableModified_Brightness(this);
         }
         //}}}}} End of Code Block
@@ -2087,80 +1741,72 @@ namespace MyUPnPSupport.UPnP.Services
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentBlueVideoBlackLevel">Associated State Variable: BlueVideoBlackLevel</param>
-        public void GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel)
-        {
+        public void GetBlueVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoBlackLevel) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetBlueVideoGain
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentBlueVideoGain">Associated State Variable: BlueVideoGain</param>
-        public void GetBlueVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoGain)
-        {
+        public void GetBlueVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentBlueVideoGain) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetBrightness
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentBrightness">Associated State Variable: Brightness</param>
-        public void GetBrightness(System.UInt32 InstanceID, out System.UInt16 CurrentBrightness)
-        {
+        public void GetBrightness(System.UInt32 InstanceID, out System.UInt16 CurrentBrightness) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetColorTemperature
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentColorTemperature">Associated State Variable: ColorTemperature</param>
-        public void GetColorTemperature(System.UInt32 InstanceID, out System.UInt16 CurrentColorTemperature)
-        {
+        public void GetColorTemperature(System.UInt32 InstanceID, out System.UInt16 CurrentColorTemperature) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetContrast
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentContrast">Associated State Variable: Contrast</param>
-        public void GetContrast(System.UInt32 InstanceID, out System.UInt16 CurrentContrast)
-        {
+        public void GetContrast(System.UInt32 InstanceID, out System.UInt16 CurrentContrast) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetGreenVideoBlackLevel
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentGreenVideoBlackLevel">Associated State Variable: GreenVideoBlackLevel</param>
-        public void GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel)
-        {
+        public void GetGreenVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoBlackLevel) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetGreenVideoGain
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentGreenVideoGain">Associated State Variable: GreenVideoGain</param>
-        public void GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain)
-        {
+        public void GetGreenVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentGreenVideoGain) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetHorizontalKeystone
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentHorizontalKeystone">Associated State Variable: HorizontalKeystone</param>
-        public void GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone)
-        {
+        public void GetHorizontalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentHorizontalKeystone) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetLoudness
@@ -2168,10 +1814,9 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="CurrentLoudness">Associated State Variable: Loudness</param>
-        public void GetLoudness(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentLoudness)
-        {
+        public void GetLoudness(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentLoudness) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetMute
@@ -2179,50 +1824,45 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="CurrentMute">Associated State Variable: Mute</param>
-        public void GetMute(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentMute)
-        {
+        public void GetMute(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Boolean CurrentMute) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetRedVideoBlackLevel
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentRedVideoBlackLevel">Associated State Variable: RedVideoBlackLevel</param>
-        public void GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel)
-        {
+        public void GetRedVideoBlackLevel(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoBlackLevel) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetRedVideoGain
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentRedVideoGain">Associated State Variable: RedVideoGain</param>
-        public void GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain)
-        {
+        public void GetRedVideoGain(System.UInt32 InstanceID, out System.UInt16 CurrentRedVideoGain) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetSharpness
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentSharpness">Associated State Variable: Sharpness</param>
-        public void GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness)
-        {
+        public void GetSharpness(System.UInt32 InstanceID, out System.UInt16 CurrentSharpness) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetVerticalKeystone
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentVerticalKeystone">Associated State Variable: VerticalKeystone</param>
-        public void GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone)
-        {
+        public void GetVerticalKeystone(System.UInt32 InstanceID, out System.Int16 CurrentVerticalKeystone) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetVolume
@@ -2230,10 +1870,9 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="CurrentVolume">Associated State Variable: Volume</param>
-        public void GetVolume(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.UInt16 CurrentVolume)
-        {
+        public void GetVolume(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.UInt16 CurrentVolume) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetVolumeDB
@@ -2241,10 +1880,9 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="CurrentVolume">Associated State Variable: VolumeDB</param>
-        public void GetVolumeDB(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume)
-        {
+        public void GetVolumeDB(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Int16 CurrentVolume) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: GetVolumeDBRange
@@ -2253,110 +1891,99 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="MinValue">Associated State Variable: VolumeDB</param>
         /// <param name="MaxValue">Associated State Variable: VolumeDB</param>
-        public void GetVolumeDBRange(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Int16 MinValue, out System.Int16 MaxValue)
-        {
+        public void GetVolumeDBRange(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, out System.Int16 MinValue, out System.Int16 MaxValue) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: ListPresets
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="CurrentPresetNameList">Associated State Variable: PresetNameList</param>
-        public void ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList)
-        {
+        public void ListPresets(System.UInt32 InstanceID, out System.String CurrentPresetNameList) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SelectPreset
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="PresetName">Associated State Variable: A_ARG_TYPE_PresetName</param>
-        public void SelectPreset(System.UInt32 InstanceID, Enum_A_ARG_TYPE_PresetName PresetName)
-        {
+        public void SelectPreset(System.UInt32 InstanceID, Enum_A_ARG_TYPE_PresetName PresetName) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetBlueVideoBlackLevel
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredBlueVideoBlackLevel">Associated State Variable: BlueVideoBlackLevel</param>
-        public void SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel)
-        {
+        public void SetBlueVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoBlackLevel) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetBlueVideoGain
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredBlueVideoGain">Associated State Variable: BlueVideoGain</param>
-        public void SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain)
-        {
+        public void SetBlueVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredBlueVideoGain) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetBrightness
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredBrightness">Associated State Variable: Brightness</param>
-        public void SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness)
-        {
+        public void SetBrightness(System.UInt32 InstanceID, System.UInt16 DesiredBrightness) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetColorTemperature
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredColorTemperature">Associated State Variable: ColorTemperature</param>
-        public void SetColorTemperature(System.UInt32 InstanceID, System.UInt16 DesiredColorTemperature)
-        {
+        public void SetColorTemperature(System.UInt32 InstanceID, System.UInt16 DesiredColorTemperature) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetContrast
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredContrast">Associated State Variable: Contrast</param>
-        public void SetContrast(System.UInt32 InstanceID, System.UInt16 DesiredContrast)
-        {
+        public void SetContrast(System.UInt32 InstanceID, System.UInt16 DesiredContrast) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetGreenVideoBlackLevel
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredGreenVideoBlackLevel">Associated State Variable: GreenVideoBlackLevel</param>
-        public void SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel)
-        {
+        public void SetGreenVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoBlackLevel) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetGreenVideoGain
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredGreenVideoGain">Associated State Variable: GreenVideoGain</param>
-        public void SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain)
-        {
+        public void SetGreenVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredGreenVideoGain) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetHorizontalKeystone
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredHorizontalKeystone">Associated State Variable: HorizontalKeystone</param>
-        public void SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone)
-        {
+        public void SetHorizontalKeystone(System.UInt32 InstanceID, System.Int16 DesiredHorizontalKeystone) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetLoudness
@@ -2364,10 +1991,9 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="DesiredLoudness">Associated State Variable: Loudness</param>
-        public void SetLoudness(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredLoudness)
-        {
+        public void SetLoudness(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredLoudness) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetMute
@@ -2375,50 +2001,45 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="DesiredMute">Associated State Variable: Mute</param>
-        public void SetMute(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredMute)
-        {
+        public void SetMute(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.Boolean DesiredMute) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetRedVideoBlackLevel
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredRedVideoBlackLevel">Associated State Variable: RedVideoBlackLevel</param>
-        public void SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel)
-        {
+        public void SetRedVideoBlackLevel(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoBlackLevel) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetRedVideoGain
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredRedVideoGain">Associated State Variable: RedVideoGain</param>
-        public void SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain)
-        {
+        public void SetRedVideoGain(System.UInt32 InstanceID, System.UInt16 DesiredRedVideoGain) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetSharpness
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredSharpness">Associated State Variable: Sharpness</param>
-        public void SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness)
-        {
+        public void SetSharpness(System.UInt32 InstanceID, System.UInt16 DesiredSharpness) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetVerticalKeystone
         /// </summary>
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="DesiredVerticalKeystone">Associated State Variable: VerticalKeystone</param>
-        public void SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone)
-        {
+        public void SetVerticalKeystone(System.UInt32 InstanceID, System.Int16 DesiredVerticalKeystone) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetVolume
@@ -2426,10 +2047,9 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="DesiredVolume">Associated State Variable: Volume</param>
-        public void SetVolume(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.UInt16 DesiredVolume)
-        {
+        public void SetVolume(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.UInt16 DesiredVolume) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
         /// <summary>
         /// Action: SetVolumeDB
@@ -2437,10 +2057,9 @@ namespace MyUPnPSupport.UPnP.Services
         /// <param name="InstanceID">Associated State Variable: A_ARG_TYPE_InstanceID</param>
         /// <param name="Channel">Associated State Variable: A_ARG_TYPE_Channel</param>
         /// <param name="DesiredVolume">Associated State Variable: VolumeDB</param>
-        public void SetVolumeDB(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.Int16 DesiredVolume)
-        {
+        public void SetVolumeDB(System.UInt32 InstanceID, Enum_A_ARG_TYPE_Channel Channel, System.Int16 DesiredVolume) {
             //ToDo: Add Your implementation here, and remove exception
-            throw(new UPnPCustomException(800,"This method has not been completely implemented..."));
+            throw (new UPnPCustomException(800, "This method has not been completely implemented..."));
         }
     }
 }

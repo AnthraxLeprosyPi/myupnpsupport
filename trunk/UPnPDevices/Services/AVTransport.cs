@@ -1,7 +1,7 @@
 using OpenSource.UPnP;
 using System.Text;
 
-namespace MyUPnPSupport.UPnP.Services
+namespace UPnPDevices.Services
 {
     /// <summary>
     /// Transparent DeviceSide UPnP Service
@@ -126,49 +126,71 @@ namespace MyUPnPSupport.UPnP.Services
                return(RetVal);
            }
         }
-        public enum Enum_CurrentPlayMode
-        {
+        public enum Enum_CurrentPlayMode {
             NORMAL,
+            SHUFFLE,
+            REPEAT_ONE,
             REPEAT_ALL,
+            RANDOM,
+            DIRECT_1,
             INTRO,
         }
-        public Enum_CurrentPlayMode CurrentPlayMode
-        {
-            set
-            {
-               string v = "";
-               switch(value)
-               {
-                  case Enum_CurrentPlayMode.NORMAL:
-                     v = "NORMAL";
-                     break;
-                  case Enum_CurrentPlayMode.REPEAT_ALL:
-                     v = "REPEAT_ALL";
-                     break;
-                  case Enum_CurrentPlayMode.INTRO:
-                     v = "INTRO";
-                     break;
-               }
-               _S.SetStateVariable("CurrentPlayMode",v);
+        public Enum_CurrentPlayMode CurrentPlayMode {
+            set {
+                string v = "";
+                switch (value) {
+                    case Enum_CurrentPlayMode.NORMAL:
+                        v = "NORMAL";
+                        break;
+                    case Enum_CurrentPlayMode.SHUFFLE:
+                        v = "SHUFFLE";
+                        break;
+                    case Enum_CurrentPlayMode.REPEAT_ONE:
+                        v = "REPEAT_ONE";
+                        break;
+                    case Enum_CurrentPlayMode.REPEAT_ALL:
+                        v = "REPEAT_ALL";
+                        break;
+                    case Enum_CurrentPlayMode.RANDOM:
+                        v = "RANDOM";
+                        break;
+                    case Enum_CurrentPlayMode.DIRECT_1:
+                        v = "DIRECT_1";
+                        break;
+                    case Enum_CurrentPlayMode.INTRO:
+                        v = "INTRO";
+                        break;
+                }
+                _S.SetStateVariable("CurrentPlayMode", v);
             }
-            get
-            {
-               Enum_CurrentPlayMode RetVal = 0;
-               string v = (string)_S.GetStateVariable("CurrentPlayMode");
-               switch(v)
-               {
-                  case "NORMAL":
-                     RetVal = Enum_CurrentPlayMode.NORMAL;
-                     break;
-                  case "REPEAT_ALL":
-                     RetVal = Enum_CurrentPlayMode.REPEAT_ALL;
-                     break;
-                  case "INTRO":
-                     RetVal = Enum_CurrentPlayMode.INTRO;
-                     break;
-               }
-               return(RetVal);
-           }
+            get {
+                Enum_CurrentPlayMode RetVal = 0;
+                string v = (string)_S.GetStateVariable("CurrentPlayMode");
+                switch (v) {
+                    case "NORMAL":
+                        RetVal = Enum_CurrentPlayMode.NORMAL;
+                        break;
+                    case "SHUFFLE":
+                        RetVal = Enum_CurrentPlayMode.SHUFFLE;
+                        break;
+                    case "REPEAT_ONE":
+                        RetVal = Enum_CurrentPlayMode.REPEAT_ONE;
+                        break;
+                    case "REPEAT_ALL":
+                        RetVal = Enum_CurrentPlayMode.REPEAT_ALL;
+                        break;
+                    case "RANDOM":
+                        RetVal = Enum_CurrentPlayMode.RANDOM;
+                        break;
+                    case "DIRECT_1":
+                        RetVal = Enum_CurrentPlayMode.DIRECT_1;
+                        break;
+                    case "INTRO":
+                        RetVal = Enum_CurrentPlayMode.INTRO;
+                        break;
+                }
+                return (RetVal);
+            }
         }
         public enum Enum_RecordStorageMedium
         {

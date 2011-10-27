@@ -4,11 +4,10 @@
 using System;
 using OpenSource.UPnP;
 using System.Collections.Generic;
-using MyUPnPSupport.UPnP.Services;
-using MyUPnPSupport.Properties;
+using UPnPDevices.Services;
 using System.Drawing;
 
-namespace MyUPnPSupport.UPnP.Devices {
+namespace UPnPDevices.Devices {
     /// <summary>
     /// Summary description for SampleDevice.
     /// </summary>
@@ -48,28 +47,28 @@ namespace MyUPnPSupport.UPnP.Devices {
             device.ModelNumber = "";
             device.HasPresentation = false;
             device.DeviceURN = "urn:schemas-upnp-org:device:MediaServer:1";
-            MyUPnPSupport.UPnP.Services.ConnectionManagerServer ConnectionManager = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer();
-            ConnectionManager.External_ConnectionComplete = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_ConnectionComplete(ConnectionManager_ConnectionComplete);
-            ConnectionManager.External_GetCurrentConnectionIDs = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
-            ConnectionManager.External_GetCurrentConnectionInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
-            ConnectionManager.External_GetProtocolInfo = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);
-            ConnectionManager.External_PrepareForConnection = new MyUPnPSupport.UPnP.Services.ConnectionManagerServer.Delegate_PrepareForConnection(ConnectionManager_PrepareForConnection);
+            UPnPDevices.Services.ConnectionManagerServer ConnectionManager = new UPnPDevices.Services.ConnectionManagerServer();
+            ConnectionManager.External_ConnectionComplete = new UPnPDevices.Services.ConnectionManagerServer.Delegate_ConnectionComplete(ConnectionManager_ConnectionComplete);
+            ConnectionManager.External_GetCurrentConnectionIDs = new UPnPDevices.Services.ConnectionManagerServer.Delegate_GetCurrentConnectionIDs(ConnectionManager_GetCurrentConnectionIDs);
+            ConnectionManager.External_GetCurrentConnectionInfo = new UPnPDevices.Services.ConnectionManagerServer.Delegate_GetCurrentConnectionInfo(ConnectionManager_GetCurrentConnectionInfo);
+            ConnectionManager.External_GetProtocolInfo = new UPnPDevices.Services.ConnectionManagerServer.Delegate_GetProtocolInfo(ConnectionManager_GetProtocolInfo);
+            ConnectionManager.External_PrepareForConnection = new UPnPDevices.Services.ConnectionManagerServer.Delegate_PrepareForConnection(ConnectionManager_PrepareForConnection);
             device.AddService(ConnectionManager);
-            MyUPnPSupport.UPnP.Services.ContentDirectory ContentDirectory = new MyUPnPSupport.UPnP.Services.ContentDirectory();
-            ContentDirectory.External_Browse = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_Browse(ContentDirectory_Browse);
-            ContentDirectory.External_CreateObject = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_CreateObject(ContentDirectory_CreateObject);
-            ContentDirectory.External_CreateReference = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_CreateReference(ContentDirectory_CreateReference);
-            ContentDirectory.External_DeleteResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_DeleteResource(ContentDirectory_DeleteResource);
-            ContentDirectory.External_DestroyObject = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_DestroyObject(ContentDirectory_DestroyObject);
-            ContentDirectory.External_ExportResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_ExportResource(ContentDirectory_ExportResource);
-            ContentDirectory.External_GetSearchCapabilities = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetSearchCapabilities(ContentDirectory_GetSearchCapabilities);
-            ContentDirectory.External_GetSortCapabilities = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetSortCapabilities(ContentDirectory_GetSortCapabilities);
-            ContentDirectory.External_GetSystemUpdateID = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetSystemUpdateID(ContentDirectory_GetSystemUpdateID);
-            ContentDirectory.External_GetTransferProgress = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_GetTransferProgress(ContentDirectory_GetTransferProgress);
-            ContentDirectory.External_ImportResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_ImportResource(ContentDirectory_ImportResource);
-            ContentDirectory.External_Search = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_Search(ContentDirectory_Search);
-            ContentDirectory.External_StopTransferResource = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_StopTransferResource(ContentDirectory_StopTransferResource);
-            ContentDirectory.External_UpdateObject = new MyUPnPSupport.UPnP.Services.ContentDirectory.Delegate_UpdateObject(ContentDirectory_UpdateObject);
+            UPnPDevices.Services.ContentDirectory ContentDirectory = new UPnPDevices.Services.ContentDirectory();
+            ContentDirectory.External_Browse = new UPnPDevices.Services.ContentDirectory.Delegate_Browse(ContentDirectory_Browse);
+            ContentDirectory.External_CreateObject = new UPnPDevices.Services.ContentDirectory.Delegate_CreateObject(ContentDirectory_CreateObject);
+            ContentDirectory.External_CreateReference = new UPnPDevices.Services.ContentDirectory.Delegate_CreateReference(ContentDirectory_CreateReference);
+            ContentDirectory.External_DeleteResource = new UPnPDevices.Services.ContentDirectory.Delegate_DeleteResource(ContentDirectory_DeleteResource);
+            ContentDirectory.External_DestroyObject = new UPnPDevices.Services.ContentDirectory.Delegate_DestroyObject(ContentDirectory_DestroyObject);
+            ContentDirectory.External_ExportResource = new UPnPDevices.Services.ContentDirectory.Delegate_ExportResource(ContentDirectory_ExportResource);
+            ContentDirectory.External_GetSearchCapabilities = new UPnPDevices.Services.ContentDirectory.Delegate_GetSearchCapabilities(ContentDirectory_GetSearchCapabilities);
+            ContentDirectory.External_GetSortCapabilities = new UPnPDevices.Services.ContentDirectory.Delegate_GetSortCapabilities(ContentDirectory_GetSortCapabilities);
+            ContentDirectory.External_GetSystemUpdateID = new UPnPDevices.Services.ContentDirectory.Delegate_GetSystemUpdateID(ContentDirectory_GetSystemUpdateID);
+            ContentDirectory.External_GetTransferProgress = new UPnPDevices.Services.ContentDirectory.Delegate_GetTransferProgress(ContentDirectory_GetTransferProgress);
+            ContentDirectory.External_ImportResource = new UPnPDevices.Services.ContentDirectory.Delegate_ImportResource(ContentDirectory_ImportResource);
+            ContentDirectory.External_Search = new UPnPDevices.Services.ContentDirectory.Delegate_Search(ContentDirectory_Search);
+            ContentDirectory.External_StopTransferResource = new UPnPDevices.Services.ContentDirectory.Delegate_StopTransferResource(ContentDirectory_StopTransferResource);
+            ContentDirectory.External_UpdateObject = new UPnPDevices.Services.ContentDirectory.Delegate_UpdateObject(ContentDirectory_UpdateObject);
             device.AddService(ContentDirectory);
 
            
