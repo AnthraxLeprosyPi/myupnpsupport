@@ -126,22 +126,27 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         public override void AVTransport_SetAVTransportURI(uint InstanceID, string CurrentURI, string CurrentURIMetaData) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_SetAVTransportURI(InstanceID, CurrentURI, CurrentURIMetaData)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_SetAVTransportURI(InstanceID, CurrentURI, CurrentURIMetaData)));
                 return;
             }
+           
             if (String.IsNullOrEmpty(CurrentURI)) {
                 g_Player.Stop();
                 _aVTransport.TransportState = AVTransport.Enum_TransportState.STOPPED;
             } else {
                 _aVTransport.TransportState = AVTransport.Enum_TransportState.TRANSITIONING;
                 g_Player.Play(CurrentURI);
+                //g_Player.PlayVideoStream(CurrentURI);
+                //_aVTransport.AVTransportURI = CurrentURI;
+                //_aVTransport.AVTransportURIMetaData = CurrentURIMetaData;
             }
             Log.Debug("AVTransport_SetAVTransportURI(" + InstanceID.ToString() + CurrentURI.ToString() + CurrentURIMetaData.ToString() + ")");
         }
+        
 
         public override void AVTransport_Next(uint InstanceID) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Next(InstanceID)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_Next(InstanceID)));
                 return;
             }
             Player.PlayNext();
@@ -149,7 +154,7 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         public override void AVTransport_Previous(uint InstanceID) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Previous(InstanceID)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_Previous(InstanceID)));
                 return;
             }
             Player.PlayPrevious();
@@ -157,7 +162,7 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         public override void AVTransport_Pause(uint InstanceID) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Pause(InstanceID)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_Pause(InstanceID)));
                 return;
             }
             if (!g_Player.Paused) {
@@ -167,7 +172,7 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         public override void AVTransport_Play(uint InstanceID, AVTransport.Enum_TransportPlaySpeed Speed) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Play(InstanceID, Speed)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_Play(InstanceID, Speed)));
                 return;
             }
             if (g_Player.Paused) {
@@ -179,15 +184,15 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         public override void AVTransport_Stop(uint InstanceID) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Stop(InstanceID)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_Stop(InstanceID)));
                 return;
-            } 
+            }
             g_Player.Stop();
         }
 
         public override void AVTransport_Seek(uint InstanceID, AVTransport.Enum_A_ARG_TYPE_SeekMode Unit, string Target) {
             if (GUIGraphicsContext.form.InvokeRequired) {
-                GUIGraphicsContext.form.Invoke(new System.Action(() => AVTransport_Seek(InstanceID, Unit, Target)));
+                GUIGraphicsContext.form.BeginInvoke(new System.Action(() => AVTransport_Seek(InstanceID, Unit, Target)));
                 return;
             }
             if (!g_Player.CanSeek) {
@@ -224,7 +229,6 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         private static int ConvertToMePo(ushort upnpVolume) {
             return (upnpVolume * ushort.MaxValue) / 100;
-        }
-
+        }       
     }
 }
