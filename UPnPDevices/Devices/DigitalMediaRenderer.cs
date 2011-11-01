@@ -126,7 +126,7 @@ namespace UPnPDevices.Devices {
 
             // Setting the initial value of evented variables
             _aVTransport.Evented_LastChange = "";
-            _connectionManager.Evented_SinkProtocolInfo = "http-get:*:audio/mpegurl:*,http-get:*:audio/mp3:*,http-get:*:audio/mpeg:*,http-get:*:audio/x-ms-wma:*,http-get:*:audio/wma:*,http-get:*:audio/mpeg3:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-ms-avi:*,http-get:*:video/mpeg:*";
+            _connectionManager.Evented_SinkProtocolInfo = "http-get:*:audio/mpegurl:*,http-get:*:audio/mp3:*,http-get:*:audio/mpeg:*,http-get:*:audio/x-ms-wma:*,http-get:*:audio/wma:*,http-get:*:audio/mpeg3:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-ms-avi:*,http-get:*:video/mpeg:*,http-get:*:audio/x-matroska:*,http-get:*:video/x-matroska:*";
             _connectionManager.Evented_SourceProtocolInfo = "Sample String";
             _connectionManager.Evented_CurrentConnectionIDs = "Sample String";
             _renderingControl.Evented_LastChange = "";
