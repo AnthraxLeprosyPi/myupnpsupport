@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MyUPnPSupport.Plugin.Config;
 using OpenSource.UPnP;
-using UPnPDevices.Devices;
+using UPnPStack.Devices;
 
 namespace MyUPnPSupport.Plugin.Devices {
    public class UPnPDeviceManager  : IDisposable{

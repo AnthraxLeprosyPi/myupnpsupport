@@ -131,9 +131,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UPnPDevices\UPnPDevices.csproj">
+    <ProjectReference Include="..\UPnPStack\UPnPStack.csproj">
       <Project>{4D528573-314D-45BE-A201-E22E3B9808B5}</Project>
-      <Name>UPnPDevices</Name>
+      <Name>UPnPStack</Name>
     </ProjectReference>
     <ProjectReference Include="..\UPnP\UPnP.csproj">
       <Project>{584ED187-8F2A-4B58-A266-85F3F212B092}</Project>
