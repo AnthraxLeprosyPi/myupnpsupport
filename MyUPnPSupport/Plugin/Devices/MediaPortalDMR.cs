@@ -3,12 +3,12 @@ using System.Windows.Forms;
 using MediaPortal.GUI.Library;
 using MediaPortal.Player;
 using MediaPortal.Playlists;
-using UPnPDevices.Devices;
-using UPnPDevices.Services;
 using MediaPortal.Util;
+using UPnPStack.Devices;
+using UPnPStack.Services;
 
 namespace MyUPnPSupport.Plugin.Devices {
-    class MediaPortalDMR : DigitalMediaRenderer {
+   public class MediaPortalDMR : DigitalMediaRenderer {
 
         private static readonly PlayListPlayer Player;
         private Timer PositionTimer;
@@ -102,7 +102,7 @@ namespace MyUPnPSupport.Plugin.Devices {
 
         public override void AVTransport_GetTransportSettings(uint InstanceID, out AVTransport.Enum_CurrentPlayMode PlayMode, out AVTransport.Enum_CurrentRecordQualityMode RecQualityMode) {
             PlayMode = _aVTransport.CurrentPlayMode;
-            RecQualityMode = UPnPDevices.Services.AVTransport.Enum_CurrentRecordQualityMode.NOT_IMPLEMENTED;
+            RecQualityMode = AVTransport.Enum_CurrentRecordQualityMode.NOT_IMPLEMENTED;
         }
 
         public override void AVTransport_GetCurrentTransportActions(uint InstanceID, out string Actions) {

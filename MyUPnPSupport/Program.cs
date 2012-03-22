@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UPnPDevices;
-using UPnPDevices.Services;
 using MyUPnPSupport.Plugin.Devices;
 using MyUPnPSupport.Plugin.Config;
 
