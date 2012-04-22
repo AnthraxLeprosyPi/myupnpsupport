@@ -56,19 +56,30 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
-      <Private>False</Private>
+    <Reference Include="Common.Utils, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\MediaPortal\Common.Utils.dll</HintPath>
     </Reference>
     <Reference Include="core, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\MediaPortal\core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Databases, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
-      <Private>False</Private>
+    <Reference Include="Databases, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\MediaPortal\Databases.dll</HintPath>
     </Reference>
-    <Reference Include="dialogs, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
-      <Private>False</Private>
+    <Reference Include="dialogs, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\MediaPortal\dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Platinum\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Platinum.Managed, Version=1.0.4493.20373, Culture=neutral, PublicKeyToken=8d541b58a99dc6ec, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Platinum\Platinum.Managed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,14 +89,17 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
-      <Private>False</Private>
+    <Reference Include="utils, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\MediaPortal\utils.dll</HintPath>
     </Reference>
-    <Reference Include="WindowPlugins, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
-      <Private>False</Private>
+    <Reference Include="WindowPlugins, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\MediaPortal\WindowPlugins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UPnPMediaServer.cs" />
     <Compile Include="Plugin\Config\Configuration.cs" />
     <Compile Include="Plugin\Config\ConfigurationForm.cs">
       <SubType>Form</SubType>
@@ -113,6 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extension\Forum\" />
@@ -152,6 +167,8 @@
     <Content Include="Resources\MediaPortal\dialogs.dll" />
     <Content Include="Resources\MediaPortal\utils.dll" />
     <Content Include="Resources\MediaPortal\WindowPlugins.dll" />
+    <Content Include="Resources\Platinum\log4net.dll" />
+    <Content Include="Resources\Platinum\Platinum.Managed.dll" />
     <Content Include="Resources\upnp_dmc_l.png" />
     <Content Include="Resources\upnp_dmc_s.png" />
     <Content Include="Resources\upnp_dmr_l.png" />
