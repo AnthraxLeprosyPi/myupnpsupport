@@ -31,6 +31,7 @@ namespace MyUPnPSupport.Plugin.Window {
     public partial class Main : WindowPluginBase {
         public Main() {
             GetID = Settings.PLUGIN_WINDOW_ID;
+            UPnPMediaServer s = new UPnPMediaServer();
         }
 
         #region Enums
