@@ -27,12 +27,11 @@ namespace MyUPnPSupport {
             Devices = new BindingList<DeviceData>();
 
             ms = new MediaConnect("Anthrax", "F9E4D149-58F0-4B99-A181-6D0B69A117A5", 0);
-            
-            try {
-                ms.AddIcon(new DeviceIcon(), BmpToBytes_Unsafe(Properties.Resources.upnp_dms_s));
-            } catch { 
-            
-            }
+            //try { 
+            //        ms.AddIcon(new DeviceIcon(), ImageToByte(Properties.Resources.upnp_dms_s));
+            //} catch {
+
+            //}
             ms.BrowseDirectChildren += new MediaServer.BrowseDirectChildrenDelegate(ms_BrowseDirectChildren);
             ms.BrowseMetadata += new MediaServer.BrowseMetadataDelegate(ms_BrowseMetadata);
             ms.SearchContainer += new MediaServer.SearchContainerDelegate(ms_SearchContainer);
@@ -48,22 +47,11 @@ namespace MyUPnPSupport {
 
         }
 
-        private unsafe byte[] BmpToBytes_Unsafe(Bitmap bmp) {
-            BitmapData bData = bmp.LockBits(new Rectangle(new Point(), bmp.Size),
-                ImageLockMode.ReadOnly,
-                PixelFormat.Format24bppRgb);
-            // number of bytes in the bitmap
-            int byteCount = bData.Stride * bmp.Height;
-            byte[] bmpBytes = new byte[byteCount];
-
-            // Copy the locked bytes from memory
-            Marshal.Copy(bData.Scan0, bmpBytes, 0, byteCount);
-
-            // don't forget to unlock the bitmap!!
-            bmp.UnlockBits(bData);
-
-            return bmpBytes;
+        public static byte[] ImageToByte(Image img) {
+            ImageConverter converter = new ImageConverter();
+            return (byte[])converter.ConvertTo(img, typeof(byte[]));
         }
+
         int ms_SearchContainer(Platinum.Action action, string object_id, string searchCriteria, string filter, int starting_index, int requested_count, string sort_criteria, HttpRequestContext context) {
             return -1;
         }
@@ -73,28 +61,38 @@ namespace MyUPnPSupport {
 
         int ms_BrowseMetadata(Platinum.Action action, string object_id, string filter, int starting_index, int requested_count, string sort_criteria, HttpRequestContext context) {
             var didl = Didl.header;
-            if (object_id.Equals("0")) {
-                didl += Root.Value.ToDidl(filter);
+            try {
+
+                MediaObject item = Root.BreadthFirstEnumerator.First(o => o.ObjectID == object_id);
+                didl += item.ToDidl(filter);
+
+                var resource = new MediaResource();
+                resource.ProtoInfo = ProtocolInfo.GetProtocolInfoFromMimeType("audio/mp3", true, context);
+
+                // get list of ips and make sure the ip the request came from is used for the first resource returned
+                // this ensures that clients which look only at the first resource will be able to reach the item
+                List<String> ips = UPnP.GetIpAddresses(true);
+                String localIP = context.LocalAddress.ip;
+                if (localIP != "0.0.0.0") {
+                    ips.Remove(localIP);
+                    ips.Insert(0, localIP);
+                }
+
+                // iterate through all ips and create a resource for each
+                foreach (String ip in ips) {
+                    resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/" + item.ReferenceID).ToString();
+                    item.AddResource(resource);
+                }
+
                 didl += Didl.footer;
                 action.SetArgumentValue("Result", didl);
                 action.SetArgumentValue("NumberReturned", "1");
                 action.SetArgumentValue("TotalMatches", "1");
                 action.SetArgumentValue("UpdateId", "1");
                 return 0;
-            } else { 
-                MediaContainer c = new MediaContainer();
-                c.Title = "Root";
-                c.ObjectID = object_id;
-                c.ParentID = object_id;
-                c.Class = new ObjectClass("object.container.storageFolder", "");
-                didl += c.ToDidl(filter);
-                didl += Didl.footer;
-                action.SetArgumentValue("Result", didl);
-                action.SetArgumentValue("NumberReturned", "1");
-                action.SetArgumentValue("TotalMatches", "1");
-                action.SetArgumentValue("UpdateId", "1");
+            } catch {
+                return -1;
             }
-            return -1;
 
 
             //if (object_id == "0") {
@@ -162,11 +160,23 @@ namespace MyUPnPSupport {
                 foreach (var node in Root.BreadthFirstNodeEnumerator.First(o => o.Value.ObjectID == object_id).Nodes) {
                     didl += node.Value.ToDidl(filter);
                     count++;
-                }
-                if (count <= 0) {
-                    foreach (var node in Root.GetNodeAt(object_id.Split(new char[] { '/' }).ToList().ConvertAll<int>(x => int.Parse(x)).ToArray()).Nodes) {
-                        didl += node.Value.ToDidl(filter);
-                        count++;
+
+                    var resource = new MediaResource();
+                    resource.ProtoInfo = ProtocolInfo.GetProtocolInfoFromMimeType("audio/mp3", true, context);
+
+                    // get list of ips and make sure the ip the request came from is used for the first resource returned
+                    // this ensures that clients which look only at the first resource will be able to reach the item
+                    List<String> ips = UPnP.GetIpAddresses(true);
+                    String localIP = context.LocalAddress.ip;
+                    if (localIP != "0.0.0.0") {
+                        ips.Remove(localIP);
+                        ips.Insert(0, localIP);
+                    }
+
+                    // iterate through all ips and create a resource for each
+                    foreach (String ip in ips) {
+                        resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/" + node.Value.ObjectID).ToString();
+                        node.Value.AddResource(resource);
                     }
                 }
                 didl += Didl.footer;
@@ -234,13 +244,14 @@ namespace MyUPnPSupport {
         }
 
         private int ms_ProcessFileRequest(HttpRequestContext context, HttpResponse response) {
-            Uri uri = context.Request.URI;
-            if (uri.AbsolutePath == "/test/test.mp3") {
-                MediaServer.SetResponseFilePath(context, response, "C:\\Test.mp3");
+            try {
+                string path = context.Request.URI.AbsolutePath.Remove(0, 1);
+                MediaObject item = Root.DepthFirstEnumerator.First(o => o.ObjectID == path);
+                MediaConnect.SetResponseFilePath(context, response, item.ReferenceID);
                 return 0;
+            } catch {
+                return -1;
             }
-
-            return -1;
         }
 
 
@@ -319,16 +330,14 @@ namespace MyUPnPSupport {
             string parentID = string.Join("/", parentNode.GetIndexPath().Select(x => x.ToString()).ToArray());
             int i = 0;
             foreach (Song song in songs) {
-                MediaItem currentSong = new MediaItem() {
-                    Title = song.Title,
-                    ParentID = parentID,
-                    ObjectID = parentID + "/" + i++.ToString(),
-                    Class = new ObjectClass("object.item.audioItem.musicTrack", "Track")     
-                    
-                };
-
+                MediaItem currentSong = new MediaItem();
+                currentSong.Title = song.Title;
+                currentSong.ParentID = parentID;
+                currentSong.ObjectID = parentID + "/" + i++.ToString();
+                currentSong.Class = new ObjectClass("object.item.audioItem.musicTrack", "Track");
+                currentSong.ReferenceID = song.FileName;
+                currentSong.People.AddArtist(new PersonRole(song.Artist));
                 DTreeNode<MediaObject> songNode = nodesCollection.Add(currentSong);
-                
             }
         }
 
