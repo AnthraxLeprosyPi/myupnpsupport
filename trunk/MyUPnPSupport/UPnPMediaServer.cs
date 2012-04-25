@@ -25,13 +25,9 @@ namespace MyUPnPSupport {
             log4net.Config.BasicConfigurator.Configure();
             UPnP = new UPnP();
             Devices = new BindingList<DeviceData>();
-
+            
             ms = new MediaConnect("Anthrax", "F9E4D149-58F0-4B99-A181-6D0B69A117A5", 0);
-            //try { 
-            //        ms.AddIcon(new DeviceIcon(), ImageToByte(Properties.Resources.upnp_dms_s));
-            //} catch {
-
-            //}
+            
             ms.BrowseDirectChildren += new MediaServer.BrowseDirectChildrenDelegate(ms_BrowseDirectChildren);
             ms.BrowseMetadata += new MediaServer.BrowseMetadataDelegate(ms_BrowseMetadata);
             ms.SearchContainer += new MediaServer.SearchContainerDelegate(ms_SearchContainer);
@@ -44,7 +40,11 @@ namespace MyUPnPSupport {
             //UPnP.AddControlPoint(cp);
             UPnP.AddDeviceHost(ms);
             UPnP.Start();
+            try {
+                ms.AddIcon(new DeviceIcon("image/png", 48, 48, 32,""), ImageToByte(Properties.Resources.upnp_dms_s));
+            } catch {
 
+            }
         }
 
         public static byte[] ImageToByte(Image img) {
@@ -246,8 +246,9 @@ namespace MyUPnPSupport {
         private int ms_ProcessFileRequest(HttpRequestContext context, HttpResponse response) {
             try {
                 string path = context.Request.URI.AbsolutePath.Remove(0, 1);
-                MediaObject item = Root.DepthFirstEnumerator.First(o => o.ObjectID == path);
-                MediaConnect.SetResponseFilePath(context, response, item.ReferenceID);
+                //MediaObject item = Root.DepthFirstEnumerator.First(o => o.ObjectID == path);
+                //MediaConnect.SetResponseFilePath(context, response, item.ReferenceID);
+                MediaConnect.SetResponseFilePath(context, response, @"d:\upnp_dms_s.png");
                 return 0;
             } catch {
                 return -1;
