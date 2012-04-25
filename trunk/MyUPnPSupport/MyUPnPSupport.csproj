@@ -60,6 +60,7 @@
     <Reference Include="Common.Utils, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\MediaPortal\Common.Utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="core, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -69,14 +70,12 @@
     <Reference Include="Databases, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\MediaPortal\Databases.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="dialogs, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\MediaPortal\dialogs.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\Platinum\log4net.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Platinum.Managed, Version=1.0.4493.20373, Culture=neutral, PublicKeyToken=8d541b58a99dc6ec, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -93,10 +92,12 @@
     <Reference Include="utils, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\MediaPortal\utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="WindowPlugins, Version=1.2.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\MediaPortal\WindowPlugins.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +169,7 @@
     <Content Include="Resources\MediaPortal\dialogs.dll" />
     <Content Include="Resources\MediaPortal\utils.dll" />
     <Content Include="Resources\MediaPortal\WindowPlugins.dll" />
-    <Content Include="Resources\Platinum\log4net.dll" />
+    <Content Include="Resources\Platinum\LICENSE.txt" />
     <Content Include="Resources\Platinum\Platinum.Managed.dll" />
     <Content Include="Resources\upnp_dmc_l.png" />
     <Content Include="Resources\upnp_dmc_s.png" />

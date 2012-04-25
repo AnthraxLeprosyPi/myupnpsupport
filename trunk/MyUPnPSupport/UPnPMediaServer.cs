@@ -16,26 +16,58 @@ namespace MyUPnPSupport {
     public class UPnPMediaServer : IDisposable {
         UPnP UPnP { get; set; }
         MediaConnect ms { get; set; }
+        ControlPoint cp { get; set; }
         BindingList<DeviceData> Devices { get; set; }
         DTreeNode<MediaObject> Root { get; set; }
 
         public UPnPMediaServer() {
-
             Root = BuildStaticFolderStructure();
-            //log4net.Config.BasicConfigurator.Configure();
             UPnP = new UPnP();
             Devices = new BindingList<DeviceData>();
-            ms = new MediaConnect("Anthrax", "AFA16A2F-8AEB-4B0F-82D6-940774095F41", 0);
+            UPnP.Start();
+
+            ms = new MediaConnect("MediaPortal (DMS)", "AFA16A2F-8AEB-4B0F-82D6-940774095F41", 0);
+            UPnP.AddDeviceHost(ms);
             ms.BrowseDirectChildren += new MediaServer.BrowseDirectChildrenDelegate(ms_BrowseDirectChildren);
             ms.BrowseMetadata += new MediaServer.BrowseMetadataDelegate(ms_BrowseMetadata);
             ms.SearchContainer += new MediaServer.SearchContainerDelegate(ms_SearchContainer);
             ms.ProcessFileRequest += new MediaServer.ProcessFileRequestDelegate(ms_ProcessFileRequest);
 
-            UPnP.AddDeviceHost(ms);
-            UPnP.Start();
             ms.AddIcon(new DeviceIcon("image/png", 48, 48, 32, "/icon/upnp_dms_s.png"), ImageToByte(Properties.Resources.upnp_dms_s));
             ms.AddIcon(new DeviceIcon("image/png", 120, 120, 32, "/icon/upnp_dms_l.png"), ImageToByte(Properties.Resources.upnp_dms_l));
 
+            cp = new ControlPoint(true);
+            cp.DeviceAdded += cp_DeviceAdded;
+            cp.DeviceRemoved += cp_DeviceRemoved;
+            cp.EventNotify += cp_EventNotify;
+            cp.ActionResponse += cp_ActionResponse;
+            UPnP.AddControlPoint(cp);
+        }
+
+        void cp_ActionResponse(NeptuneException error, Platinum.Action action) {
+           
+        }
+
+        void cp_EventNotify(Service srv, IEnumerable<StateVariable> vars) {
+          
+        }
+
+        void cp_DeviceRemoved(DeviceData dev) {
+            Devices.Remove(dev);
+            foreach (var service in dev.Services) {
+                cp.Unsubscribe(service);
+            }
+        }
+
+        void cp_DeviceAdded(DeviceData dev) {
+            Devices.Add(dev);
+            foreach (var service in dev.Services) {
+                cp.Subscribe(service);
+            }
+        }
+
+        ~UPnPMediaServer() {
+            this.Dispose();
         }
 
         public static byte[] ImageToByte(Image img) {
@@ -46,9 +78,6 @@ namespace MyUPnPSupport {
         int ms_SearchContainer(Platinum.Action action, string object_id, string searchCriteria, string filter, int starting_index, int requested_count, string sort_criteria, HttpRequestContext context) {
             return -1;
         }
-
-
-
 
         int ms_BrowseMetadata(Platinum.Action action, string object_id, string filter, int starting_index, int requested_count, string sort_criteria, HttpRequestContext context) {
             var didl = Didl.header;
