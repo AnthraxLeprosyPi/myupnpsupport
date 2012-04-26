@@ -11,6 +11,7 @@ using System.Text;
 using MediaPortal.Music.Database;
 using PH.DataTree;
 using Platinum;
+using MediaPortal.Video.Database;
 
 namespace MyUPnPSupport {
     public class UPnPMediaServer : IDisposable {
@@ -41,6 +42,7 @@ namespace MyUPnPSupport {
             cp.DeviceRemoved += cp_DeviceRemoved;
             cp.EventNotify += cp_EventNotify;
             cp.ActionResponse += cp_ActionResponse;
+            
             UPnP.AddControlPoint(cp);
         }
 
@@ -79,16 +81,13 @@ namespace MyUPnPSupport {
             return -1;
         }
 
+
         int ms_BrowseMetadata(Platinum.Action action, string object_id, string filter, int starting_index, int requested_count, string sort_criteria, HttpRequestContext context) {
             var didl = Didl.header;
             try {
-
                 MediaObject item = Root.BreadthFirstEnumerator.First(o => o.ObjectID == object_id);
-                didl += item.ToDidl(filter);
-
                 var resource = new MediaResource();
                 resource.ProtoInfo = ProtocolInfo.GetProtocolInfoFromMimeType("audio/mp3", true, context);
-
                 // get list of ips and make sure the ip the request came from is used for the first resource returned
                 // this ensures that clients which look only at the first resource will be able to reach the item
                 List<String> ips = UPnP.GetIpAddresses(true);
@@ -103,7 +102,7 @@ namespace MyUPnPSupport {
                     resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/" + item.ReferenceID).ToString();
                     item.AddResource(resource);
                 }
-
+                didl += item.ToDidl(filter);
                 didl += Didl.footer;
                 action.SetArgumentValue("Result", didl);
                 action.SetArgumentValue("NumberReturned", "1");
@@ -111,76 +110,72 @@ namespace MyUPnPSupport {
                 action.SetArgumentValue("UpdateId", "1");
                 return 0;
             } catch {
-                return -1;
+                #region this pleases the mighty WMP gods
+                switch (object_id) {
+                    case "0":
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "12":
+                    case "4":
+                    case "5":
+                    case "6":
+                    case "7":
+                    case "F":
+                    case "14":
+                    case "100":
+                    case "107":
+                    case "108":
+                    case "101":
+                    case "102":
+                    case "103":
+                    case "104":
+                    case "106":
+                    case "8":
+                    case "9":
+                    case "A":
+                    case "E":
+                    case "10":
+                    case "15":
+                    case "200":
+                    case "201":
+                    case "202":
+                    case "203":
+                    case "204":
+                    case "205":
+                    case "B":
+                    case "C":
+                    case "D":
+                    case "D2":
+                    case "11":
+                    case "16":
+                    case "300":
+                    case "301":
+                    case "302":
+                    case "303":
+                    case "304":
+                    case "305":
+                    case "306":
+                    case "13":
+                    case "17":
+                        return 0;
+                    default:
+                        return -1;
+                }
+                #endregion
             }
-
-
-            //if (object_id == "0") {
-            //    var root = new MediaContainer();
-            //    root.Title = "Root";
-            //    root.ObjectID = "0";
-            //    root.ParentID = "-1";
-            //    root.Class = new ObjectClass("object.container.storageFolder", "");
-
-            //    var didl = Didl.header + root.ToDidl(filter) + Didl.footer;
-            //    action.SetArgumentValue("Result", didl);
-            //    action.SetArgumentValue("NumberReturned", "1");
-            //    action.SetArgumentValue("TotalMatches", "1");
-
-            //    // update ID may be wrong here, it should be the one of the container?
-            //    // TODO: We need to keep track of the overall updateID of the CDS
-            //    action.SetArgumentValue("UpdateId", "1");
-
-            //    return 0;
-            //} else if (object_id == "1") {
-            //    var item = new MediaItem();
-            //    item.Title = "Item";
-            //    item.ObjectID = "1";
-            //    item.ParentID = "0";
-            //    item.Class = new ObjectClass("object.item.audioItem.musicTrack", "");
-
-            //    var resource = new MediaResource();
-            //    resource.ProtoInfo = ProtocolInfo.GetProtocolInfoFromMimeType("audio/mp3", true, context);
-
-            //    // get list of ips and make sure the ip the request came from is used for the first resource returned
-            //    // this ensures that clients which look only at the first resource will be able to reach the item
-            //    List<String> ips = UPnP.GetIpAddresses(true);
-            //    String localIP = context.LocalAddress.ip;
-            //    if (localIP != "0.0.0.0") {
-            //        ips.Remove(localIP);
-            //        ips.Insert(0, localIP);
-            //    }
-
-            //    // iterate through all ips and create a resource for each
-            //    foreach (String ip in ips) {
-            //        resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/test/test.mp3").ToString();
-            //        item.AddResource(resource);
-            //    }
-
-            //    var didl = Didl.header + item.ToDidl(filter) + Didl.footer;
-            //    action.SetArgumentValue("Result", didl);
-            //    action.SetArgumentValue("NumberReturned", "1");
-            //    action.SetArgumentValue("TotalMatches", "1");
-
-            //    // update ID may be wrong here, it should be the one of the container?
-            //    // TODO: We need to keep track of the overall updateID of the CDS
-            //    action.SetArgumentValue("UpdateId", "1");
-
-            //    return 0;
-            //}
-
-            // return -1;
-
         }
 
         int ms_BrowseDirectChildren(Platinum.Action action, string object_id, string filter, int starting_index, int requested_count, string sort_criteria, HttpRequestContext context) {
-            var didl = Didl.header;
             try {
-                int count = 0;
-                foreach (var node in Root.BreadthFirstNodeEnumerator.First(o => o.Value.ObjectID == object_id).Nodes) {
-                    didl += node.Value.ToDidl(filter);
-                    count++;
-
+                var didl = Didl.header;
+                var parentNode = Root.BreadthFirstNodeEnumerator.First(o => o.Value.ObjectID == object_id);
+                int returnCount = 0;
+                if (requested_count == 0) {
+                    requested_count = parentNode.Nodes.Count;
+                }
+                for (int i = starting_index; i < starting_index + requested_count && i < parentNode.Nodes.Count; i++) {
+                    var currentItem = parentNode.Nodes[i].Value;
                     var resource = new MediaResource();
                     resource.ProtoInfo = ProtocolInfo.GetProtocolInfoFromMimeType("audio/mp3", true, context);
 
@@ -195,72 +190,73 @@ namespace MyUPnPSupport {
 
                     // iterate through all ips and create a resource for each
                     foreach (String ip in ips) {
-                        resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/" + node.Value.ObjectID).ToString();
-                        node.Value.AddResource(resource);
+                        resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/" + currentItem.ObjectID).ToString();
+                        currentItem.AddResource(resource);
                     }
+                    didl += currentItem.ToDidl(filter);
+                    returnCount++;
                 }
                 didl += Didl.footer;
                 action.SetArgumentValue("Result", didl);
-                action.SetArgumentValue("NumberReturned", count.ToString());
-                action.SetArgumentValue("TotalMatches", count.ToString());
+                action.SetArgumentValue("NumberReturned", returnCount.ToString());
+                action.SetArgumentValue("TotalMatches", parentNode.Nodes.Count.ToString());
                 action.SetArgumentValue("UpdateId", "1");
                 return 0;
             } catch {
-                return -1;
+                #region this pleases the mighty WMP gods
+                switch (object_id) {
+                    case "0":
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "12":
+                    case "4":
+                    case "5":
+                    case "6":
+                    case "7":
+                    case "F":
+                    case "14":
+                    case "100":
+                    case "107":
+                    case "108":
+                    case "101":
+                    case "102":
+                    case "103":
+                    case "104":
+                    case "106":
+                    case "8":
+                    case "9":
+                    case "A":
+                    case "E":
+                    case "10":
+                    case "15":
+                    case "200":
+                    case "201":
+                    case "202":
+                    case "203":
+                    case "204":
+                    case "205":
+                    case "B":
+                    case "C":
+                    case "D":
+                    case "D2":
+                    case "11":
+                    case "16":
+                    case "300":
+                    case "301":
+                    case "302":
+                    case "303":
+                    case "304":
+                    case "305":
+                    case "306":
+                    case "13":
+                    case "17":
+                        return 0;
+                    default:
+                        return -1;
+                }
+                #endregion
             }
-
-            //if (Root.Nodes.Find(object_id, true).Count() > 0) {
-            //    var didl = Didl.header;
-            //    foreach (var node in Root.Nodes.Find(object_id, true)[0].Nodes) {
-            //        if (node is ContainerNode) {
-            //            didl += ((ContainerNode)node).MediaContainer.ToDidl(filter);
-            //        }
-            //    }
-            //    didl += Didl.footer;
-            //    action.SetArgumentValue("Result", didl);
-            //    action.SetArgumentValue("NumberReturned", Root.Nodes.Find(object_id, true)[0].Nodes.Count.ToString());
-            //    action.SetArgumentValue("TotalMatches", Root.Nodes.Find(object_id, true)[0].Nodes.Count.ToString());
-            //    action.SetArgumentValue("UpdateId", "1");
-            //    return 0;
-            //} else {
-            //    return -1;
-            //}
-            //if (object_id != "0") return -1;
-
-            //var item = new MediaItem();
-            //item.Title = "Item";
-            //item.ObjectID = "1";
-            //item.ParentID = "0";
-            //item.Class = new ObjectClass("object.item.audioItem.musicTrack", "");
-
-            //var resource = new MediaResource();
-            //resource.ProtoInfo = ProtocolInfo.GetProtocolInfoFromMimeType("audio/mp3", true, context);
-
-            //// get list of ips and make sure the ip the request came from is used for the first resource returned
-            //// this ensures that clients which look only at the first resource will be able to reach the item
-            //List<String> ips = UPnP.GetIpAddresses(true);
-            //String localIP = context.LocalAddress.ip;
-            //if (localIP != "0.0.0.0") {
-            //    ips.Remove(localIP);
-            //    ips.Insert(0, localIP);
-            //}
-
-            //// iterate through all ips and create a resource for each
-            //foreach (String ip in ips) {
-            //    resource.URI = new Uri("http://" + ip + ":" + context.LocalAddress.port + "/test/test.mp3").ToString();
-            //    item.AddResource(resource);
-            //}
-
-            //var didl = Didl.header + item.ToDidl(filter) + Didl.footer;
-            //action.SetArgumentValue("Result", didl);
-            //action.SetArgumentValue("NumberReturned", "1");
-            //action.SetArgumentValue("TotalMatches", "1");
-
-            //// update ID may be wrong here, it should be the one of the container?
-            //// TODO: We need to keep track of the overall updateID of the CDS
-            //action.SetArgumentValue("UpdateId", "1");
-
-            //return 0;
         }
 
         private int ms_ProcessFileRequest(HttpRequestContext context, HttpResponse response) {
@@ -317,18 +313,50 @@ namespace MyUPnPSupport {
             DTreeNode<MediaObject> albums = music.Nodes.Add(new MediaContainer() {
                 ObjectID = "7",
                 ParentID = "1",
-                Title = "Album",
-                ChildrenCount = 10,
-                Class = new ObjectClass("object.container.album.musicAlbum", "Album")
+                Title = "By Album",
+                Class = new ObjectClass("object.container.album.musicAlbum", "By Album")
             });
             albums.NodesAccessedInitially += new DTreeNode<MediaObject>.NodesAccessedInitiallyHandler(albums_NodesAccessedInitially);
+
+            // Subsections of Video
+            DTreeNode<MediaObject> allVideos = video.Nodes.Add(new MediaContainer() {
+                ObjectID = "8",
+                ParentID = "2",
+                Title = "All Videos",
+                Class = new ObjectClass("object.item.videoItem", "All Videos")
+            });
+            allVideos.NodesAccessedInitially += new DTreeNode<MediaObject>.NodesAccessedInitiallyHandler(allVideos_NodesAccessedInitially);
             return root;
         }
 
+        void allVideos_NodesAccessedInitially(DTreeNode<MediaObject> parentNode, ref DTreeNodeCollection<MediaObject> nodesCollection) {
+            ArrayList videos = new ArrayList();
+            VideoDatabase.GetMovies(ref videos);
+            string parentID = string.Join("/", parentNode.GetIndexPath().Select(x => x.ToString()).ToArray());
+            int i = 0;
+            foreach (IMDBMovie movie in videos) {
+                MediaItem currentMovie = new MediaItem();
+                currentMovie.Title = movie.Title;
+                currentMovie.ParentID = parentID;
+                currentMovie.ObjectID = parentID + "/" + i++.ToString();
+                currentMovie.Class = new ObjectClass("object.item.videoItem", "Video");
+                currentMovie.ReferenceID = movie.File;
+                currentMovie.People.AddActor(new PersonRole(movie.Actor));
+                currentMovie.People.Director = movie.Director;
+                currentMovie.Description.DescriptionText = movie.Plot;
+                currentMovie.Description.Rating = movie.Rating.ToString();
+                currentMovie.Extra.AddGenre(movie.SingleGenre);
+                MediaResource resource = new MediaResource();
+                resource.ProtoInfo = ProtocolInfo.GetProtocolInfo(movie.Path);
+                resource.Duration = (uint)movie.RunTime * 60 * 60;
+                currentMovie.AddResource(resource);
+                DTreeNode<MediaObject> movieNode = nodesCollection.Add(currentMovie);
+            }
+        }
+
         void albums_NodesAccessedInitially(DTreeNode<MediaObject> parentNode, ref DTreeNodeCollection<MediaObject> nodesCollection) {
-            MusicDatabase db = MusicDatabase.Instance;
             List<AlbumInfo> albums = new List<AlbumInfo>();
-            db.GetAllAlbums(ref albums);
+            MusicDatabase.Instance.GetAllAlbums(ref albums);
             string parentID = string.Join("/", parentNode.GetIndexPath().Select(x => x.ToString()).ToArray());
             int i = 0;
             foreach (var album in albums) {
@@ -338,15 +366,16 @@ namespace MyUPnPSupport {
                     ObjectID = parentID + "/" + i++.ToString(),
                     Class = new ObjectClass("object.container.album.musicAlbum", "Album")
                 };
+                currentAlbum.Extra.AddGenre(album.Genre);
+                currentAlbum.Extra.AddAlbumArtInfo(new AlbumArtInfo(album.Image));
                 DTreeNode<MediaObject> albumNode = nodesCollection.Add(currentAlbum);
                 albumNode.NodesAccessedInitially += album_NodesAccessedInitially;
             }
         }
 
         void album_NodesAccessedInitially(DTreeNode<MediaObject> parentNode, ref DTreeNodeCollection<MediaObject> nodesCollection) {
-            MusicDatabase db = MusicDatabase.Instance;
             ArrayList songs = new ArrayList();
-            db.GetSongsByAlbum(parentNode.Value.Title, ref songs);
+            MusicDatabase.Instance.GetSongsByAlbum(parentNode.Value.Title, ref songs);
             string parentID = string.Join("/", parentNode.GetIndexPath().Select(x => x.ToString()).ToArray());
             int i = 0;
             foreach (Song song in songs) {
@@ -357,6 +386,12 @@ namespace MyUPnPSupport {
                 currentSong.Class = new ObjectClass("object.item.audioItem.musicTrack", "Track");
                 currentSong.ReferenceID = song.FileName;
                 currentSong.People.AddArtist(new PersonRole(song.Artist));
+                currentSong.Extra.AddGenre(song.Genre);
+                MediaResource resource = new MediaResource();
+                resource.ProtoInfo = ProtocolInfo.GetProtocolInfo(song.FileName);
+                resource.Bitrate = (uint)song.BitRate;
+                resource.Duration = (uint)song.Duration;
+                currentSong.AddResource(resource);
                 DTreeNode<MediaObject> songNode = nodesCollection.Add(currentSong);
             }
         }
