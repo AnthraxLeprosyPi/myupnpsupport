@@ -101,6 +101,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugin\Devices\MediaPortalDMS.cs" />
     <Compile Include="UPnPMediaServer.cs" />
     <Compile Include="Plugin\Config\Configuration.cs" />
     <Compile Include="Plugin\Config\ConfigurationForm.cs">

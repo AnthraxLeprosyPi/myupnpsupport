@@ -63,8 +63,10 @@ namespace MyUPnPSupport {
 
         void cp_DeviceAdded(DeviceData dev) {
             Devices.Add(dev);
-            foreach (var service in dev.Services) {
-                cp.Subscribe(service);
+            foreach (var edev in dev.EmbeddedDevices) {
+                foreach (var service in edev.Services) {
+                    cp.Subscribe(service);
+                }
             }
         }
 
@@ -341,14 +343,16 @@ namespace MyUPnPSupport {
                 currentMovie.ObjectID = parentID + "/" + i++.ToString();
                 currentMovie.Class = new ObjectClass("object.item.videoItem", "Video");
                 currentMovie.ReferenceID = movie.File;
-                currentMovie.People.AddActor(new PersonRole(movie.Actor));
+                foreach (var actor in movie.Cast.Split('\n')) {
+                    currentMovie.People.AddActor(new PersonRole(actor));
+                }
                 currentMovie.People.Director = movie.Director;
                 currentMovie.Description.DescriptionText = movie.Plot;
                 currentMovie.Description.Rating = movie.Rating.ToString();
                 currentMovie.Extra.AddGenre(movie.SingleGenre);
                 MediaResource resource = new MediaResource();
                 resource.ProtoInfo = ProtocolInfo.GetProtocolInfo(movie.Path);
-                resource.Duration = (uint)movie.RunTime * 60 * 60;
+                resource.Duration = (uint)movie.RunTime * 60;
                 currentMovie.AddResource(resource);
                 DTreeNode<MediaObject> movieNode = nodesCollection.Add(currentMovie);
             }
@@ -383,6 +387,7 @@ namespace MyUPnPSupport {
                 currentSong.Title = song.Title;
                 currentSong.ParentID = parentID;
                 currentSong.ObjectID = parentID + "/" + i++.ToString();
+                currentSong.Affiliation.Album = parentNode.Value.Title;
                 currentSong.Class = new ObjectClass("object.item.audioItem.musicTrack", "Track");
                 currentSong.ReferenceID = song.FileName;
                 currentSong.People.AddArtist(new PersonRole(song.Artist));

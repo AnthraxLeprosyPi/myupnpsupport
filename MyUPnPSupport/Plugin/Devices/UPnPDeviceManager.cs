@@ -17,15 +17,7 @@ namespace MyUPnPSupport.Plugin.Devices {
                 AddDevice(dmr);
             }
             if (enableDMS) {
-                DigitalMediaServer server = new DigitalMediaServer(
-                    "MediaPortal (DMS)",
-                    "Anthrax",
-                    "MyUPnPSupport MediaPortal-Plugin",
-                    "Custom root-device for the MyUPnPSupport MediaPortal-Plugin",
-                    new Guid("6D40169B-BC4E-4D1D-BBB4-C26A67CC9BCF"),
-                    new Uri("http://www.team-mediaportal.com"),
-                    Properties.Resources.upnp_dms_l,
-                    Properties.Resources.upnp_dms_s);
+                MediaPortalDMS server = new MediaPortalDMS("MediaPortal (DMS)","6D40169B-BC4E-4D1D-BBB4-C26A67CC9BCF");
                 this.AddDevice(server);
             }
             if (enableDMC) { 

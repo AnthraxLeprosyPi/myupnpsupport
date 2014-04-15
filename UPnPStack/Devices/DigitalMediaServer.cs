@@ -86,23 +86,23 @@ namespace UPnPStack.Devices {
         //    MediaServer.AddDirectory(new DirectoryInfo(dirPath), false, false);
         //}
 
-        //public void AddDirectories(List<string> directories) {
+        //public virtual void AddDirectories(List<string> directories) {
         //    directories
         //        .ConvertAll(strdir => new DirectoryInfo(strdir))
         //        .FindAll(dirinfo => dirinfo.Exists)
         //        .ForEach(dirinfo => MediaServer.AddDirectory(dirinfo, false, false));
         //}
 
-        public void ConnectionManager_ConnectionComplete(System.Int32 ConnectionID) {
+        public virtual void ConnectionManager_ConnectionComplete(System.Int32 ConnectionID) {
             Console.WriteLine("ConnectionManager_ConnectionComplete(" + ConnectionID.ToString() + ")");
         }
 
-        public void ConnectionManager_GetCurrentConnectionIDs(out System.String ConnectionIDs) {
+        public virtual void ConnectionManager_GetCurrentConnectionIDs(out System.String ConnectionIDs) {
             ConnectionIDs = "Sample String";
             Console.WriteLine("ConnectionManager_GetCurrentConnectionIDs(" + ")");
         }
 
-        public void ConnectionManager_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status) {
+        public virtual void ConnectionManager_GetCurrentConnectionInfo(System.Int32 ConnectionID, out System.Int32 RcsID, out System.Int32 AVTransportID, out System.String ProtocolInfo, out System.String PeerConnectionManager, out System.Int32 PeerConnectionID, out ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out ConnectionManagerServer.Enum_A_ARG_TYPE_ConnectionStatus Status) {
             RcsID = 0;
             AVTransportID = 0;
             ProtocolInfo = "Sample String";
@@ -113,20 +113,20 @@ namespace UPnPStack.Devices {
             Console.WriteLine("ConnectionManager_GetCurrentConnectionInfo(" + ConnectionID.ToString() + ")");
         }
 
-        public void ConnectionManager_GetProtocolInfo(out System.String Source, out System.String Sink) {
+        public virtual void ConnectionManager_GetProtocolInfo(out System.String Source, out System.String Sink) {
             Source = "Sample String";
             Sink = "Sample String";
             Console.WriteLine("ConnectionManager_GetProtocolInfo(" + ")");
         }
 
-        public void ConnectionManager_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID) {
+        public virtual void ConnectionManager_PrepareForConnection(System.String RemoteProtocolInfo, System.String PeerConnectionManager, System.Int32 PeerConnectionID, ConnectionManagerServer.Enum_A_ARG_TYPE_Direction Direction, out System.Int32 ConnectionID, out System.Int32 AVTransportID, out System.Int32 RcsID) {
             ConnectionID = 0;
             AVTransportID = 0;
             RcsID = 0;
             Console.WriteLine("ConnectionManager_PrepareForConnection(" + RemoteProtocolInfo.ToString() + PeerConnectionManager.ToString() + PeerConnectionID.ToString() + Direction.ToString() + ")");
         }
 
-        public void ContentDirectory_Browse(System.String ObjectID, ContentDirectory.Enum_A_ARG_TYPE_BrowseFlag BrowseFlag, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID) {
+        public virtual void ContentDirectory_Browse(System.String ObjectID, ContentDirectory.Enum_A_ARG_TYPE_BrowseFlag BrowseFlag, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID) {
             Result = "Sample String";
             NumberReturned = 0;
             TotalMatches = 0;
@@ -134,58 +134,58 @@ namespace UPnPStack.Devices {
             Console.WriteLine("ContentDirectory_Browse(" + ObjectID.ToString() + BrowseFlag.ToString() + Filter.ToString() + StartingIndex.ToString() + RequestedCount.ToString() + SortCriteria.ToString() + ")");
         }
 
-        public void ContentDirectory_CreateObject(System.String ContainerID, System.String Elements, out System.String ObjectID, out System.String Result) {
+        public virtual void ContentDirectory_CreateObject(System.String ContainerID, System.String Elements, out System.String ObjectID, out System.String Result) {
             ObjectID = "Sample String";
             Result = "Sample String";
             Console.WriteLine("ContentDirectory_CreateObject(" + ContainerID.ToString() + Elements.ToString() + ")");
         }
 
-        public void ContentDirectory_CreateReference(System.String ContainerID, System.String ObjectID, out System.String NewID) {
+        public virtual void ContentDirectory_CreateReference(System.String ContainerID, System.String ObjectID, out System.String NewID) {
             NewID = "Sample String";
             Console.WriteLine("ContentDirectory_CreateReference(" + ContainerID.ToString() + ObjectID.ToString() + ")");
         }
 
-        public void ContentDirectory_DeleteResource(System.Uri ResourceURI) {
+        public virtual void ContentDirectory_DeleteResource(System.Uri ResourceURI) {
             Console.WriteLine("ContentDirectory_DeleteResource(" + ResourceURI.ToString() + ")");
         }
 
-        public void ContentDirectory_DestroyObject(System.String ObjectID) {
+        public virtual void ContentDirectory_DestroyObject(System.String ObjectID) {
             Console.WriteLine("ContentDirectory_DestroyObject(" + ObjectID.ToString() + ")");
         }
 
-        public void ContentDirectory_ExportResource(System.Uri SourceURI, System.Uri DestinationURI, out System.UInt32 TransferID) {
+        public virtual void ContentDirectory_ExportResource(System.Uri SourceURI, System.Uri DestinationURI, out System.UInt32 TransferID) {
             TransferID = 0;
             Console.WriteLine("ContentDirectory_ExportResource(" + SourceURI.ToString() + DestinationURI.ToString() + ")");
         }
 
-        public void ContentDirectory_GetSearchCapabilities(out System.String SearchCaps) {
+        public virtual void ContentDirectory_GetSearchCapabilities(out System.String SearchCaps) {
             SearchCaps = "Sample String";
             Console.WriteLine("ContentDirectory_GetSearchCapabilities(" + ")");
         }
 
-        public void ContentDirectory_GetSortCapabilities(out System.String SortCaps) {
+        public virtual void ContentDirectory_GetSortCapabilities(out System.String SortCaps) {
             SortCaps = "Sample String";
             Console.WriteLine("ContentDirectory_GetSortCapabilities(" + ")");
         }
 
-        public void ContentDirectory_GetSystemUpdateID(out System.UInt32 Id) {
+        public virtual void ContentDirectory_GetSystemUpdateID(out System.UInt32 Id) {
             Id = 0;
             Console.WriteLine("ContentDirectory_GetSystemUpdateID(" + ")");
         }
 
-        public void ContentDirectory_GetTransferProgress(System.UInt32 TransferID, out ContentDirectory.Enum_A_ARG_TYPE_TransferStatus TransferStatus, out System.String TransferLength, out System.String TransferTotal) {
+        public virtual void ContentDirectory_GetTransferProgress(System.UInt32 TransferID, out ContentDirectory.Enum_A_ARG_TYPE_TransferStatus TransferStatus, out System.String TransferLength, out System.String TransferTotal) {
             TransferStatus = ContentDirectory.Enum_A_ARG_TYPE_TransferStatus.COMPLETED;
             TransferLength = "Sample String";
             TransferTotal = "Sample String";
             Console.WriteLine("ContentDirectory_GetTransferProgress(" + TransferID.ToString() + ")");
         }
 
-        public void ContentDirectory_ImportResource(System.Uri SourceURI, System.Uri DestinationURI, out System.UInt32 TransferID) {
+        public virtual void ContentDirectory_ImportResource(System.Uri SourceURI, System.Uri DestinationURI, out System.UInt32 TransferID) {
             TransferID = 0;
             Console.WriteLine("ContentDirectory_ImportResource(" + SourceURI.ToString() + DestinationURI.ToString() + ")");
         }
 
-        public void ContentDirectory_Search(System.String ContainerID, System.String SearchCriteria, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID) {
+        public virtual void ContentDirectory_Search(System.String ContainerID, System.String SearchCriteria, System.String Filter, System.UInt32 StartingIndex, System.UInt32 RequestedCount, System.String SortCriteria, out System.String Result, out System.UInt32 NumberReturned, out System.UInt32 TotalMatches, out System.UInt32 UpdateID) {
             Result = "Sample String";
             NumberReturned = 0;
             TotalMatches = 0;
@@ -193,11 +193,11 @@ namespace UPnPStack.Devices {
             Console.WriteLine("ContentDirectory_Search(" + ContainerID.ToString() + SearchCriteria.ToString() + Filter.ToString() + StartingIndex.ToString() + RequestedCount.ToString() + SortCriteria.ToString() + ")");
         }
 
-        public void ContentDirectory_StopTransferResource(System.UInt32 TransferID) {
+        public virtual void ContentDirectory_StopTransferResource(System.UInt32 TransferID) {
             Console.WriteLine("ContentDirectory_StopTransferResource(" + TransferID.ToString() + ")");
         }
 
-        public void ContentDirectory_UpdateObject(System.String ObjectID, System.String CurrentTagValue, System.String NewTagValue) {
+        public virtual void ContentDirectory_UpdateObject(System.String ObjectID, System.String CurrentTagValue, System.String NewTagValue) {
             Console.WriteLine("ContentDirectory_UpdateObject(" + ObjectID.ToString() + CurrentTagValue.ToString() + NewTagValue.ToString() + ")");
         }
 
